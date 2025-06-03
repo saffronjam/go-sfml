@@ -1435,7 +1435,7 @@ func (r *RenderWindow) Close() int32 {
 }
 
 func RenderWindowCreate(mode VideoMode, title byte, style uint32, settings *ContextSettings) int32 {
-	return C.sfRenderWindow_create(mode, title, style, settings)
+	return C.sfRenderWindow_create(mode.ToC(), title, style, settings)
 }
 
 func RenderWindowCreateFromHandle(handle uintptr, settings *ContextSettings) int32 {
@@ -1443,7 +1443,7 @@ func RenderWindowCreateFromHandle(handle uintptr, settings *ContextSettings) int
 }
 
 func RenderWindowCreateUnicode(mode VideoMode, title uint32, style uint32, settings *ContextSettings) int32 {
-	return C.sfRenderWindow_createUnicode(mode, title, style, settings)
+	return C.sfRenderWindow_createUnicode(mode.ToC(), title, style, settings)
 }
 
 func (r *RenderWindow) CreateVulkanSurface(instance int32, surface int32, allocator int32) int32 {
@@ -3027,7 +3027,7 @@ func (w *WindowBase) Close() int32 {
 }
 
 func WindowBaseCreate(mode VideoMode, title byte, style uint32) int32 {
-	return C.sfWindowBase_create(mode, title, style)
+	return C.sfWindowBase_create(mode.ToC(), title, style)
 }
 
 func WindowBaseCreateFromHandle(handle uintptr) int32 {
@@ -3035,7 +3035,7 @@ func WindowBaseCreateFromHandle(handle uintptr) int32 {
 }
 
 func WindowBaseCreateUnicode(mode VideoMode, title uint32, style uint32) int32 {
-	return C.sfWindowBase_createUnicode(mode, title, style)
+	return C.sfWindowBase_createUnicode(mode.ToC(), title, style)
 }
 
 func (w *WindowBase) CreateVulkanSurface(instance int32, surface int32, allocator int32) int32 {
@@ -3127,7 +3127,7 @@ func (w *Window) Close() int32 {
 }
 
 func WindowCreate(mode VideoMode, title byte, style uint32, settings *ContextSettings) int32 {
-	return C.sfWindow_create(mode, title, style, settings)
+	return C.sfWindow_create(mode.ToC(), title, style, settings)
 }
 
 func WindowCreateFromHandle(handle uintptr, settings *ContextSettings) int32 {
@@ -3135,7 +3135,7 @@ func WindowCreateFromHandle(handle uintptr, settings *ContextSettings) int32 {
 }
 
 func WindowCreateUnicode(mode VideoMode, title uint32, style uint32, settings *ContextSettings) int32 {
-	return C.sfWindow_createUnicode(mode, title, style, settings)
+	return C.sfWindow_createUnicode(mode.ToC(), title, style, settings)
 }
 
 func (w *Window) CreateVulkanSurface(instance int32, surface int32, allocator int32) int32 {

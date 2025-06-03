@@ -83,6 +83,11 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 				"Vector4f",
 				[]Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}, {Name: "W", Type: "float32"}},
 				[]Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}, {Name: "w", Type: "float"}}},
+			"sfVideoMode": {
+				"VideoMode",
+				[]Field{{Name: "Width", Type: "uint32"}, {Name: "Height", Type: "uint32"}, {Name: "BitsPerPixel", Type: "uint32"}},
+				[]Field{{Name: "width", Type: "unsigned int"}, {Name: "height", Type: "unsigned int"}, {Name: "bitsPerPixel", Type: "unsigned int"}},
+			},
 		},
 		PrefixMap: map[string]string{
 			"sf": "",

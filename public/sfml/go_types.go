@@ -1194,11 +1194,13 @@ const (
 )
 
 type VideoMode struct {
-	ptr unsafe.Pointer
+	Width uint32
+	Height uint32
+	BitsPerPixel uint32
 }
 
-func (videoMode *VideoMode) CPtr() unsafe.Pointer {
-	return (*C.sfVideoMode)(videoMode.ptr)
+func (v VideoMode) ToC() C.sfVideoMode {
+	return C.sfVideoMode{ width: v.Width, height: v.Height, bitsPerPixel: v.BitsPerPixel }
 }
 
 type View struct {

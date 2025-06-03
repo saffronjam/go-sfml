@@ -50,10 +50,10 @@ go run gen_functions.go
 # Move to public directory
 echo "📁 Moving generated files to public directory..."
 rm -rf "$PUBLIC_DIR"
-mkdir -p "$PUBLIC_DIR/go-sfml"
+mkdir -p "$PUBLIC_DIR/sfml"
 
-mv "$GEN_DIR/go_types.go" "$PUBLIC_DIR/go-sfml/go_types.go"
-mv "$GEN_DIR/go_functions.go" "$PUBLIC_DIR/go-sfml/go_functions.go"
+mv "$GEN_DIR/go_types.go" "$PUBLIC_DIR/sfml/go_types.go"
+mv "$GEN_DIR/go_functions.go" "$PUBLIC_DIR/sfml/go_functions.go"
 
-echo "✅ Done. Output in $PUBLIC_DIR/go-sfml/"
+echo "✅ Done. Output in $PUBLIC_DIR/sfml/"
 
