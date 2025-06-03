@@ -48,8 +48,9 @@ func main() {
 					Fields: structOverride.Fields,
 				})
 
+				receiverName := strings.ToLower(structOverride.GoName[:1]) // e.g. "v" for "Vector2i"
 				writer.ReceiverFunctionHeader(common.ReceiverFunctionHeader{
-					ReceiverName: strings.ToLower(structOverride.GoName[:1]), // e.g. "v" for "Vector2i"
+					ReceiverName: receiverName, // e.g. "v" for "Vector2i"
 					ReceiverType: structOverride.GoName,
 					MethodName:   "ToC",
 					Parameters:   []common.Field{},
@@ -61,7 +62,7 @@ func main() {
 					if i > 0 {
 						returnValue.WriteString(", ")
 					}
-					returnValue.WriteString(fmt.Sprintf("%s: v.%s", structOverride.CFields[i].Name, field.Name))
+					returnValue.WriteString(fmt.Sprintf("%s: %s.%s", structOverride.CFields[i].Name, receiverName, field.Name))
 				}
 				returnValue.WriteString(" }")
 
@@ -89,7 +90,7 @@ func main() {
 
 			// Generate CPtr() method:
 			// func (s *GoName) CPtr() unsafe.Pointer { return s.ptr }
-			receiverName := strings.ToLower(goName[:1]) + goName[1:] // e.g. "s" for "Sprite"
+			receiverName := strings.ToLower(goName[:1]) // e.g. "s" for "Sprite"
 			writer.ReceiverFunctionHeader(common.ReceiverFunctionHeader{
 				ReceiverName: receiverName,
 				ReceiverType: fmt.Sprintf("*%s", goName),
@@ -110,10 +111,18 @@ func main() {
 			baseName := converter.StripPrefix(rawName)
 			goName := textcase.PascalCase(baseName)
 
+			enumerators := make([]common.Enumerator, len(t.Enumerators))
+			for i, enumerator := range t.Enumerators {
+				// Convert enumerator name to Go style
+				enumerators[i] = common.Enumerator{
+					Name: textcase.PascalCase(converter.StripPrefix(enumerator.Name)),
+				}
+			}
+
 			// Generate enum type:
 			writer.Enum(common.Enum{
 				Name:        goName,
-				Enumerators: t.Enumerators,
+				Enumerators: enumerators,
 			})
 		}
 	}

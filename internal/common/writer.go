@@ -30,6 +30,7 @@ func (w *Writer) HeaderFunctions() {
 	w.acc.WriteString(fmt.Sprintf("package %s\n\n", packageName))
 	w.acc.WriteString("import (\n")
 	w.acc.WriteString("\t\"C\"\n")
+	w.acc.WriteString("\t\"unsafe\"\n")
 	w.acc.WriteString(")\n\n")
 }
 
@@ -126,6 +127,11 @@ func (w *Writer) ReturnValue(returnValue string) {
 	} else {
 		w.acc.WriteString("\treturn\n")
 	}
+	w.acc.WriteString("}\n\n")
+}
+
+func (w *Writer) VoidReturn() {
+	w.acc.WriteString("\treturn\n")
 	w.acc.WriteString("}\n\n")
 }
 

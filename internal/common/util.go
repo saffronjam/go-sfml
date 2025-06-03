@@ -5,23 +5,6 @@ import (
 	"strings"
 )
 
-// PrimitiveCast returns the Go primitive type to cast a C vector field into,
-// given the Go‐side vector name (e.g. "Vector2i" → "int32").
-func PrimitiveCast(goVectorName string) string {
-	switch goVectorName {
-	case "Vector2i":
-		return "int32"
-	case "Vector2f":
-		return "float32"
-	case "Vector2u":
-		return "uint32"
-	case "Vector3f":
-		return "float32"
-	default:
-		return ""
-	}
-}
-
 // CleanCType returns the raw C typedef name with no "const ", "struct ", or "*".
 // e.g. "const sfVector2i*" → "sfVector2i"
 func CleanCType(cType string) string {

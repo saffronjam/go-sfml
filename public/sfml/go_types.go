@@ -10,34 +10,39 @@ import (
 type BlendEquation int32
 
 const (
-	sfBlendEquationAdd BlendEquation = C.sfBlendEquationAdd
-	sfBlendEquationSubtract BlendEquation = C.sfBlendEquationSubtract
-	sfBlendEquationReverseSubtract BlendEquation = C.sfBlendEquationReverseSubtract
-	sfBlendEquationMin BlendEquation = C.sfBlendEquationMin
-	sfBlendEquationMax BlendEquation = C.sfBlendEquationMax
+	BlendEquationAdd BlendEquation = C.BlendEquationAdd
+	BlendEquationSubtract BlendEquation = C.BlendEquationSubtract
+	BlendEquationReverseSubtract BlendEquation = C.BlendEquationReverseSubtract
+	BlendEquationMin BlendEquation = C.BlendEquationMin
+	BlendEquationMax BlendEquation = C.BlendEquationMax
 )
 
 type BlendFactor int32
 
 const (
-	sfBlendFactorZero BlendFactor = C.sfBlendFactorZero
-	sfBlendFactorOne BlendFactor = C.sfBlendFactorOne
-	sfBlendFactorSrcColor BlendFactor = C.sfBlendFactorSrcColor
-	sfBlendFactorOneMinusSrcColor BlendFactor = C.sfBlendFactorOneMinusSrcColor
-	sfBlendFactorDstColor BlendFactor = C.sfBlendFactorDstColor
-	sfBlendFactorOneMinusDstColor BlendFactor = C.sfBlendFactorOneMinusDstColor
-	sfBlendFactorSrcAlpha BlendFactor = C.sfBlendFactorSrcAlpha
-	sfBlendFactorOneMinusSrcAlpha BlendFactor = C.sfBlendFactorOneMinusSrcAlpha
-	sfBlendFactorDstAlpha BlendFactor = C.sfBlendFactorDstAlpha
-	sfBlendFactorOneMinusDstAlpha BlendFactor = C.sfBlendFactorOneMinusDstAlpha
+	BlendFactorZero BlendFactor = C.BlendFactorZero
+	BlendFactorOne BlendFactor = C.BlendFactorOne
+	BlendFactorSrcColor BlendFactor = C.BlendFactorSrcColor
+	BlendFactorOneMinusSrcColor BlendFactor = C.BlendFactorOneMinusSrcColor
+	BlendFactorDstColor BlendFactor = C.BlendFactorDstColor
+	BlendFactorOneMinusDstColor BlendFactor = C.BlendFactorOneMinusDstColor
+	BlendFactorSrcAlpha BlendFactor = C.BlendFactorSrcAlpha
+	BlendFactorOneMinusSrcAlpha BlendFactor = C.BlendFactorOneMinusSrcAlpha
+	BlendFactorDstAlpha BlendFactor = C.BlendFactorDstAlpha
+	BlendFactorOneMinusDstAlpha BlendFactor = C.BlendFactorOneMinusDstAlpha
 )
 
 type BlendMode struct {
-	ptr unsafe.Pointer
+	ColorSrcFactor BlendFactor
+	ColorDstFactor BlendFactor
+	ColorEquation BlendEquation
+	AlphaSrcFactor BlendFactor
+	AlphaDstFactor BlendFactor
+	AlphaEquation BlendEquation
 }
 
-func (blendMode *BlendMode) CPtr() unsafe.Pointer {
-	return (*C.sfBlendMode)(blendMode.ptr)
+func (b BlendMode) ToC() C.sfBlendMode {
+	return C.sfBlendMode{ colorSrcFactor: b.ColorSrcFactor, colorDstFactor: b.ColorDstFactor, colorEquation: b.ColorEquation, alphaSrcFactor: b.AlphaSrcFactor, alphaDstFactor: b.AlphaDstFactor, alphaEquation: b.AlphaEquation }
 }
 
 type Buffer struct {
@@ -65,11 +70,14 @@ func (clock *Clock) CPtr() unsafe.Pointer {
 }
 
 type Color struct {
-	ptr unsafe.Pointer
+	R uint8
+	G uint8
+	B uint8
+	A uint8
 }
 
-func (color *Color) CPtr() unsafe.Pointer {
-	return (*C.sfColor)(color.ptr)
+func (c Color) ToC() C.sfColor {
+	return C.sfColor{ r: c.R, g: c.G, b: c.B, a: c.A }
 }
 
 type Context struct {
@@ -83,17 +91,23 @@ func (context *Context) CPtr() unsafe.Pointer {
 type ContextAttribute int32
 
 const (
-	sfContextDefault ContextAttribute = C.sfContextDefault
-	sfContextCore ContextAttribute = C.sfContextCore
-	sfContextDebug ContextAttribute = C.sfContextDebug
+	ContextDefault ContextAttribute = C.ContextDefault
+	ContextCore ContextAttribute = C.ContextCore
+	ContextDebug ContextAttribute = C.ContextDebug
 )
 
 type ContextSettings struct {
-	ptr unsafe.Pointer
+	DepthBits uint32
+	StencilBits uint32
+	AntialiasingLevel uint32
+	MajorVersion uint32
+	MinorVersion uint32
+	AttributeFlags uint32
+	SRgbCapable bool
 }
 
-func (contextSettings *ContextSettings) CPtr() unsafe.Pointer {
-	return (*C.sfContextSettings)(contextSettings.ptr)
+func (c ContextSettings) ToC() C.sfContextSettings {
+	return C.sfContextSettings{ depthBits: c.DepthBits, stencilBits: c.StencilBits, antialiasingLevel: c.AntialiasingLevel, majorVersion: c.MajorVersion, minorVersion: c.MinorVersion, attributeFlags: c.AttributeFlags, sRgbCapable: c.SRgbCapable }
 }
 
 type ConvexShape struct {
@@ -115,27 +129,27 @@ func (cursor *Cursor) CPtr() unsafe.Pointer {
 type CursorType int32
 
 const (
-	sfCursorArrow CursorType = C.sfCursorArrow
-	sfCursorArrowWait CursorType = C.sfCursorArrowWait
-	sfCursorWait CursorType = C.sfCursorWait
-	sfCursorText CursorType = C.sfCursorText
-	sfCursorHand CursorType = C.sfCursorHand
-	sfCursorSizeHorizontal CursorType = C.sfCursorSizeHorizontal
-	sfCursorSizeVertical CursorType = C.sfCursorSizeVertical
-	sfCursorSizeTopLeftBottomRight CursorType = C.sfCursorSizeTopLeftBottomRight
-	sfCursorSizeBottomLeftTopRight CursorType = C.sfCursorSizeBottomLeftTopRight
-	sfCursorSizeLeft CursorType = C.sfCursorSizeLeft
-	sfCursorSizeRight CursorType = C.sfCursorSizeRight
-	sfCursorSizeTop CursorType = C.sfCursorSizeTop
-	sfCursorSizeBottom CursorType = C.sfCursorSizeBottom
-	sfCursorSizeTopLeft CursorType = C.sfCursorSizeTopLeft
-	sfCursorSizeBottomRight CursorType = C.sfCursorSizeBottomRight
-	sfCursorSizeBottomLeft CursorType = C.sfCursorSizeBottomLeft
-	sfCursorSizeTopRight CursorType = C.sfCursorSizeTopRight
-	sfCursorSizeAll CursorType = C.sfCursorSizeAll
-	sfCursorCross CursorType = C.sfCursorCross
-	sfCursorHelp CursorType = C.sfCursorHelp
-	sfCursorNotAllowed CursorType = C.sfCursorNotAllowed
+	CursorArrow CursorType = C.CursorArrow
+	CursorArrowWait CursorType = C.CursorArrowWait
+	CursorWait CursorType = C.CursorWait
+	CursorText CursorType = C.CursorText
+	CursorHand CursorType = C.CursorHand
+	CursorSizeHorizontal CursorType = C.CursorSizeHorizontal
+	CursorSizeVertical CursorType = C.CursorSizeVertical
+	CursorSizeTopLeftBottomRight CursorType = C.CursorSizeTopLeftBottomRight
+	CursorSizeBottomLeftTopRight CursorType = C.CursorSizeBottomLeftTopRight
+	CursorSizeLeft CursorType = C.CursorSizeLeft
+	CursorSizeRight CursorType = C.CursorSizeRight
+	CursorSizeTop CursorType = C.CursorSizeTop
+	CursorSizeBottom CursorType = C.CursorSizeBottom
+	CursorSizeTopLeft CursorType = C.CursorSizeTopLeft
+	CursorSizeBottomRight CursorType = C.CursorSizeBottomRight
+	CursorSizeBottomLeft CursorType = C.CursorSizeBottomLeft
+	CursorSizeTopRight CursorType = C.CursorSizeTopRight
+	CursorSizeAll CursorType = C.CursorSizeAll
+	CursorCross CursorType = C.CursorCross
+	CursorHelp CursorType = C.CursorHelp
+	CursorNotAllowed CursorType = C.CursorNotAllowed
 )
 
 type Event struct {
@@ -149,38 +163,41 @@ func (event *Event) CPtr() unsafe.Pointer {
 type EventType int32
 
 const (
-	sfEvtClosed EventType = C.sfEvtClosed
-	sfEvtResized EventType = C.sfEvtResized
-	sfEvtLostFocus EventType = C.sfEvtLostFocus
-	sfEvtGainedFocus EventType = C.sfEvtGainedFocus
-	sfEvtTextEntered EventType = C.sfEvtTextEntered
-	sfEvtKeyPressed EventType = C.sfEvtKeyPressed
-	sfEvtKeyReleased EventType = C.sfEvtKeyReleased
-	sfEvtMouseWheelMoved EventType = C.sfEvtMouseWheelMoved
-	sfEvtMouseWheelScrolled EventType = C.sfEvtMouseWheelScrolled
-	sfEvtMouseButtonPressed EventType = C.sfEvtMouseButtonPressed
-	sfEvtMouseButtonReleased EventType = C.sfEvtMouseButtonReleased
-	sfEvtMouseMoved EventType = C.sfEvtMouseMoved
-	sfEvtMouseEntered EventType = C.sfEvtMouseEntered
-	sfEvtMouseLeft EventType = C.sfEvtMouseLeft
-	sfEvtJoystickButtonPressed EventType = C.sfEvtJoystickButtonPressed
-	sfEvtJoystickButtonReleased EventType = C.sfEvtJoystickButtonReleased
-	sfEvtJoystickMoved EventType = C.sfEvtJoystickMoved
-	sfEvtJoystickConnected EventType = C.sfEvtJoystickConnected
-	sfEvtJoystickDisconnected EventType = C.sfEvtJoystickDisconnected
-	sfEvtTouchBegan EventType = C.sfEvtTouchBegan
-	sfEvtTouchMoved EventType = C.sfEvtTouchMoved
-	sfEvtTouchEnded EventType = C.sfEvtTouchEnded
-	sfEvtSensorChanged EventType = C.sfEvtSensorChanged
-	sfEvtCount EventType = C.sfEvtCount
+	EvtClosed EventType = C.EvtClosed
+	EvtResized EventType = C.EvtResized
+	EvtLostFocus EventType = C.EvtLostFocus
+	EvtGainedFocus EventType = C.EvtGainedFocus
+	EvtTextEntered EventType = C.EvtTextEntered
+	EvtKeyPressed EventType = C.EvtKeyPressed
+	EvtKeyReleased EventType = C.EvtKeyReleased
+	EvtMouseWheelMoved EventType = C.EvtMouseWheelMoved
+	EvtMouseWheelScrolled EventType = C.EvtMouseWheelScrolled
+	EvtMouseButtonPressed EventType = C.EvtMouseButtonPressed
+	EvtMouseButtonReleased EventType = C.EvtMouseButtonReleased
+	EvtMouseMoved EventType = C.EvtMouseMoved
+	EvtMouseEntered EventType = C.EvtMouseEntered
+	EvtMouseLeft EventType = C.EvtMouseLeft
+	EvtJoystickButtonPressed EventType = C.EvtJoystickButtonPressed
+	EvtJoystickButtonReleased EventType = C.EvtJoystickButtonReleased
+	EvtJoystickMoved EventType = C.EvtJoystickMoved
+	EvtJoystickConnected EventType = C.EvtJoystickConnected
+	EvtJoystickDisconnected EventType = C.EvtJoystickDisconnected
+	EvtTouchBegan EventType = C.EvtTouchBegan
+	EvtTouchMoved EventType = C.EvtTouchMoved
+	EvtTouchEnded EventType = C.EvtTouchEnded
+	EvtSensorChanged EventType = C.EvtSensorChanged
+	EvtCount EventType = C.EvtCount
 )
 
 type FloatRect struct {
-	ptr unsafe.Pointer
+	Left float32
+	Top float32
+	Width float32
+	Height float32
 }
 
-func (floatRect *FloatRect) CPtr() unsafe.Pointer {
-	return (*C.sfFloatRect)(floatRect.ptr)
+func (f FloatRect) ToC() C.sfFloatRect {
+	return C.sfFloatRect{ left: f.Left, top: f.Top, width: f.Width, height: f.Height }
 }
 
 type Font struct {
@@ -198,94 +215,6 @@ type FontInfo struct {
 func (fontInfo *FontInfo) CPtr() unsafe.Pointer {
 	return (*C.sfFontInfo)(fontInfo.ptr)
 }
-
-type Ftp struct {
-	ptr unsafe.Pointer
-}
-
-func (ftp *Ftp) CPtr() unsafe.Pointer {
-	return (*C.sfFtp)(ftp.ptr)
-}
-
-type FtpDirectoryResponse struct {
-	ptr unsafe.Pointer
-}
-
-func (ftpDirectoryResponse *FtpDirectoryResponse) CPtr() unsafe.Pointer {
-	return (*C.sfFtpDirectoryResponse)(ftpDirectoryResponse.ptr)
-}
-
-type FtpListingResponse struct {
-	ptr unsafe.Pointer
-}
-
-func (ftpListingResponse *FtpListingResponse) CPtr() unsafe.Pointer {
-	return (*C.sfFtpListingResponse)(ftpListingResponse.ptr)
-}
-
-type FtpResponse struct {
-	ptr unsafe.Pointer
-}
-
-func (ftpResponse *FtpResponse) CPtr() unsafe.Pointer {
-	return (*C.sfFtpResponse)(ftpResponse.ptr)
-}
-
-type FtpStatus int32
-
-const (
-	sfFtpRestartMarkerReply FtpStatus = C.sfFtpRestartMarkerReply
-	sfFtpServiceReadySoon FtpStatus = C.sfFtpServiceReadySoon
-	sfFtpDataConnectionAlreadyOpened FtpStatus = C.sfFtpDataConnectionAlreadyOpened
-	sfFtpOpeningDataConnection FtpStatus = C.sfFtpOpeningDataConnection
-	sfFtpOk FtpStatus = C.sfFtpOk
-	sfFtpPointlessCommand FtpStatus = C.sfFtpPointlessCommand
-	sfFtpSystemStatus FtpStatus = C.sfFtpSystemStatus
-	sfFtpDirectoryStatus FtpStatus = C.sfFtpDirectoryStatus
-	sfFtpFileStatus FtpStatus = C.sfFtpFileStatus
-	sfFtpHelpMessage FtpStatus = C.sfFtpHelpMessage
-	sfFtpSystemType FtpStatus = C.sfFtpSystemType
-	sfFtpServiceReady FtpStatus = C.sfFtpServiceReady
-	sfFtpClosingConnection FtpStatus = C.sfFtpClosingConnection
-	sfFtpDataConnectionOpened FtpStatus = C.sfFtpDataConnectionOpened
-	sfFtpClosingDataConnection FtpStatus = C.sfFtpClosingDataConnection
-	sfFtpEnteringPassiveMode FtpStatus = C.sfFtpEnteringPassiveMode
-	sfFtpLoggedIn FtpStatus = C.sfFtpLoggedIn
-	sfFtpFileActionOk FtpStatus = C.sfFtpFileActionOk
-	sfFtpDirectoryOk FtpStatus = C.sfFtpDirectoryOk
-	sfFtpNeedPassword FtpStatus = C.sfFtpNeedPassword
-	sfFtpNeedAccountToLogIn FtpStatus = C.sfFtpNeedAccountToLogIn
-	sfFtpNeedInformation FtpStatus = C.sfFtpNeedInformation
-	sfFtpServiceUnavailable FtpStatus = C.sfFtpServiceUnavailable
-	sfFtpDataConnectionUnavailable FtpStatus = C.sfFtpDataConnectionUnavailable
-	sfFtpTransferAborted FtpStatus = C.sfFtpTransferAborted
-	sfFtpFileActionAborted FtpStatus = C.sfFtpFileActionAborted
-	sfFtpLocalError FtpStatus = C.sfFtpLocalError
-	sfFtpInsufficientStorageSpace FtpStatus = C.sfFtpInsufficientStorageSpace
-	sfFtpCommandUnknown FtpStatus = C.sfFtpCommandUnknown
-	sfFtpParametersUnknown FtpStatus = C.sfFtpParametersUnknown
-	sfFtpCommandNotImplemented FtpStatus = C.sfFtpCommandNotImplemented
-	sfFtpBadCommandSequence FtpStatus = C.sfFtpBadCommandSequence
-	sfFtpParameterNotImplemented FtpStatus = C.sfFtpParameterNotImplemented
-	sfFtpNotLoggedIn FtpStatus = C.sfFtpNotLoggedIn
-	sfFtpNeedAccountToStore FtpStatus = C.sfFtpNeedAccountToStore
-	sfFtpFileUnavailable FtpStatus = C.sfFtpFileUnavailable
-	sfFtpPageTypeUnknown FtpStatus = C.sfFtpPageTypeUnknown
-	sfFtpNotEnoughMemory FtpStatus = C.sfFtpNotEnoughMemory
-	sfFtpFilenameNotAllowed FtpStatus = C.sfFtpFilenameNotAllowed
-	sfFtpInvalidResponse FtpStatus = C.sfFtpInvalidResponse
-	sfFtpConnectionFailed FtpStatus = C.sfFtpConnectionFailed
-	sfFtpConnectionClosed FtpStatus = C.sfFtpConnectionClosed
-	sfFtpInvalidFile FtpStatus = C.sfFtpInvalidFile
-)
-
-type FtpTransferMode int32
-
-const (
-	sfFtpBinary FtpTransferMode = C.sfFtpBinary
-	sfFtpAscii FtpTransferMode = C.sfFtpAscii
-	sfFtpEbcdic FtpTransferMode = C.sfFtpEbcdic
-)
 
 type Vector2b struct {
 	X bool
@@ -373,68 +302,6 @@ func (glyph *Glyph) CPtr() unsafe.Pointer {
 	return (*C.sfGlyph)(glyph.ptr)
 }
 
-type Http struct {
-	ptr unsafe.Pointer
-}
-
-func (http *Http) CPtr() unsafe.Pointer {
-	return (*C.sfHttp)(http.ptr)
-}
-
-type HttpMethod int32
-
-const (
-	sfHttpGet HttpMethod = C.sfHttpGet
-	sfHttpPost HttpMethod = C.sfHttpPost
-	sfHttpHead HttpMethod = C.sfHttpHead
-	sfHttpPut HttpMethod = C.sfHttpPut
-	sfHttpDelete HttpMethod = C.sfHttpDelete
-)
-
-type HttpRequest struct {
-	ptr unsafe.Pointer
-}
-
-func (httpRequest *HttpRequest) CPtr() unsafe.Pointer {
-	return (*C.sfHttpRequest)(httpRequest.ptr)
-}
-
-type HttpResponse struct {
-	ptr unsafe.Pointer
-}
-
-func (httpResponse *HttpResponse) CPtr() unsafe.Pointer {
-	return (*C.sfHttpResponse)(httpResponse.ptr)
-}
-
-type HttpStatus int32
-
-const (
-	sfHttpOk HttpStatus = C.sfHttpOk
-	sfHttpCreated HttpStatus = C.sfHttpCreated
-	sfHttpAccepted HttpStatus = C.sfHttpAccepted
-	sfHttpNoContent HttpStatus = C.sfHttpNoContent
-	sfHttpResetContent HttpStatus = C.sfHttpResetContent
-	sfHttpPartialContent HttpStatus = C.sfHttpPartialContent
-	sfHttpMultipleChoices HttpStatus = C.sfHttpMultipleChoices
-	sfHttpMovedPermanently HttpStatus = C.sfHttpMovedPermanently
-	sfHttpMovedTemporarily HttpStatus = C.sfHttpMovedTemporarily
-	sfHttpNotModified HttpStatus = C.sfHttpNotModified
-	sfHttpBadRequest HttpStatus = C.sfHttpBadRequest
-	sfHttpUnauthorized HttpStatus = C.sfHttpUnauthorized
-	sfHttpForbidden HttpStatus = C.sfHttpForbidden
-	sfHttpNotFound HttpStatus = C.sfHttpNotFound
-	sfHttpRangeNotSatisfiable HttpStatus = C.sfHttpRangeNotSatisfiable
-	sfHttpInternalServerError HttpStatus = C.sfHttpInternalServerError
-	sfHttpNotImplemented HttpStatus = C.sfHttpNotImplemented
-	sfHttpBadGateway HttpStatus = C.sfHttpBadGateway
-	sfHttpServiceNotAvailable HttpStatus = C.sfHttpServiceNotAvailable
-	sfHttpGatewayTimeout HttpStatus = C.sfHttpGatewayTimeout
-	sfHttpVersionNotSupported HttpStatus = C.sfHttpVersionNotSupported
-	sfHttpInvalidResponse HttpStatus = C.sfHttpInvalidResponse
-	sfHttpConnectionFailed HttpStatus = C.sfHttpConnectionFailed
-)
-
 type Image struct {
 	ptr unsafe.Pointer
 }
@@ -452,32 +319,27 @@ func (inputStream *InputStream) CPtr() unsafe.Pointer {
 }
 
 type IntRect struct {
-	ptr unsafe.Pointer
+	Left int32
+	Top int32
+	Width int32
+	Height int32
 }
 
-func (intRect *IntRect) CPtr() unsafe.Pointer {
-	return (*C.sfIntRect)(intRect.ptr)
-}
-
-type IpAddress struct {
-	ptr unsafe.Pointer
-}
-
-func (ipAddress *IpAddress) CPtr() unsafe.Pointer {
-	return (*C.sfIpAddress)(ipAddress.ptr)
+func (i IntRect) ToC() C.sfIntRect {
+	return C.sfIntRect{ left: i.Left, top: i.Top, width: i.Width, height: i.Height }
 }
 
 type JoystickAxis int32
 
 const (
-	sfJoystickX JoystickAxis = C.sfJoystickX
-	sfJoystickY JoystickAxis = C.sfJoystickY
-	sfJoystickZ JoystickAxis = C.sfJoystickZ
-	sfJoystickR JoystickAxis = C.sfJoystickR
-	sfJoystickU JoystickAxis = C.sfJoystickU
-	sfJoystickV JoystickAxis = C.sfJoystickV
-	sfJoystickPovX JoystickAxis = C.sfJoystickPovX
-	sfJoystickPovY JoystickAxis = C.sfJoystickPovY
+	JoystickX JoystickAxis = C.JoystickX
+	JoystickY JoystickAxis = C.JoystickY
+	JoystickZ JoystickAxis = C.JoystickZ
+	JoystickR JoystickAxis = C.JoystickR
+	JoystickU JoystickAxis = C.JoystickU
+	JoystickV JoystickAxis = C.JoystickV
+	JoystickPovX JoystickAxis = C.JoystickPovX
+	JoystickPovY JoystickAxis = C.JoystickPovY
 )
 
 type JoystickButtonEvent struct {
@@ -515,116 +377,116 @@ func (joystickMoveEvent *JoystickMoveEvent) CPtr() unsafe.Pointer {
 type KeyCode int32
 
 const (
-	sfKeyUnknown KeyCode = C.sfKeyUnknown
-	sfKeyA KeyCode = C.sfKeyA
-	sfKeyB KeyCode = C.sfKeyB
-	sfKeyC KeyCode = C.sfKeyC
-	sfKeyD KeyCode = C.sfKeyD
-	sfKeyE KeyCode = C.sfKeyE
-	sfKeyF KeyCode = C.sfKeyF
-	sfKeyG KeyCode = C.sfKeyG
-	sfKeyH KeyCode = C.sfKeyH
-	sfKeyI KeyCode = C.sfKeyI
-	sfKeyJ KeyCode = C.sfKeyJ
-	sfKeyK KeyCode = C.sfKeyK
-	sfKeyL KeyCode = C.sfKeyL
-	sfKeyM KeyCode = C.sfKeyM
-	sfKeyN KeyCode = C.sfKeyN
-	sfKeyO KeyCode = C.sfKeyO
-	sfKeyP KeyCode = C.sfKeyP
-	sfKeyQ KeyCode = C.sfKeyQ
-	sfKeyR KeyCode = C.sfKeyR
-	sfKeyS KeyCode = C.sfKeyS
-	sfKeyT KeyCode = C.sfKeyT
-	sfKeyU KeyCode = C.sfKeyU
-	sfKeyV KeyCode = C.sfKeyV
-	sfKeyW KeyCode = C.sfKeyW
-	sfKeyX KeyCode = C.sfKeyX
-	sfKeyY KeyCode = C.sfKeyY
-	sfKeyZ KeyCode = C.sfKeyZ
-	sfKeyNum0 KeyCode = C.sfKeyNum0
-	sfKeyNum1 KeyCode = C.sfKeyNum1
-	sfKeyNum2 KeyCode = C.sfKeyNum2
-	sfKeyNum3 KeyCode = C.sfKeyNum3
-	sfKeyNum4 KeyCode = C.sfKeyNum4
-	sfKeyNum5 KeyCode = C.sfKeyNum5
-	sfKeyNum6 KeyCode = C.sfKeyNum6
-	sfKeyNum7 KeyCode = C.sfKeyNum7
-	sfKeyNum8 KeyCode = C.sfKeyNum8
-	sfKeyNum9 KeyCode = C.sfKeyNum9
-	sfKeyEscape KeyCode = C.sfKeyEscape
-	sfKeyLControl KeyCode = C.sfKeyLControl
-	sfKeyLShift KeyCode = C.sfKeyLShift
-	sfKeyLAlt KeyCode = C.sfKeyLAlt
-	sfKeyLSystem KeyCode = C.sfKeyLSystem
-	sfKeyRControl KeyCode = C.sfKeyRControl
-	sfKeyRShift KeyCode = C.sfKeyRShift
-	sfKeyRAlt KeyCode = C.sfKeyRAlt
-	sfKeyRSystem KeyCode = C.sfKeyRSystem
-	sfKeyMenu KeyCode = C.sfKeyMenu
-	sfKeyLBracket KeyCode = C.sfKeyLBracket
-	sfKeyRBracket KeyCode = C.sfKeyRBracket
-	sfKeySemicolon KeyCode = C.sfKeySemicolon
-	sfKeyComma KeyCode = C.sfKeyComma
-	sfKeyPeriod KeyCode = C.sfKeyPeriod
-	sfKeyApostrophe KeyCode = C.sfKeyApostrophe
-	sfKeySlash KeyCode = C.sfKeySlash
-	sfKeyBackslash KeyCode = C.sfKeyBackslash
-	sfKeyGrave KeyCode = C.sfKeyGrave
-	sfKeyEqual KeyCode = C.sfKeyEqual
-	sfKeyHyphen KeyCode = C.sfKeyHyphen
-	sfKeySpace KeyCode = C.sfKeySpace
-	sfKeyEnter KeyCode = C.sfKeyEnter
-	sfKeyBackspace KeyCode = C.sfKeyBackspace
-	sfKeyTab KeyCode = C.sfKeyTab
-	sfKeyPageUp KeyCode = C.sfKeyPageUp
-	sfKeyPageDown KeyCode = C.sfKeyPageDown
-	sfKeyEnd KeyCode = C.sfKeyEnd
-	sfKeyHome KeyCode = C.sfKeyHome
-	sfKeyInsert KeyCode = C.sfKeyInsert
-	sfKeyDelete KeyCode = C.sfKeyDelete
-	sfKeyAdd KeyCode = C.sfKeyAdd
-	sfKeySubtract KeyCode = C.sfKeySubtract
-	sfKeyMultiply KeyCode = C.sfKeyMultiply
-	sfKeyDivide KeyCode = C.sfKeyDivide
-	sfKeyLeft KeyCode = C.sfKeyLeft
-	sfKeyRight KeyCode = C.sfKeyRight
-	sfKeyUp KeyCode = C.sfKeyUp
-	sfKeyDown KeyCode = C.sfKeyDown
-	sfKeyNumpad0 KeyCode = C.sfKeyNumpad0
-	sfKeyNumpad1 KeyCode = C.sfKeyNumpad1
-	sfKeyNumpad2 KeyCode = C.sfKeyNumpad2
-	sfKeyNumpad3 KeyCode = C.sfKeyNumpad3
-	sfKeyNumpad4 KeyCode = C.sfKeyNumpad4
-	sfKeyNumpad5 KeyCode = C.sfKeyNumpad5
-	sfKeyNumpad6 KeyCode = C.sfKeyNumpad6
-	sfKeyNumpad7 KeyCode = C.sfKeyNumpad7
-	sfKeyNumpad8 KeyCode = C.sfKeyNumpad8
-	sfKeyNumpad9 KeyCode = C.sfKeyNumpad9
-	sfKeyF1 KeyCode = C.sfKeyF1
-	sfKeyF2 KeyCode = C.sfKeyF2
-	sfKeyF3 KeyCode = C.sfKeyF3
-	sfKeyF4 KeyCode = C.sfKeyF4
-	sfKeyF5 KeyCode = C.sfKeyF5
-	sfKeyF6 KeyCode = C.sfKeyF6
-	sfKeyF7 KeyCode = C.sfKeyF7
-	sfKeyF8 KeyCode = C.sfKeyF8
-	sfKeyF9 KeyCode = C.sfKeyF9
-	sfKeyF10 KeyCode = C.sfKeyF10
-	sfKeyF11 KeyCode = C.sfKeyF11
-	sfKeyF12 KeyCode = C.sfKeyF12
-	sfKeyF13 KeyCode = C.sfKeyF13
-	sfKeyF14 KeyCode = C.sfKeyF14
-	sfKeyF15 KeyCode = C.sfKeyF15
-	sfKeyPause KeyCode = C.sfKeyPause
-	sfKeyCount KeyCode = C.sfKeyCount
-	sfKeyTilde KeyCode = C.sfKeyTilde
-	sfKeyDash KeyCode = C.sfKeyDash
-	sfKeyBack KeyCode = C.sfKeyBack
-	sfKeyBackSlash KeyCode = C.sfKeyBackSlash
-	sfKeySemiColon KeyCode = C.sfKeySemiColon
-	sfKeyReturn KeyCode = C.sfKeyReturn
-	sfKeyQuote KeyCode = C.sfKeyQuote
+	KeyUnknown KeyCode = C.KeyUnknown
+	KeyA KeyCode = C.KeyA
+	KeyB KeyCode = C.KeyB
+	KeyC KeyCode = C.KeyC
+	KeyD KeyCode = C.KeyD
+	KeyE KeyCode = C.KeyE
+	KeyF KeyCode = C.KeyF
+	KeyG KeyCode = C.KeyG
+	KeyH KeyCode = C.KeyH
+	KeyI KeyCode = C.KeyI
+	KeyJ KeyCode = C.KeyJ
+	KeyK KeyCode = C.KeyK
+	KeyL KeyCode = C.KeyL
+	KeyM KeyCode = C.KeyM
+	KeyN KeyCode = C.KeyN
+	KeyO KeyCode = C.KeyO
+	KeyP KeyCode = C.KeyP
+	KeyQ KeyCode = C.KeyQ
+	KeyR KeyCode = C.KeyR
+	KeyS KeyCode = C.KeyS
+	KeyT KeyCode = C.KeyT
+	KeyU KeyCode = C.KeyU
+	KeyV KeyCode = C.KeyV
+	KeyW KeyCode = C.KeyW
+	KeyX KeyCode = C.KeyX
+	KeyY KeyCode = C.KeyY
+	KeyZ KeyCode = C.KeyZ
+	KeyNum0 KeyCode = C.KeyNum0
+	KeyNum1 KeyCode = C.KeyNum1
+	KeyNum2 KeyCode = C.KeyNum2
+	KeyNum3 KeyCode = C.KeyNum3
+	KeyNum4 KeyCode = C.KeyNum4
+	KeyNum5 KeyCode = C.KeyNum5
+	KeyNum6 KeyCode = C.KeyNum6
+	KeyNum7 KeyCode = C.KeyNum7
+	KeyNum8 KeyCode = C.KeyNum8
+	KeyNum9 KeyCode = C.KeyNum9
+	KeyEscape KeyCode = C.KeyEscape
+	KeyLcOntrol KeyCode = C.KeyLcOntrol
+	KeyLsHift KeyCode = C.KeyLsHift
+	KeyLaLt KeyCode = C.KeyLaLt
+	KeyLsYstem KeyCode = C.KeyLsYstem
+	KeyRcOntrol KeyCode = C.KeyRcOntrol
+	KeyRsHift KeyCode = C.KeyRsHift
+	KeyRaLt KeyCode = C.KeyRaLt
+	KeyRsYstem KeyCode = C.KeyRsYstem
+	KeyMenu KeyCode = C.KeyMenu
+	KeyLbRacket KeyCode = C.KeyLbRacket
+	KeyRbRacket KeyCode = C.KeyRbRacket
+	KeySemicolon KeyCode = C.KeySemicolon
+	KeyComma KeyCode = C.KeyComma
+	KeyPeriod KeyCode = C.KeyPeriod
+	KeyApostrophe KeyCode = C.KeyApostrophe
+	KeySlash KeyCode = C.KeySlash
+	KeyBackslash KeyCode = C.KeyBackslash
+	KeyGrave KeyCode = C.KeyGrave
+	KeyEqual KeyCode = C.KeyEqual
+	KeyHyphen KeyCode = C.KeyHyphen
+	KeySpace KeyCode = C.KeySpace
+	KeyEnter KeyCode = C.KeyEnter
+	KeyBackspace KeyCode = C.KeyBackspace
+	KeyTab KeyCode = C.KeyTab
+	KeyPageUp KeyCode = C.KeyPageUp
+	KeyPageDown KeyCode = C.KeyPageDown
+	KeyEnd KeyCode = C.KeyEnd
+	KeyHome KeyCode = C.KeyHome
+	KeyInsert KeyCode = C.KeyInsert
+	KeyDelete KeyCode = C.KeyDelete
+	KeyAdd KeyCode = C.KeyAdd
+	KeySubtract KeyCode = C.KeySubtract
+	KeyMultiply KeyCode = C.KeyMultiply
+	KeyDivide KeyCode = C.KeyDivide
+	KeyLeft KeyCode = C.KeyLeft
+	KeyRight KeyCode = C.KeyRight
+	KeyUp KeyCode = C.KeyUp
+	KeyDown KeyCode = C.KeyDown
+	KeyNumpad0 KeyCode = C.KeyNumpad0
+	KeyNumpad1 KeyCode = C.KeyNumpad1
+	KeyNumpad2 KeyCode = C.KeyNumpad2
+	KeyNumpad3 KeyCode = C.KeyNumpad3
+	KeyNumpad4 KeyCode = C.KeyNumpad4
+	KeyNumpad5 KeyCode = C.KeyNumpad5
+	KeyNumpad6 KeyCode = C.KeyNumpad6
+	KeyNumpad7 KeyCode = C.KeyNumpad7
+	KeyNumpad8 KeyCode = C.KeyNumpad8
+	KeyNumpad9 KeyCode = C.KeyNumpad9
+	KeyF1 KeyCode = C.KeyF1
+	KeyF2 KeyCode = C.KeyF2
+	KeyF3 KeyCode = C.KeyF3
+	KeyF4 KeyCode = C.KeyF4
+	KeyF5 KeyCode = C.KeyF5
+	KeyF6 KeyCode = C.KeyF6
+	KeyF7 KeyCode = C.KeyF7
+	KeyF8 KeyCode = C.KeyF8
+	KeyF9 KeyCode = C.KeyF9
+	KeyF10 KeyCode = C.KeyF10
+	KeyF11 KeyCode = C.KeyF11
+	KeyF12 KeyCode = C.KeyF12
+	KeyF13 KeyCode = C.KeyF13
+	KeyF14 KeyCode = C.KeyF14
+	KeyF15 KeyCode = C.KeyF15
+	KeyPause KeyCode = C.KeyPause
+	KeyCount KeyCode = C.KeyCount
+	KeyTilde KeyCode = C.KeyTilde
+	KeyDash KeyCode = C.KeyDash
+	KeyBack KeyCode = C.KeyBack
+	KeyBackSlash KeyCode = C.KeyBackSlash
+	KeySemiColon KeyCode = C.KeySemiColon
+	KeyReturn KeyCode = C.KeyReturn
+	KeyQuote KeyCode = C.KeyQuote
 )
 
 type KeyEvent struct {
@@ -638,12 +500,12 @@ func (keyEvent *KeyEvent) CPtr() unsafe.Pointer {
 type MouseButton int32
 
 const (
-	sfMouseLeft MouseButton = C.sfMouseLeft
-	sfMouseRight MouseButton = C.sfMouseRight
-	sfMouseMiddle MouseButton = C.sfMouseMiddle
-	sfMouseXButton1 MouseButton = C.sfMouseXButton1
-	sfMouseXButton2 MouseButton = C.sfMouseXButton2
-	sfMouseButtonCount MouseButton = C.sfMouseButtonCount
+	MouseLeft MouseButton = C.MouseLeft
+	MouseRight MouseButton = C.MouseRight
+	MouseMiddle MouseButton = C.MouseMiddle
+	MouseXbUtton1 MouseButton = C.MouseXbUtton1
+	MouseXbUtton2 MouseButton = C.MouseXbUtton2
+	MouseButtonCount MouseButton = C.MouseButtonCount
 )
 
 type MouseButtonEvent struct {
@@ -665,8 +527,8 @@ func (mouseMoveEvent *MouseMoveEvent) CPtr() unsafe.Pointer {
 type MouseWheel int32
 
 const (
-	sfMouseVerticalWheel MouseWheel = C.sfMouseVerticalWheel
-	sfMouseHorizontalWheel MouseWheel = C.sfMouseHorizontalWheel
+	MouseVerticalWheel MouseWheel = C.MouseVerticalWheel
+	MouseHorizontalWheel MouseWheel = C.MouseHorizontalWheel
 )
 
 type MouseWheelEvent struct {
@@ -685,14 +547,6 @@ func (mouseWheelScrollEvent *MouseWheelScrollEvent) CPtr() unsafe.Pointer {
 	return (*C.sfMouseWheelScrollEvent)(mouseWheelScrollEvent.ptr)
 }
 
-type Music struct {
-	ptr unsafe.Pointer
-}
-
-func (music *Music) CPtr() unsafe.Pointer {
-	return (*C.sfMusic)(music.ptr)
-}
-
 type Mutex struct {
 	ptr unsafe.Pointer
 }
@@ -701,27 +555,19 @@ func (mutex *Mutex) CPtr() unsafe.Pointer {
 	return (*C.sfMutex)(mutex.ptr)
 }
 
-type Packet struct {
-	ptr unsafe.Pointer
-}
-
-func (packet *Packet) CPtr() unsafe.Pointer {
-	return (*C.sfPacket)(packet.ptr)
-}
-
 type PrimitiveType int32
 
 const (
-	sfPoints PrimitiveType = C.sfPoints
-	sfLines PrimitiveType = C.sfLines
-	sfLineStrip PrimitiveType = C.sfLineStrip
-	sfTriangles PrimitiveType = C.sfTriangles
-	sfTriangleStrip PrimitiveType = C.sfTriangleStrip
-	sfTriangleFan PrimitiveType = C.sfTriangleFan
-	sfQuads PrimitiveType = C.sfQuads
-	sfLinesStrip PrimitiveType = C.sfLinesStrip
-	sfTrianglesStrip PrimitiveType = C.sfTrianglesStrip
-	sfTrianglesFan PrimitiveType = C.sfTrianglesFan
+	Points PrimitiveType = C.Points
+	Lines PrimitiveType = C.Lines
+	LineStrip PrimitiveType = C.LineStrip
+	Triangles PrimitiveType = C.Triangles
+	TriangleStrip PrimitiveType = C.TriangleStrip
+	TriangleFan PrimitiveType = C.TriangleFan
+	Quads PrimitiveType = C.Quads
+	LinesStrip PrimitiveType = C.LinesStrip
+	TrianglesStrip PrimitiveType = C.TrianglesStrip
+	TrianglesFan PrimitiveType = C.TrianglesFan
 )
 
 type RectangleShape struct {
@@ -733,11 +579,14 @@ func (rectangleShape *RectangleShape) CPtr() unsafe.Pointer {
 }
 
 type RenderStates struct {
-	ptr unsafe.Pointer
+	BlendMode BlendMode
+	Transform Transform
+	Texture Texture
+	Shader Shader
 }
 
-func (renderStates *RenderStates) CPtr() unsafe.Pointer {
-	return (*C.sfRenderStates)(renderStates.ptr)
+func (r RenderStates) ToC() C.sfRenderStates {
+	return C.sfRenderStates{ blendMode: r.BlendMode, transform: r.Transform, texture: r.Texture, shader: r.Shader }
 }
 
 type RenderTexture struct {
@@ -759,154 +608,154 @@ func (renderWindow *RenderWindow) CPtr() unsafe.Pointer {
 type Scancode int32
 
 const (
-	sfScanUnknown Scancode = C.sfScanUnknown
-	sfScanA Scancode = C.sfScanA
-	sfScanB Scancode = C.sfScanB
-	sfScanC Scancode = C.sfScanC
-	sfScanD Scancode = C.sfScanD
-	sfScanE Scancode = C.sfScanE
-	sfScanF Scancode = C.sfScanF
-	sfScanG Scancode = C.sfScanG
-	sfScanH Scancode = C.sfScanH
-	sfScanI Scancode = C.sfScanI
-	sfScanJ Scancode = C.sfScanJ
-	sfScanK Scancode = C.sfScanK
-	sfScanL Scancode = C.sfScanL
-	sfScanM Scancode = C.sfScanM
-	sfScanN Scancode = C.sfScanN
-	sfScanO Scancode = C.sfScanO
-	sfScanP Scancode = C.sfScanP
-	sfScanQ Scancode = C.sfScanQ
-	sfScanR Scancode = C.sfScanR
-	sfScanS Scancode = C.sfScanS
-	sfScanT Scancode = C.sfScanT
-	sfScanU Scancode = C.sfScanU
-	sfScanV Scancode = C.sfScanV
-	sfScanW Scancode = C.sfScanW
-	sfScanX Scancode = C.sfScanX
-	sfScanY Scancode = C.sfScanY
-	sfScanZ Scancode = C.sfScanZ
-	sfScanNum1 Scancode = C.sfScanNum1
-	sfScanNum2 Scancode = C.sfScanNum2
-	sfScanNum3 Scancode = C.sfScanNum3
-	sfScanNum4 Scancode = C.sfScanNum4
-	sfScanNum5 Scancode = C.sfScanNum5
-	sfScanNum6 Scancode = C.sfScanNum6
-	sfScanNum7 Scancode = C.sfScanNum7
-	sfScanNum8 Scancode = C.sfScanNum8
-	sfScanNum9 Scancode = C.sfScanNum9
-	sfScanNum0 Scancode = C.sfScanNum0
-	sfScanEnter Scancode = C.sfScanEnter
-	sfScanEscape Scancode = C.sfScanEscape
-	sfScanBackspace Scancode = C.sfScanBackspace
-	sfScanTab Scancode = C.sfScanTab
-	sfScanSpace Scancode = C.sfScanSpace
-	sfScanHyphen Scancode = C.sfScanHyphen
-	sfScanEqual Scancode = C.sfScanEqual
-	sfScanLBracket Scancode = C.sfScanLBracket
-	sfScanRBracket Scancode = C.sfScanRBracket
-	sfScanBackslash Scancode = C.sfScanBackslash
-	sfScanSemicolon Scancode = C.sfScanSemicolon
-	sfScanApostrophe Scancode = C.sfScanApostrophe
-	sfScanGrave Scancode = C.sfScanGrave
-	sfScanComma Scancode = C.sfScanComma
-	sfScanPeriod Scancode = C.sfScanPeriod
-	sfScanSlash Scancode = C.sfScanSlash
-	sfScanF1 Scancode = C.sfScanF1
-	sfScanF2 Scancode = C.sfScanF2
-	sfScanF3 Scancode = C.sfScanF3
-	sfScanF4 Scancode = C.sfScanF4
-	sfScanF5 Scancode = C.sfScanF5
-	sfScanF6 Scancode = C.sfScanF6
-	sfScanF7 Scancode = C.sfScanF7
-	sfScanF8 Scancode = C.sfScanF8
-	sfScanF9 Scancode = C.sfScanF9
-	sfScanF10 Scancode = C.sfScanF10
-	sfScanF11 Scancode = C.sfScanF11
-	sfScanF12 Scancode = C.sfScanF12
-	sfScanF13 Scancode = C.sfScanF13
-	sfScanF14 Scancode = C.sfScanF14
-	sfScanF15 Scancode = C.sfScanF15
-	sfScanF16 Scancode = C.sfScanF16
-	sfScanF17 Scancode = C.sfScanF17
-	sfScanF18 Scancode = C.sfScanF18
-	sfScanF19 Scancode = C.sfScanF19
-	sfScanF20 Scancode = C.sfScanF20
-	sfScanF21 Scancode = C.sfScanF21
-	sfScanF22 Scancode = C.sfScanF22
-	sfScanF23 Scancode = C.sfScanF23
-	sfScanF24 Scancode = C.sfScanF24
-	sfScanCapsLock Scancode = C.sfScanCapsLock
-	sfScanPrintScreen Scancode = C.sfScanPrintScreen
-	sfScanScrollLock Scancode = C.sfScanScrollLock
-	sfScanPause Scancode = C.sfScanPause
-	sfScanInsert Scancode = C.sfScanInsert
-	sfScanHome Scancode = C.sfScanHome
-	sfScanPageUp Scancode = C.sfScanPageUp
-	sfScanDelete Scancode = C.sfScanDelete
-	sfScanEnd Scancode = C.sfScanEnd
-	sfScanPageDown Scancode = C.sfScanPageDown
-	sfScanRight Scancode = C.sfScanRight
-	sfScanLeft Scancode = C.sfScanLeft
-	sfScanDown Scancode = C.sfScanDown
-	sfScanUp Scancode = C.sfScanUp
-	sfScanNumLock Scancode = C.sfScanNumLock
-	sfScanNumpadDivide Scancode = C.sfScanNumpadDivide
-	sfScanNumpadMultiply Scancode = C.sfScanNumpadMultiply
-	sfScanNumpadMinus Scancode = C.sfScanNumpadMinus
-	sfScanNumpadPlus Scancode = C.sfScanNumpadPlus
-	sfScanNumpadEqual Scancode = C.sfScanNumpadEqual
-	sfScanNumpadEnter Scancode = C.sfScanNumpadEnter
-	sfScanNumpadDecimal Scancode = C.sfScanNumpadDecimal
-	sfScanNumpad1 Scancode = C.sfScanNumpad1
-	sfScanNumpad2 Scancode = C.sfScanNumpad2
-	sfScanNumpad3 Scancode = C.sfScanNumpad3
-	sfScanNumpad4 Scancode = C.sfScanNumpad4
-	sfScanNumpad5 Scancode = C.sfScanNumpad5
-	sfScanNumpad6 Scancode = C.sfScanNumpad6
-	sfScanNumpad7 Scancode = C.sfScanNumpad7
-	sfScanNumpad8 Scancode = C.sfScanNumpad8
-	sfScanNumpad9 Scancode = C.sfScanNumpad9
-	sfScanNumpad0 Scancode = C.sfScanNumpad0
-	sfScanNonUsBackslash Scancode = C.sfScanNonUsBackslash
-	sfScanApplication Scancode = C.sfScanApplication
-	sfScanExecute Scancode = C.sfScanExecute
-	sfScanModeChange Scancode = C.sfScanModeChange
-	sfScanHelp Scancode = C.sfScanHelp
-	sfScanMenu Scancode = C.sfScanMenu
-	sfScanSelect Scancode = C.sfScanSelect
-	sfScanRedo Scancode = C.sfScanRedo
-	sfScanUndo Scancode = C.sfScanUndo
-	sfScanCut Scancode = C.sfScanCut
-	sfScanCopy Scancode = C.sfScanCopy
-	sfScanPaste Scancode = C.sfScanPaste
-	sfScanVolumeMute Scancode = C.sfScanVolumeMute
-	sfScanVolumeUp Scancode = C.sfScanVolumeUp
-	sfScanVolumeDown Scancode = C.sfScanVolumeDown
-	sfScanMediaPlayPause Scancode = C.sfScanMediaPlayPause
-	sfScanMediaStop Scancode = C.sfScanMediaStop
-	sfScanMediaNextTrack Scancode = C.sfScanMediaNextTrack
-	sfScanMediaPreviousTrack Scancode = C.sfScanMediaPreviousTrack
-	sfScanLControl Scancode = C.sfScanLControl
-	sfScanLShift Scancode = C.sfScanLShift
-	sfScanLAlt Scancode = C.sfScanLAlt
-	sfScanLSystem Scancode = C.sfScanLSystem
-	sfScanRControl Scancode = C.sfScanRControl
-	sfScanRShift Scancode = C.sfScanRShift
-	sfScanRAlt Scancode = C.sfScanRAlt
-	sfScanRSystem Scancode = C.sfScanRSystem
-	sfScanBack Scancode = C.sfScanBack
-	sfScanForward Scancode = C.sfScanForward
-	sfScanRefresh Scancode = C.sfScanRefresh
-	sfScanStop Scancode = C.sfScanStop
-	sfScanSearch Scancode = C.sfScanSearch
-	sfScanFavorites Scancode = C.sfScanFavorites
-	sfScanHomePage Scancode = C.sfScanHomePage
-	sfScanLaunchApplication1 Scancode = C.sfScanLaunchApplication1
-	sfScanLaunchApplication2 Scancode = C.sfScanLaunchApplication2
-	sfScanLaunchMail Scancode = C.sfScanLaunchMail
-	sfScanLaunchMediaSelect Scancode = C.sfScanLaunchMediaSelect
-	sfScancodeCount Scancode = C.sfScancodeCount
+	ScanUnknown Scancode = C.ScanUnknown
+	ScanA Scancode = C.ScanA
+	ScanB Scancode = C.ScanB
+	ScanC Scancode = C.ScanC
+	ScanD Scancode = C.ScanD
+	ScanE Scancode = C.ScanE
+	ScanF Scancode = C.ScanF
+	ScanG Scancode = C.ScanG
+	ScanH Scancode = C.ScanH
+	ScanI Scancode = C.ScanI
+	ScanJ Scancode = C.ScanJ
+	ScanK Scancode = C.ScanK
+	ScanL Scancode = C.ScanL
+	ScanM Scancode = C.ScanM
+	ScanN Scancode = C.ScanN
+	ScanO Scancode = C.ScanO
+	ScanP Scancode = C.ScanP
+	ScanQ Scancode = C.ScanQ
+	ScanR Scancode = C.ScanR
+	ScanS Scancode = C.ScanS
+	ScanT Scancode = C.ScanT
+	ScanU Scancode = C.ScanU
+	ScanV Scancode = C.ScanV
+	ScanW Scancode = C.ScanW
+	ScanX Scancode = C.ScanX
+	ScanY Scancode = C.ScanY
+	ScanZ Scancode = C.ScanZ
+	ScanNum1 Scancode = C.ScanNum1
+	ScanNum2 Scancode = C.ScanNum2
+	ScanNum3 Scancode = C.ScanNum3
+	ScanNum4 Scancode = C.ScanNum4
+	ScanNum5 Scancode = C.ScanNum5
+	ScanNum6 Scancode = C.ScanNum6
+	ScanNum7 Scancode = C.ScanNum7
+	ScanNum8 Scancode = C.ScanNum8
+	ScanNum9 Scancode = C.ScanNum9
+	ScanNum0 Scancode = C.ScanNum0
+	ScanEnter Scancode = C.ScanEnter
+	ScanEscape Scancode = C.ScanEscape
+	ScanBackspace Scancode = C.ScanBackspace
+	ScanTab Scancode = C.ScanTab
+	ScanSpace Scancode = C.ScanSpace
+	ScanHyphen Scancode = C.ScanHyphen
+	ScanEqual Scancode = C.ScanEqual
+	ScanLbRacket Scancode = C.ScanLbRacket
+	ScanRbRacket Scancode = C.ScanRbRacket
+	ScanBackslash Scancode = C.ScanBackslash
+	ScanSemicolon Scancode = C.ScanSemicolon
+	ScanApostrophe Scancode = C.ScanApostrophe
+	ScanGrave Scancode = C.ScanGrave
+	ScanComma Scancode = C.ScanComma
+	ScanPeriod Scancode = C.ScanPeriod
+	ScanSlash Scancode = C.ScanSlash
+	ScanF1 Scancode = C.ScanF1
+	ScanF2 Scancode = C.ScanF2
+	ScanF3 Scancode = C.ScanF3
+	ScanF4 Scancode = C.ScanF4
+	ScanF5 Scancode = C.ScanF5
+	ScanF6 Scancode = C.ScanF6
+	ScanF7 Scancode = C.ScanF7
+	ScanF8 Scancode = C.ScanF8
+	ScanF9 Scancode = C.ScanF9
+	ScanF10 Scancode = C.ScanF10
+	ScanF11 Scancode = C.ScanF11
+	ScanF12 Scancode = C.ScanF12
+	ScanF13 Scancode = C.ScanF13
+	ScanF14 Scancode = C.ScanF14
+	ScanF15 Scancode = C.ScanF15
+	ScanF16 Scancode = C.ScanF16
+	ScanF17 Scancode = C.ScanF17
+	ScanF18 Scancode = C.ScanF18
+	ScanF19 Scancode = C.ScanF19
+	ScanF20 Scancode = C.ScanF20
+	ScanF21 Scancode = C.ScanF21
+	ScanF22 Scancode = C.ScanF22
+	ScanF23 Scancode = C.ScanF23
+	ScanF24 Scancode = C.ScanF24
+	ScanCapsLock Scancode = C.ScanCapsLock
+	ScanPrintScreen Scancode = C.ScanPrintScreen
+	ScanScrollLock Scancode = C.ScanScrollLock
+	ScanPause Scancode = C.ScanPause
+	ScanInsert Scancode = C.ScanInsert
+	ScanHome Scancode = C.ScanHome
+	ScanPageUp Scancode = C.ScanPageUp
+	ScanDelete Scancode = C.ScanDelete
+	ScanEnd Scancode = C.ScanEnd
+	ScanPageDown Scancode = C.ScanPageDown
+	ScanRight Scancode = C.ScanRight
+	ScanLeft Scancode = C.ScanLeft
+	ScanDown Scancode = C.ScanDown
+	ScanUp Scancode = C.ScanUp
+	ScanNumLock Scancode = C.ScanNumLock
+	ScanNumpadDivide Scancode = C.ScanNumpadDivide
+	ScanNumpadMultiply Scancode = C.ScanNumpadMultiply
+	ScanNumpadMinus Scancode = C.ScanNumpadMinus
+	ScanNumpadPlus Scancode = C.ScanNumpadPlus
+	ScanNumpadEqual Scancode = C.ScanNumpadEqual
+	ScanNumpadEnter Scancode = C.ScanNumpadEnter
+	ScanNumpadDecimal Scancode = C.ScanNumpadDecimal
+	ScanNumpad1 Scancode = C.ScanNumpad1
+	ScanNumpad2 Scancode = C.ScanNumpad2
+	ScanNumpad3 Scancode = C.ScanNumpad3
+	ScanNumpad4 Scancode = C.ScanNumpad4
+	ScanNumpad5 Scancode = C.ScanNumpad5
+	ScanNumpad6 Scancode = C.ScanNumpad6
+	ScanNumpad7 Scancode = C.ScanNumpad7
+	ScanNumpad8 Scancode = C.ScanNumpad8
+	ScanNumpad9 Scancode = C.ScanNumpad9
+	ScanNumpad0 Scancode = C.ScanNumpad0
+	ScanNonUsBackslash Scancode = C.ScanNonUsBackslash
+	ScanApplication Scancode = C.ScanApplication
+	ScanExecute Scancode = C.ScanExecute
+	ScanModeChange Scancode = C.ScanModeChange
+	ScanHelp Scancode = C.ScanHelp
+	ScanMenu Scancode = C.ScanMenu
+	ScanSelect Scancode = C.ScanSelect
+	ScanRedo Scancode = C.ScanRedo
+	ScanUndo Scancode = C.ScanUndo
+	ScanCut Scancode = C.ScanCut
+	ScanCopy Scancode = C.ScanCopy
+	ScanPaste Scancode = C.ScanPaste
+	ScanVolumeMute Scancode = C.ScanVolumeMute
+	ScanVolumeUp Scancode = C.ScanVolumeUp
+	ScanVolumeDown Scancode = C.ScanVolumeDown
+	ScanMediaPlayPause Scancode = C.ScanMediaPlayPause
+	ScanMediaStop Scancode = C.ScanMediaStop
+	ScanMediaNextTrack Scancode = C.ScanMediaNextTrack
+	ScanMediaPreviousTrack Scancode = C.ScanMediaPreviousTrack
+	ScanLcOntrol Scancode = C.ScanLcOntrol
+	ScanLsHift Scancode = C.ScanLsHift
+	ScanLaLt Scancode = C.ScanLaLt
+	ScanLsYstem Scancode = C.ScanLsYstem
+	ScanRcOntrol Scancode = C.ScanRcOntrol
+	ScanRsHift Scancode = C.ScanRsHift
+	ScanRaLt Scancode = C.ScanRaLt
+	ScanRsYstem Scancode = C.ScanRsYstem
+	ScanBack Scancode = C.ScanBack
+	ScanForward Scancode = C.ScanForward
+	ScanRefresh Scancode = C.ScanRefresh
+	ScanStop Scancode = C.ScanStop
+	ScanSearch Scancode = C.ScanSearch
+	ScanFavorites Scancode = C.ScanFavorites
+	ScanHomePage Scancode = C.ScanHomePage
+	ScanLaunchApplication1 Scancode = C.ScanLaunchApplication1
+	ScanLaunchApplication2 Scancode = C.ScanLaunchApplication2
+	ScanLaunchMail Scancode = C.ScanLaunchMail
+	ScanLaunchMediaSelect Scancode = C.ScanLaunchMediaSelect
+	ScancodeCount Scancode = C.ScancodeCount
 )
 
 type SensorEvent struct {
@@ -920,13 +769,13 @@ func (sensorEvent *SensorEvent) CPtr() unsafe.Pointer {
 type SensorType int32
 
 const (
-	sfSensorAccelerometer SensorType = C.sfSensorAccelerometer
-	sfSensorGyroscope SensorType = C.sfSensorGyroscope
-	sfSensorMagnetometer SensorType = C.sfSensorMagnetometer
-	sfSensorGravity SensorType = C.sfSensorGravity
-	sfSensorUserAcceleration SensorType = C.sfSensorUserAcceleration
-	sfSensorOrientation SensorType = C.sfSensorOrientation
-	sfSensorCount SensorType = C.sfSensorCount
+	SensorAccelerometer SensorType = C.SensorAccelerometer
+	SensorGyroscope SensorType = C.SensorGyroscope
+	SensorMagnetometer SensorType = C.SensorMagnetometer
+	SensorGravity SensorType = C.SensorGravity
+	SensorUserAcceleration SensorType = C.SensorUserAcceleration
+	SensorOrientation SensorType = C.SensorOrientation
+	SensorCount SensorType = C.SensorCount
 )
 
 type Shader struct {
@@ -953,78 +802,12 @@ func (sizeEvent *SizeEvent) CPtr() unsafe.Pointer {
 	return (*C.sfSizeEvent)(sizeEvent.ptr)
 }
 
-type SocketSelector struct {
-	ptr unsafe.Pointer
-}
-
-func (socketSelector *SocketSelector) CPtr() unsafe.Pointer {
-	return (*C.sfSocketSelector)(socketSelector.ptr)
-}
-
-type SocketStatus int32
-
-const (
-	sfSocketDone SocketStatus = C.sfSocketDone
-	sfSocketNotReady SocketStatus = C.sfSocketNotReady
-	sfSocketPartial SocketStatus = C.sfSocketPartial
-	sfSocketDisconnected SocketStatus = C.sfSocketDisconnected
-	sfSocketError SocketStatus = C.sfSocketError
-)
-
-type Sound struct {
-	ptr unsafe.Pointer
-}
-
-func (sound *Sound) CPtr() unsafe.Pointer {
-	return (*C.sfSound)(sound.ptr)
-}
-
-type SoundBuffer struct {
-	ptr unsafe.Pointer
-}
-
-func (soundBuffer *SoundBuffer) CPtr() unsafe.Pointer {
-	return (*C.sfSoundBuffer)(soundBuffer.ptr)
-}
-
-type SoundBufferRecorder struct {
-	ptr unsafe.Pointer
-}
-
-func (soundBufferRecorder *SoundBufferRecorder) CPtr() unsafe.Pointer {
-	return (*C.sfSoundBufferRecorder)(soundBufferRecorder.ptr)
-}
-
-type SoundStatus int32
-
-const (
-	sfStopped SoundStatus = C.sfStopped
-	sfPaused SoundStatus = C.sfPaused
-	sfPlaying SoundStatus = C.sfPlaying
-)
-
 type Sprite struct {
 	ptr unsafe.Pointer
 }
 
 func (sprite *Sprite) CPtr() unsafe.Pointer {
 	return (*C.sfSprite)(sprite.ptr)
-}
-
-type TcpListener struct {
-	ptr unsafe.Pointer
-}
-
-func (tcpListener *TcpListener) CPtr() unsafe.Pointer {
-	return (*C.sfTcpListener)(tcpListener.ptr)
-}
-
-type TcpSocket struct {
-	ptr unsafe.Pointer
-}
-
-func (tcpSocket *TcpSocket) CPtr() unsafe.Pointer {
-	return (*C.sfTcpSocket)(tcpSocket.ptr)
 }
 
 type Text struct {
@@ -1046,11 +829,11 @@ func (textEvent *TextEvent) CPtr() unsafe.Pointer {
 type TextStyle int32
 
 const (
-	sfTextRegular TextStyle = C.sfTextRegular
-	sfTextBold TextStyle = C.sfTextBold
-	sfTextItalic TextStyle = C.sfTextItalic
-	sfTextUnderlined TextStyle = C.sfTextUnderlined
-	sfTextStrikeThrough TextStyle = C.sfTextStrikeThrough
+	TextRegular TextStyle = C.TextRegular
+	TextBold TextStyle = C.TextBold
+	TextItalic TextStyle = C.TextItalic
+	TextUnderlined TextStyle = C.TextUnderlined
+	TextStrikeThrough TextStyle = C.TextStrikeThrough
 )
 
 type Texture struct {
@@ -1064,8 +847,8 @@ func (texture *Texture) CPtr() unsafe.Pointer {
 type TextureCoordinateType int32
 
 const (
-	sfTextureNormalized TextureCoordinateType = C.sfTextureNormalized
-	sfTexturePixels TextureCoordinateType = C.sfTexturePixels
+	TextureNormalized TextureCoordinateType = C.TextureNormalized
+	TexturePixels TextureCoordinateType = C.TexturePixels
 )
 
 type Thread struct {
@@ -1077,19 +860,11 @@ func (thread *Thread) CPtr() unsafe.Pointer {
 }
 
 type Time struct {
-	ptr unsafe.Pointer
+	Microseconds int64
 }
 
-func (time *Time) CPtr() unsafe.Pointer {
-	return (*C.sfTime)(time.ptr)
-}
-
-type TimeSpan struct {
-	ptr unsafe.Pointer
-}
-
-func (timeSpan *TimeSpan) CPtr() unsafe.Pointer {
-	return (*C.sfTimeSpan)(timeSpan.ptr)
+func (t Time) ToC() C.sfTime {
+	return C.sfTime{ microseconds: t.Microseconds }
 }
 
 type TouchEvent struct {
@@ -1114,14 +889,6 @@ type Transformable struct {
 
 func (transformable *Transformable) CPtr() unsafe.Pointer {
 	return (*C.sfTransformable)(transformable.ptr)
-}
-
-type UdpSocket struct {
-	ptr unsafe.Pointer
-}
-
-func (udpSocket *UdpSocket) CPtr() unsafe.Pointer {
-	return (*C.sfUdpSocket)(udpSocket.ptr)
 }
 
 type Vector2f struct {
@@ -1188,9 +955,9 @@ func (vertexBuffer *VertexBuffer) CPtr() unsafe.Pointer {
 type VertexBufferUsage int32
 
 const (
-	sfVertexBufferStream VertexBufferUsage = C.sfVertexBufferStream
-	sfVertexBufferDynamic VertexBufferUsage = C.sfVertexBufferDynamic
-	sfVertexBufferStatic VertexBufferUsage = C.sfVertexBufferStatic
+	VertexBufferStream VertexBufferUsage = C.VertexBufferStream
+	VertexBufferDynamic VertexBufferUsage = C.VertexBufferDynamic
+	VertexBufferStatic VertexBufferUsage = C.VertexBufferStatic
 )
 
 type VideoMode struct {
@@ -1230,11 +997,11 @@ func (windowBase *WindowBase) CPtr() unsafe.Pointer {
 type WindowStyle int32
 
 const (
-	sfNone WindowStyle = C.sfNone
-	sfTitlebar WindowStyle = C.sfTitlebar
-	sfResize WindowStyle = C.sfResize
-	sfClose WindowStyle = C.sfClose
-	sfFullscreen WindowStyle = C.sfFullscreen
-	sfDefaultStyle WindowStyle = C.sfDefaultStyle
+	None WindowStyle = C.None
+	Titlebar WindowStyle = C.Titlebar
+	Resize WindowStyle = C.Resize
+	Close WindowStyle = C.Close
+	Fullscreen WindowStyle = C.Fullscreen
+	DefaultStyle WindowStyle = C.DefaultStyle
 )
 

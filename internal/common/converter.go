@@ -16,10 +16,12 @@ type Converter struct {
 
 	PrefixMap map[string]string
 
-	RawTypesMap map[string]struct{}
+	RawTypesMap map[string]TypeDecl
 	GoTypesMap  map[string]struct{}
+	GoEnumsMap  map[string]struct{} // Map Go‐side enum names to struct{} for quick lookup
 
-	StructOverrides map[string]VectorInfo
+	StructOverrides  map[string]VectorInfo
+	PointerOverrides map[string]struct{} // Map cTypes (as translated to GoTypes) that should remain pointers in Go
 
 	SkippedTypes     map[string]struct{}
 	SkippedFunctions map[string]struct{}
@@ -42,7 +44,7 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 			"sfVector2u": {
 				"Vector2u",
 				[]Field{{Name: "X", Type: "uint32"}, {Name: "Y", Type: "uint32"}},
-				[]Field{{Name: "x", Type: "unsigned int"}, {Name: "y", Type: "unsigned int"}}},
+				[]Field{{Name: "x", Type: "sfUint32"}, {Name: "y", Type: "sfUint32"}}},
 			"sfVector3f": {
 				"Vector3f",
 				[]Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}},
@@ -88,12 +90,62 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 				[]Field{{Name: "Width", Type: "uint32"}, {Name: "Height", Type: "uint32"}, {Name: "BitsPerPixel", Type: "uint32"}},
 				[]Field{{Name: "width", Type: "unsigned int"}, {Name: "height", Type: "unsigned int"}, {Name: "bitsPerPixel", Type: "unsigned int"}},
 			},
+			"sfContextSettings": {
+				"ContextSettings",
+				[]Field{{Name: "DepthBits", Type: "uint32"}, {Name: "StencilBits", Type: "uint32"}, {Name: "AntialiasingLevel", Type: "uint32"}, {Name: "MajorVersion", Type: "uint32"}, {Name: "MinorVersion", Type: "uint32"}, {Name: "AttributeFlags", Type: "uint32"}, {Name: "SRgbCapable", Type: "bool"}},
+				[]Field{{Name: "depthBits", Type: "unsigned int"}, {Name: "stencilBits", Type: "unsigned int"}, {Name: "antialiasingLevel", Type: "unsigned int"}, {Name: "majorVersion", Type: "unsigned int"}, {Name: "minorVersion", Type: "unsigned int"}, {Name: "attributeFlags", Type: "sfUint32"}, {Name: "sRgbCapable", Type: "sfBool"}},
+			},
+			"sfTime": {
+				"Time",
+				[]Field{{Name: "Microseconds", Type: "int64"}},
+				[]Field{{Name: "microseconds", Type: "sfInt64"}},
+			},
+			"sfColor": {
+				"Color",
+				[]Field{{Name: "R", Type: "uint8"}, {Name: "G", Type: "uint8"}, {Name: "B", Type: "uint8"}, {Name: "A", Type: "uint8"}},
+				[]Field{{Name: "r", Type: "sfUint8"}, {Name: "g", Type: "sfUint8"}, {Name: "b", Type: "sfUint8"}, {Name: "a", Type: "sfUint8"}},
+			},
+			"sfIntRect": {
+				"IntRect",
+				[]Field{{Name: "Left", Type: "int32"}, {Name: "Top", Type: "int32"}, {Name: "Width", Type: "int32"}, {Name: "Height", Type: "int32"}},
+				[]Field{{Name: "left", Type: "sfInt32"}, {Name: "top", Type: "sfInt32"}, {Name: "width", Type: "sfInt32"}, {Name: "height", Type: "sfInt32"}},
+			},
+			"sfFloatRect": {
+				"FloatRect",
+				[]Field{{Name: "Left", Type: "float32"}, {Name: "Top", Type: "float32"}, {Name: "Width", Type: "float32"}, {Name: "Height", Type: "float32"}},
+				[]Field{{Name: "left", Type: "float"}, {Name: "top", Type: "float"}, {Name: "width", Type: "float"}, {Name: "height", Type: "float"}},
+			},
+
+			"sfRenderStates": {
+				"RenderStates",
+				[]Field{{Name: "BlendMode", Type: "BlendMode"}, {Name: "Transform", Type: "Transform"}, {Name: "Texture", Type: "Texture"}, {Name: "Shader", Type: "Shader"}},
+				[]Field{{Name: "blendMode", Type: "sfBlendMode"}, {Name: "transform", Type: "sfTransform"}, {Name: "texture", Type: "sfTexture"}, {Name: "shader", Type: "sfShader"}},
+			},
+			"sfBlendMode": {
+				"BlendMode",
+				[]Field{{Name: "ColorSrcFactor", Type: "BlendFactor"}, {Name: "ColorDstFactor", Type: "BlendFactor"}, {Name: "ColorEquation", Type: "BlendEquation"}, {Name: "AlphaSrcFactor", Type: "BlendFactor"}, {Name: "AlphaDstFactor", Type: "BlendFactor"}, {Name: "AlphaEquation", Type: "BlendEquation"}},
+				[]Field{{Name: "colorSrcFactor", Type: "sfBlendFactor"}, {Name: "colorDstFactor", Type: "sfBlendFactor"}, {Name: "colorEquation", Type: "sfBlendEquation"}, {Name: "alphaSrcFactor", Type: "sfBlendFactor"}, {Name: "alphaDstFactor", Type: "sfBlendFactor"}, {Name: "alphaEquation", Type: "sfBlendEquation"}},
+			},
+			"sfGlyph": {
+				"Glyph",
+				[]Field{{Name: "Advance", Type: "float32"}, {Name: "Bounds", Type: "FloatRect"}, {Name: "TextureRect", Type: "IntRect"}},
+				[]Field{{Name: "advance", Type: "float"}, {Name: "bounds", Type: "sfFloatRect"}, {Name: "textureRect", Type: "sfIntRect"}},
+			},
+			"sfFontInfo": {
+				"FontInfo",
+				[]Field{{Name: "Family", Type: "string"}},
+				[]Field{{Name: "family", Type: "sfString"}},
+			},
+		},
+		PointerOverrides: map[string]struct{}{
+			"Transform": struct{}{}, // Keep Transform as a pointer in Go
 		},
 		PrefixMap: map[string]string{
 			"sf": "",
 		},
-		RawTypesMap: make(map[string]struct{}),
+		RawTypesMap: make(map[string]TypeDecl),
 		GoTypesMap:  make(map[string]struct{}),
+		GoEnumsMap:  make(map[string]struct{}), // Map Go‐side enum names to struct{} for quick lookup
 		// Skip native types that are not needed in Go.
 		SkippedTypes:     map[string]struct{}{"sfWindowHandle": {}, "sfBool": {}, "sfChar32": {}, "sfUint8": {}, "sfUint16": {}, "sfUint32": {}, "sfUint64": {}, "sfInt8": {}, "sfInt16": {}, "sfInt32": {}, "sfInt64": {}},
 		SkippedFunctions: map[string]struct{}{"sfMusic_setEffectProcessor": {}, "sfShape_create": {}, "sfSound_setEffectProcessor": {}},
@@ -101,6 +153,8 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 			// Skip Sound Recorder completely
 			"sfSoundRecorder*",
 			"sfSoundStream*",
+			"sfJoystick*",
+			"sfVulkan*",
 		},
 	}
 
@@ -117,12 +171,15 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 	}
 
 	for _, t := range c.RawTypes {
-		c.RawTypesMap[t.Name] = struct{}{}
+		c.RawTypesMap[t.Name] = t
 	}
 
-	for raw := range c.RawTypesMap {
-		goName := textcase.PascalCase(c.StripPrefix(raw))
+	for name, raw := range c.RawTypesMap {
+		goName := textcase.PascalCase(c.StripPrefix(name))
 		c.GoTypesMap[goName] = struct{}{}
+		if raw.Type == "enum" {
+			c.GoEnumsMap[goName] = struct{}{} // Store Go‐side enum names for quick lookup
+		}
 	}
 
 	for _, vi := range c.StructOverrides {
@@ -203,6 +260,9 @@ func (c *Converter) readFunctions(functionsFile string) ([]FunctionDecl, error) 
 // MapCParamToGoType maps a C parameter type (e.g. "const sfSprite*", "int", "sfVector2i")
 // to a Go type string (e.g. "*Sprite", "int32", "Vector2i") using global knownTypes.
 func (c *Converter) MapCParamToGoType(cType string) string {
+	if cType == "const char *" {
+		return "string" // Special case for C strings
+	}
 
 	// Strip "const ", "struct ", "*" from cType to get the base.
 	base := strings.ReplaceAll(cType, "const ", "")
@@ -277,6 +337,10 @@ func (c *Converter) MapReturnType(cReturnType string) string {
 	}
 	base = strings.ReplaceAll(base, "*", "")
 	base = strings.TrimSpace(base)
+	goName := textcase.PascalCase(c.StripPrefix(base))
+	if _, ok := c.PointerOverrides[goName]; ok {
+		ptr = "*" // Ensure we return a pointer type
+	}
 
 	// If this is a known vector typedef, return its Go‐side name.
 	if vi, ok := c.StructOverrides[base]; ok {
@@ -285,7 +349,7 @@ func (c *Converter) MapReturnType(cReturnType string) string {
 
 	// If base in knownTypes, map to PascalCase + pointer if needed.
 	if _, ok := c.RawTypesMap[base]; ok {
-		return ptr + textcase.PascalCase(c.StripPrefix(base))
+		return ptr + goName
 	}
 
 	// Fallback for primitives.
@@ -322,6 +386,10 @@ func (c *Converter) StripPrefix(name string) string {
 func (c *Converter) ParamCallExpr(cParam Field, goParam Field) string {
 	cleanCType := CleanCType(cParam.Type)
 
+	if cParam.Type == "const char *" {
+		return fmt.Sprintf("C.CString(%s)", goParam.Name)
+	}
+
 	if strings.HasPrefix(goParam.Type, "*") {
 		if _, ok := c.GoTypesMap[cleanCType]; ok {
 			return fmt.Sprintf("%s.CPtr()", goParam.Name)
@@ -331,12 +399,19 @@ func (c *Converter) ParamCallExpr(cParam Field, goParam Field) string {
 			return fmt.Sprintf("%s.ToC()", goParam.Name)
 		}
 	}
+
 	return goParam.Name
 }
 
 // IsKnownGoType checks if the provided type name is in knownGoTypes.
 func (c *Converter) IsKnownGoType(name string) bool {
 	_, ok := c.GoTypesMap[name]
+	return ok
+}
+
+// IsEnum checks if the provided type name is a Go‐side enum.
+func (c *Converter) IsEnum(name string) bool {
+	_, ok := c.GoEnumsMap[name]
 	return ok
 }
 

@@ -2,29 +2,32 @@ import json
 import os
 import re
 
-
 # Get from environment variables or error
 AST_DIR = os.getenv('AST_DIR')
 if not AST_DIR:
-    raise ValueError("Environment variable AST_DIR is not set. Please set it to the directory containing the AST JSON files.")
+    raise ValueError(
+        "Environment variable AST_DIR is not set. Please set it to the directory containing the AST JSON files.")
 if not os.path.isdir(AST_DIR):
     raise ValueError(f"AST_DIR '{AST_DIR}' is not a valid directory.")
 
 # Output directories
 JSON_DIR = os.getenv('JSON_DIR')
 if not JSON_DIR:
-    raise ValueError("Environment variable JSON_OUTPUT_DIR is not set. Please set it to the directory where you want to save the output files.")
+    raise ValueError(
+        "Environment variable JSON_DIR is not set. Please set it to the directory where you want to save the output files.")
 if not os.path.isdir(JSON_DIR):
-    raise ValueError(f"JSON_OUTPUT_DIR '{JSON_DIR}' is not a valid directory.")
+    raise ValueError(f"JSON_DIR '{JSON_DIR}' is not a valid directory.")
 
 # Output files
 TYPES_OUT = os.path.join(JSON_DIR, 'types.json')
 FUNCS_OUT = os.path.join(JSON_DIR, 'functions.json')
 
-
 # Regex patterns for filtering what should be passed
 # 1. Starts with sf
 name_reqex = re.compile(r'^sf[A-Z][a-zA-Z0-9_]*')
+
+# Skip Network and Audio files
+skip_files_regex = re.compile(r'^(SFML_Network|SFML_Audio)')
 
 
 def should_include(name):
@@ -94,7 +97,7 @@ def extract_functions(ast_node):
         if ast_node.get('kind') == 'FunctionDecl':
             fn = {
                 'name': ast_node.get('name'),
-                'return_type': ast_node.get('type', {}).get('qualType', 'void'),
+                'return_type': ast_node.get('type', {}).get('qualType', 'void').split('(')[0],
                 'parameters': []
             }
 
@@ -125,6 +128,10 @@ all_types = []
 all_functions = []
 
 for filename in os.listdir(AST_DIR):
+    if skip_files_regex.match(filename):
+        print(f"Skipping {filename} as it matches the skip pattern.")
+        continue
+
     if filename.endswith('.json'):
         with open(os.path.join(AST_DIR, filename)) as f:
             print(f"🔍 Processing {filename}...")
