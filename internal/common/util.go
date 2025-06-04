@@ -28,6 +28,18 @@ func IsVoidReturnType(returnType string) bool {
 	return returnType == "void" || returnType == "void*" || returnType == ""
 }
 
+// IsPointerType checks if a type name is a pointer type.
+// Works for both C and Go pointer types.
+func IsPointerType(typeName string) bool {
+	// Check if prefix or suffix is a pointer symbol after trimming spaces.
+	typeName = strings.TrimSpace(typeName)
+	if strings.HasPrefix(typeName, "*") || strings.HasSuffix(typeName, "*") {
+		return true
+	}
+
+	return false
+}
+
 // SanitizeFieldName fixes a field name if it is not valid in Go.
 // For instance, it should not start with a digit or be called "type" or "func".
 func SanitizeFieldName(field Field) Field {

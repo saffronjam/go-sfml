@@ -64,10 +64,6 @@ func (w *Writer) FunctionHeader(header FunctionHeader) {
 	paramsStr := make([]string, len(header.Parameters))
 	for i, param := range header.Parameters {
 		paramType := param.Type
-		if !w.Converter.IsKnownGoType(StripPointer(param.Type)) {
-			w.Converter.MapCParamToGoType(param.Type)
-		}
-
 		if param.Name == "" {
 			param.Name = fmt.Sprintf("arg%d", i)
 		}
@@ -90,9 +86,6 @@ func (w *Writer) ReceiverFunctionHeader(header ReceiverFunctionHeader) {
 	paramsStr := make([]string, len(header.Parameters))
 	for i, param := range header.Parameters {
 		paramType := param.Type
-		if !w.Converter.IsKnownGoType(StripPointer(param.Type)) {
-			paramType = w.Converter.MapCParamToGoType(param.Type)
-		}
 
 		if param.Name == "" {
 			param.Name = fmt.Sprintf("arg%d", i)

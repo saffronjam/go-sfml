@@ -24,8 +24,8 @@ type FunctionDecl struct {
 	ReturnType string  `json:"return_type"`
 }
 
-// VectorInfo holds the Go‐side name of a vector typedef and its field names.
-type VectorInfo struct {
+// StructInfo holds the Go‐side name of a vector typedef and its field names.
+type StructInfo struct {
 	GoName  string
 	Fields  []Field // Go‐side field names, e.g. "X", "Y", "Z", "W"
 	CFields []Field // C‐side field names, e.g. "x", "y", "z", "w"

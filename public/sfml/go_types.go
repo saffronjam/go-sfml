@@ -49,24 +49,24 @@ type Buffer struct {
 	ptr unsafe.Pointer
 }
 
-func (buffer *Buffer) CPtr() unsafe.Pointer {
-	return (*C.sfBuffer)(buffer.ptr)
+func (b *Buffer) CPtr() unsafe.Pointer {
+	return (*C.sfBuffer)(b.ptr)
 }
 
 type CircleShape struct {
 	ptr unsafe.Pointer
 }
 
-func (circleShape *CircleShape) CPtr() unsafe.Pointer {
-	return (*C.sfCircleShape)(circleShape.ptr)
+func (c *CircleShape) CPtr() unsafe.Pointer {
+	return (*C.sfCircleShape)(c.ptr)
 }
 
 type Clock struct {
 	ptr unsafe.Pointer
 }
 
-func (clock *Clock) CPtr() unsafe.Pointer {
-	return (*C.sfClock)(clock.ptr)
+func (c *Clock) CPtr() unsafe.Pointer {
+	return (*C.sfClock)(c.ptr)
 }
 
 type Color struct {
@@ -84,8 +84,8 @@ type Context struct {
 	ptr unsafe.Pointer
 }
 
-func (context *Context) CPtr() unsafe.Pointer {
-	return (*C.sfContext)(context.ptr)
+func (c *Context) CPtr() unsafe.Pointer {
+	return (*C.sfContext)(c.ptr)
 }
 
 type ContextAttribute int32
@@ -114,16 +114,16 @@ type ConvexShape struct {
 	ptr unsafe.Pointer
 }
 
-func (convexShape *ConvexShape) CPtr() unsafe.Pointer {
-	return (*C.sfConvexShape)(convexShape.ptr)
+func (c *ConvexShape) CPtr() unsafe.Pointer {
+	return (*C.sfConvexShape)(c.ptr)
 }
 
 type Cursor struct {
 	ptr unsafe.Pointer
 }
 
-func (cursor *Cursor) CPtr() unsafe.Pointer {
-	return (*C.sfCursor)(cursor.ptr)
+func (c *Cursor) CPtr() unsafe.Pointer {
+	return (*C.sfCursor)(c.ptr)
 }
 
 type CursorType int32
@@ -156,8 +156,8 @@ type Event struct {
 	ptr unsafe.Pointer
 }
 
-func (event *Event) CPtr() unsafe.Pointer {
-	return (*C.sfEvent)(event.ptr)
+func (e *Event) CPtr() unsafe.Pointer {
+	return (*C.sfEvent)(e.ptr)
 }
 
 type EventType int32
@@ -204,16 +204,16 @@ type Font struct {
 	ptr unsafe.Pointer
 }
 
-func (font *Font) CPtr() unsafe.Pointer {
-	return (*C.sfFont)(font.ptr)
+func (f *Font) CPtr() unsafe.Pointer {
+	return (*C.sfFont)(f.ptr)
 }
 
 type FontInfo struct {
-	ptr unsafe.Pointer
+	Family string
 }
 
-func (fontInfo *FontInfo) CPtr() unsafe.Pointer {
-	return (*C.sfFontInfo)(fontInfo.ptr)
+func (f FontInfo) ToC() C.sfFontInfo {
+	return C.sfFontInfo{ family: f.Family }
 }
 
 type Vector2b struct {
@@ -271,16 +271,16 @@ type GlslMat3 struct {
 	ptr unsafe.Pointer
 }
 
-func (glslMat3 *GlslMat3) CPtr() unsafe.Pointer {
-	return (*C.sfGlslMat3)(glslMat3.ptr)
+func (g *GlslMat3) CPtr() unsafe.Pointer {
+	return (*C.sfGlslMat3)(g.ptr)
 }
 
 type GlslMat4 struct {
 	ptr unsafe.Pointer
 }
 
-func (glslMat4 *GlslMat4) CPtr() unsafe.Pointer {
-	return (*C.sfGlslMat4)(glslMat4.ptr)
+func (g *GlslMat4) CPtr() unsafe.Pointer {
+	return (*C.sfGlslMat4)(g.ptr)
 }
 
 type Vector4f struct {
@@ -295,27 +295,29 @@ func (v Vector4f) ToC() C.sfGlslVec4 {
 }
 
 type Glyph struct {
-	ptr unsafe.Pointer
+	Advance float32
+	Bounds FloatRect
+	TextureRect IntRect
 }
 
-func (glyph *Glyph) CPtr() unsafe.Pointer {
-	return (*C.sfGlyph)(glyph.ptr)
+func (g Glyph) ToC() C.sfGlyph {
+	return C.sfGlyph{ advance: g.Advance, bounds: g.Bounds, textureRect: g.TextureRect }
 }
 
 type Image struct {
 	ptr unsafe.Pointer
 }
 
-func (image *Image) CPtr() unsafe.Pointer {
-	return (*C.sfImage)(image.ptr)
+func (i *Image) CPtr() unsafe.Pointer {
+	return (*C.sfImage)(i.ptr)
 }
 
 type InputStream struct {
 	ptr unsafe.Pointer
 }
 
-func (inputStream *InputStream) CPtr() unsafe.Pointer {
-	return (*C.sfInputStream)(inputStream.ptr)
+func (i *InputStream) CPtr() unsafe.Pointer {
+	return (*C.sfInputStream)(i.ptr)
 }
 
 type IntRect struct {
@@ -327,51 +329,6 @@ type IntRect struct {
 
 func (i IntRect) ToC() C.sfIntRect {
 	return C.sfIntRect{ left: i.Left, top: i.Top, width: i.Width, height: i.Height }
-}
-
-type JoystickAxis int32
-
-const (
-	JoystickX JoystickAxis = C.JoystickX
-	JoystickY JoystickAxis = C.JoystickY
-	JoystickZ JoystickAxis = C.JoystickZ
-	JoystickR JoystickAxis = C.JoystickR
-	JoystickU JoystickAxis = C.JoystickU
-	JoystickV JoystickAxis = C.JoystickV
-	JoystickPovX JoystickAxis = C.JoystickPovX
-	JoystickPovY JoystickAxis = C.JoystickPovY
-)
-
-type JoystickButtonEvent struct {
-	ptr unsafe.Pointer
-}
-
-func (joystickButtonEvent *JoystickButtonEvent) CPtr() unsafe.Pointer {
-	return (*C.sfJoystickButtonEvent)(joystickButtonEvent.ptr)
-}
-
-type JoystickConnectEvent struct {
-	ptr unsafe.Pointer
-}
-
-func (joystickConnectEvent *JoystickConnectEvent) CPtr() unsafe.Pointer {
-	return (*C.sfJoystickConnectEvent)(joystickConnectEvent.ptr)
-}
-
-type JoystickIdentification struct {
-	ptr unsafe.Pointer
-}
-
-func (joystickIdentification *JoystickIdentification) CPtr() unsafe.Pointer {
-	return (*C.sfJoystickIdentification)(joystickIdentification.ptr)
-}
-
-type JoystickMoveEvent struct {
-	ptr unsafe.Pointer
-}
-
-func (joystickMoveEvent *JoystickMoveEvent) CPtr() unsafe.Pointer {
-	return (*C.sfJoystickMoveEvent)(joystickMoveEvent.ptr)
 }
 
 type KeyCode int32
@@ -493,8 +450,8 @@ type KeyEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (keyEvent *KeyEvent) CPtr() unsafe.Pointer {
-	return (*C.sfKeyEvent)(keyEvent.ptr)
+func (k *KeyEvent) CPtr() unsafe.Pointer {
+	return (*C.sfKeyEvent)(k.ptr)
 }
 
 type MouseButton int32
@@ -512,16 +469,16 @@ type MouseButtonEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (mouseButtonEvent *MouseButtonEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseButtonEvent)(mouseButtonEvent.ptr)
+func (m *MouseButtonEvent) CPtr() unsafe.Pointer {
+	return (*C.sfMouseButtonEvent)(m.ptr)
 }
 
 type MouseMoveEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (mouseMoveEvent *MouseMoveEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseMoveEvent)(mouseMoveEvent.ptr)
+func (m *MouseMoveEvent) CPtr() unsafe.Pointer {
+	return (*C.sfMouseMoveEvent)(m.ptr)
 }
 
 type MouseWheel int32
@@ -535,24 +492,24 @@ type MouseWheelEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (mouseWheelEvent *MouseWheelEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseWheelEvent)(mouseWheelEvent.ptr)
+func (m *MouseWheelEvent) CPtr() unsafe.Pointer {
+	return (*C.sfMouseWheelEvent)(m.ptr)
 }
 
 type MouseWheelScrollEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (mouseWheelScrollEvent *MouseWheelScrollEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseWheelScrollEvent)(mouseWheelScrollEvent.ptr)
+func (m *MouseWheelScrollEvent) CPtr() unsafe.Pointer {
+	return (*C.sfMouseWheelScrollEvent)(m.ptr)
 }
 
 type Mutex struct {
 	ptr unsafe.Pointer
 }
 
-func (mutex *Mutex) CPtr() unsafe.Pointer {
-	return (*C.sfMutex)(mutex.ptr)
+func (m *Mutex) CPtr() unsafe.Pointer {
+	return (*C.sfMutex)(m.ptr)
 }
 
 type PrimitiveType int32
@@ -574,8 +531,8 @@ type RectangleShape struct {
 	ptr unsafe.Pointer
 }
 
-func (rectangleShape *RectangleShape) CPtr() unsafe.Pointer {
-	return (*C.sfRectangleShape)(rectangleShape.ptr)
+func (r *RectangleShape) CPtr() unsafe.Pointer {
+	return (*C.sfRectangleShape)(r.ptr)
 }
 
 type RenderStates struct {
@@ -593,16 +550,16 @@ type RenderTexture struct {
 	ptr unsafe.Pointer
 }
 
-func (renderTexture *RenderTexture) CPtr() unsafe.Pointer {
-	return (*C.sfRenderTexture)(renderTexture.ptr)
+func (r *RenderTexture) CPtr() unsafe.Pointer {
+	return (*C.sfRenderTexture)(r.ptr)
 }
 
 type RenderWindow struct {
 	ptr unsafe.Pointer
 }
 
-func (renderWindow *RenderWindow) CPtr() unsafe.Pointer {
-	return (*C.sfRenderWindow)(renderWindow.ptr)
+func (r *RenderWindow) CPtr() unsafe.Pointer {
+	return (*C.sfRenderWindow)(r.ptr)
 }
 
 type Scancode int32
@@ -762,8 +719,8 @@ type SensorEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (sensorEvent *SensorEvent) CPtr() unsafe.Pointer {
-	return (*C.sfSensorEvent)(sensorEvent.ptr)
+func (s *SensorEvent) CPtr() unsafe.Pointer {
+	return (*C.sfSensorEvent)(s.ptr)
 }
 
 type SensorType int32
@@ -782,48 +739,48 @@ type Shader struct {
 	ptr unsafe.Pointer
 }
 
-func (shader *Shader) CPtr() unsafe.Pointer {
-	return (*C.sfShader)(shader.ptr)
+func (s *Shader) CPtr() unsafe.Pointer {
+	return (*C.sfShader)(s.ptr)
 }
 
 type Shape struct {
 	ptr unsafe.Pointer
 }
 
-func (shape *Shape) CPtr() unsafe.Pointer {
-	return (*C.sfShape)(shape.ptr)
+func (s *Shape) CPtr() unsafe.Pointer {
+	return (*C.sfShape)(s.ptr)
 }
 
 type SizeEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (sizeEvent *SizeEvent) CPtr() unsafe.Pointer {
-	return (*C.sfSizeEvent)(sizeEvent.ptr)
+func (s *SizeEvent) CPtr() unsafe.Pointer {
+	return (*C.sfSizeEvent)(s.ptr)
 }
 
 type Sprite struct {
 	ptr unsafe.Pointer
 }
 
-func (sprite *Sprite) CPtr() unsafe.Pointer {
-	return (*C.sfSprite)(sprite.ptr)
+func (s *Sprite) CPtr() unsafe.Pointer {
+	return (*C.sfSprite)(s.ptr)
 }
 
 type Text struct {
 	ptr unsafe.Pointer
 }
 
-func (text *Text) CPtr() unsafe.Pointer {
-	return (*C.sfText)(text.ptr)
+func (t *Text) CPtr() unsafe.Pointer {
+	return (*C.sfText)(t.ptr)
 }
 
 type TextEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (textEvent *TextEvent) CPtr() unsafe.Pointer {
-	return (*C.sfTextEvent)(textEvent.ptr)
+func (t *TextEvent) CPtr() unsafe.Pointer {
+	return (*C.sfTextEvent)(t.ptr)
 }
 
 type TextStyle int32
@@ -840,8 +797,8 @@ type Texture struct {
 	ptr unsafe.Pointer
 }
 
-func (texture *Texture) CPtr() unsafe.Pointer {
-	return (*C.sfTexture)(texture.ptr)
+func (t *Texture) CPtr() unsafe.Pointer {
+	return (*C.sfTexture)(t.ptr)
 }
 
 type TextureCoordinateType int32
@@ -855,8 +812,8 @@ type Thread struct {
 	ptr unsafe.Pointer
 }
 
-func (thread *Thread) CPtr() unsafe.Pointer {
-	return (*C.sfThread)(thread.ptr)
+func (t *Thread) CPtr() unsafe.Pointer {
+	return (*C.sfThread)(t.ptr)
 }
 
 type Time struct {
@@ -871,24 +828,24 @@ type TouchEvent struct {
 	ptr unsafe.Pointer
 }
 
-func (touchEvent *TouchEvent) CPtr() unsafe.Pointer {
-	return (*C.sfTouchEvent)(touchEvent.ptr)
+func (t *TouchEvent) CPtr() unsafe.Pointer {
+	return (*C.sfTouchEvent)(t.ptr)
 }
 
 type Transform struct {
 	ptr unsafe.Pointer
 }
 
-func (transform *Transform) CPtr() unsafe.Pointer {
-	return (*C.sfTransform)(transform.ptr)
+func (t *Transform) CPtr() unsafe.Pointer {
+	return (*C.sfTransform)(t.ptr)
 }
 
 type Transformable struct {
 	ptr unsafe.Pointer
 }
 
-func (transformable *Transformable) CPtr() unsafe.Pointer {
-	return (*C.sfTransformable)(transformable.ptr)
+func (t *Transformable) CPtr() unsafe.Pointer {
+	return (*C.sfTransformable)(t.ptr)
 }
 
 type Vector2f struct {
@@ -932,24 +889,24 @@ type Vertex struct {
 	ptr unsafe.Pointer
 }
 
-func (vertex *Vertex) CPtr() unsafe.Pointer {
-	return (*C.sfVertex)(vertex.ptr)
+func (v *Vertex) CPtr() unsafe.Pointer {
+	return (*C.sfVertex)(v.ptr)
 }
 
 type VertexArray struct {
 	ptr unsafe.Pointer
 }
 
-func (vertexArray *VertexArray) CPtr() unsafe.Pointer {
-	return (*C.sfVertexArray)(vertexArray.ptr)
+func (v *VertexArray) CPtr() unsafe.Pointer {
+	return (*C.sfVertexArray)(v.ptr)
 }
 
 type VertexBuffer struct {
 	ptr unsafe.Pointer
 }
 
-func (vertexBuffer *VertexBuffer) CPtr() unsafe.Pointer {
-	return (*C.sfVertexBuffer)(vertexBuffer.ptr)
+func (v *VertexBuffer) CPtr() unsafe.Pointer {
+	return (*C.sfVertexBuffer)(v.ptr)
 }
 
 type VertexBufferUsage int32
@@ -974,24 +931,24 @@ type View struct {
 	ptr unsafe.Pointer
 }
 
-func (view *View) CPtr() unsafe.Pointer {
-	return (*C.sfView)(view.ptr)
+func (v *View) CPtr() unsafe.Pointer {
+	return (*C.sfView)(v.ptr)
 }
 
 type Window struct {
 	ptr unsafe.Pointer
 }
 
-func (window *Window) CPtr() unsafe.Pointer {
-	return (*C.sfWindow)(window.ptr)
+func (w *Window) CPtr() unsafe.Pointer {
+	return (*C.sfWindow)(w.ptr)
 }
 
 type WindowBase struct {
 	ptr unsafe.Pointer
 }
 
-func (windowBase *WindowBase) CPtr() unsafe.Pointer {
-	return (*C.sfWindowBase)(windowBase.ptr)
+func (w *WindowBase) CPtr() unsafe.Pointer {
+	return (*C.sfWindowBase)(w.ptr)
 }
 
 type WindowStyle int32

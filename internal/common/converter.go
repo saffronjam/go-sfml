@@ -20,7 +20,7 @@ type Converter struct {
 	GoTypesMap  map[string]struct{}
 	GoEnumsMap  map[string]struct{} // Map Go‐side enum names to struct{} for quick lookup
 
-	StructOverrides  map[string]VectorInfo
+	StructOverrides  map[string]StructInfo
 	PointerOverrides map[string]struct{} // Map cTypes (as translated to GoTypes) that should remain pointers in Go
 
 	SkippedTypes     map[string]struct{}
@@ -31,7 +31,7 @@ type Converter struct {
 // NewConverter initializes a Converter with the types from types.json.
 func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 	c := &Converter{
-		StructOverrides: map[string]VectorInfo{
+		StructOverrides: map[string]StructInfo{
 			"sfVector2i": {
 				"Vector2i",
 				[]Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
@@ -88,12 +88,12 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 			"sfVideoMode": {
 				"VideoMode",
 				[]Field{{Name: "Width", Type: "uint32"}, {Name: "Height", Type: "uint32"}, {Name: "BitsPerPixel", Type: "uint32"}},
-				[]Field{{Name: "width", Type: "unsigned int"}, {Name: "height", Type: "unsigned int"}, {Name: "bitsPerPixel", Type: "unsigned int"}},
+				[]Field{{Name: "width", Type: "sfUint"}, {Name: "height", Type: "sfUint"}, {Name: "bitsPerPixel", Type: "sfUint"}},
 			},
 			"sfContextSettings": {
 				"ContextSettings",
 				[]Field{{Name: "DepthBits", Type: "uint32"}, {Name: "StencilBits", Type: "uint32"}, {Name: "AntialiasingLevel", Type: "uint32"}, {Name: "MajorVersion", Type: "uint32"}, {Name: "MinorVersion", Type: "uint32"}, {Name: "AttributeFlags", Type: "uint32"}, {Name: "SRgbCapable", Type: "bool"}},
-				[]Field{{Name: "depthBits", Type: "unsigned int"}, {Name: "stencilBits", Type: "unsigned int"}, {Name: "antialiasingLevel", Type: "unsigned int"}, {Name: "majorVersion", Type: "unsigned int"}, {Name: "minorVersion", Type: "unsigned int"}, {Name: "attributeFlags", Type: "sfUint32"}, {Name: "sRgbCapable", Type: "sfBool"}},
+				[]Field{{Name: "depthBits", Type: "sfUint"}, {Name: "stencilBits", Type: "sfUint"}, {Name: "antialiasingLevel", Type: "sfUint"}, {Name: "majorVersion", Type: "sfUint"}, {Name: "minorVersion", Type: "sfUint"}, {Name: "attributeFlags", Type: "sfUint32"}, {Name: "sRgbCapable", Type: "sfBool"}},
 			},
 			"sfTime": {
 				"Time",
@@ -315,7 +315,7 @@ func (c *Converter) MapCParamToGoType(cType string) string {
 		return "float32"
 	case "double":
 		return "float64"
-	case "unsigned int":
+	case "sfUint":
 		return "uint32"
 	case "char":
 		return "byte"
@@ -364,11 +364,38 @@ func (c *Converter) MapReturnType(cReturnType string) string {
 		return "int32"
 	case "sfBool":
 		return "bool"
-	case "unsigned int":
+	case "sfUint":
 		return "uint32"
 	default:
 		return "int32"
 	}
+}
+
+func (c *Converter) TranslateMethodName(cMethodName string) string {
+	pascalCase := textcase.PascalCase(cMethodName)
+
+	// If contains "Create" and has something before it, prepend "New" and remove "Create".
+	if strings.Contains(pascalCase, "Create") {
+		withoutCreate := strings.ReplaceAll(pascalCase, "Create", "")
+		return "New" + withoutCreate // Prepend "New" and remove "Create"
+	}
+
+	if strings.HasSuffix(pascalCase, "Destroy") {
+		return "Free" + pascalCase[:len(pascalCase)-7] // Remove "Destroy" and prepend "Free"
+	}
+
+	// If starts with "Get" (and is followed by uppercase), remove "Get" prefix. With some exceptions.
+	exceptions := []string{"GetScale"}
+	if strings.HasPrefix(pascalCase, "Get") && len(pascalCase) > 3 && (pascalCase[3] >= 'A' && pascalCase[3] <= 'Z') {
+		for _, ex := range exceptions {
+			if pascalCase == ex {
+				return pascalCase // Keep the exception as is
+			}
+		}
+		return pascalCase[3:] // Remove "Get" prefix
+	}
+
+	return pascalCase // Return as is if no special cases matched
 }
 
 // StripPrefix removes any known C‐style prefix (like "sf") from the given name.
@@ -413,6 +440,17 @@ func (c *Converter) IsKnownGoType(name string) bool {
 func (c *Converter) IsEnum(name string) bool {
 	_, ok := c.GoEnumsMap[name]
 	return ok
+}
+
+// GetOverriddenType checks if a Go type has a struct override and returns it.
+func (c *Converter) GetOverriddenType(goType string) (string, *StructInfo) {
+	for cName, vi := range c.StructOverrides {
+		if vi.GoName == goType {
+			return cName, &vi
+		}
+	}
+
+	return "", nil
 }
 
 // GetReceiverType determines if a function should be a method on a Go struct.

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/golang-cz/textcase"
 	"github.com/saffronjam/go-sfml/internal/common"
 	"path"
 	"strings"
@@ -35,7 +34,8 @@ func main() {
 		}
 
 		_, methodPart := parts[0], parts[1]
-		goMethod := textcase.PascalCase(methodPart) // e.g. "GetPosition"
+		goStaticMethod := converter.TranslateMethodName(stripped)     // e.g. false for "sfMouse_getPosition"
+		goReceiverMethod := converter.TranslateMethodName(methodPart) // e.g. "GetPosition"
 
 		paramsC := fn.Parameters
 		returnTypeC := fn.ReturnType                         // e.g. "sfVector2i" or "int"
@@ -110,16 +110,36 @@ func main() {
 					var fieldAssignmentExpressions []string
 					for idx, field := range overrideInfo.Fields {
 						cField := overrideInfo.CFields[idx]
-						fieldAssignmentExpressions = append(fieldAssignmentExpressions,
-							fmt.Sprintf("%s: C.%s(%s.%s)", cField.Name, cField.Type, goParam.Name, field.Name),
-						)
+						var subFieldAssignmentExpressions []string
+						if cName, t := converter.GetOverriddenType(field.Type); t != nil {
+							// If the field type is overridden, we need to create a new C object for it
+							assignment := make([]string, len(t.Fields))
+							for subIdx, subField := range t.Fields {
+								cSubField := t.CFields[subIdx]
+								assignment[subIdx] = fmt.Sprintf("%s: C.%s(%s.%s.%s)", cSubField.Name, cSubField.Type, goParam.Name, field.Name, subField.Name)
+							}
+							subFieldAssignmentExpressions = []string{fmt.Sprintf("%s: C.%s{%s}", cField.Name, cName, strings.Join(assignment, ", "))}
+						} else {
+							// Otherwise, we can use the field directly
+							subFieldAssignmentExpressions = []string{fmt.Sprintf("%s: C.%s(%s)", cField.Name, cField.Type, goParam.Name)}
+						}
+						fieldAssignmentExpressions = append(fieldAssignmentExpressions, strings.Join(subFieldAssignmentExpressions, ", "))
 					}
 
 					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := C.%s{%s}", argVarName, common.CleanCType(cParam.Type), strings.Join(fieldAssignmentExpressions, ", ")))
-					callArgs = append(callArgs, fmt.Sprintf("&%s", argVarName))
+
+					ampersand := ""
+					if common.IsPointerType(goParam.Type) {
+						ampersand = "&"
+					}
+					callArgs = append(callArgs, fmt.Sprintf("%s%s", ampersand, argVarName))
 				} else if converter.IsKnownGoType(goParam.Type) && !converter.IsEnum(goParam.Type) {
 					// If it is a known Go type, we need to pass it as a pointer using var1.CPtr()
 					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s.CPtr()", argVarName, goParam.Name))
+					callArgs = append(callArgs, argVarName)
+				} else if goParam.Type == "string" {
+					// If the parameter is a string, we need to convert it to a C string
+					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := C.CString(%s)", argVarName, goParam.Name))
 					callArgs = append(callArgs, argVarName)
 				} else {
 					// Otherwise, we can use the type directly
@@ -133,7 +153,7 @@ func main() {
 			writer.ReceiverFunctionHeader(common.ReceiverFunctionHeader{
 				ReceiverName: receiverVar,
 				ReceiverType: receiverDecl,
-				MethodName:   goMethod,
+				MethodName:   goReceiverMethod,
 				Parameters:   goParams,
 				ReturnType:   goReturnType,
 			})
@@ -192,8 +212,8 @@ func main() {
 
 		} else {
 			// --- TOP‐LEVEL (GLOBAL) FUNCTION ---
-			goFuncName := textcase.PascalCase(stripped)
 			var goParams []common.Field
+			var functionBodyRows []string
 			var callArgs []string
 
 			for i, cParam := range paramsC {
@@ -204,23 +224,55 @@ func main() {
 				pty := converter.MapCParamToGoType(cParam.Type)
 				goParam := common.SanitizeFieldName(common.Field{Name: pname, Type: pty})
 
+				argVarName := fmt.Sprintf("var%d", len(functionBodyRows))
+
+				if overrideInfo, hasOverride := converter.StructOverrides[common.CleanCType(cParam.Type)]; hasOverride {
+					// Struct override for parameter
+					var fieldAssignmentExpressions []string
+					for idx, field := range overrideInfo.Fields {
+						cField := overrideInfo.CFields[idx]
+						var subFieldAssignmentExpressions []string
+						if cName, t := converter.GetOverriddenType(field.Type); t != nil {
+							assignment := make([]string, len(t.Fields))
+							for subIdx, subField := range t.Fields {
+								cSubField := t.CFields[subIdx]
+								assignment[subIdx] = fmt.Sprintf("%s: C.%s(%s.%s.%s)", cSubField.Name, cSubField.Type, goParam.Name, field.Name, subField.Name)
+							}
+							subFieldAssignmentExpressions = []string{fmt.Sprintf("%s: C.%s{%s}", cField.Name, cName, strings.Join(assignment, ", "))}
+						} else {
+							subFieldAssignmentExpressions = []string{fmt.Sprintf("%s: C.%s(%s)", cField.Name, cField.Type, goParam.Name)}
+						}
+						fieldAssignmentExpressions = append(fieldAssignmentExpressions, strings.Join(subFieldAssignmentExpressions, ", "))
+					}
+					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := C.%s{%s}", argVarName, common.CleanCType(cParam.Type), strings.Join(fieldAssignmentExpressions, ", ")))
+
+					ampersand := ""
+					if common.IsPointerType(goParam.Type) {
+						ampersand = "&"
+					}
+					callArgs = append(callArgs, fmt.Sprintf("%s%s", ampersand, argVarName))
+				} else if converter.IsKnownGoType(goParam.Type) && !converter.IsEnum(goParam.Type) {
+					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s.CPtr()", argVarName, goParam.Name))
+					callArgs = append(callArgs, argVarName)
+				} else if goParam.Type == "string" {
+					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := C.CString(%s)", argVarName, goParam.Name))
+					callArgs = append(callArgs, argVarName)
+				} else {
+					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s", argVarName, goParam.Name))
+					callArgs = append(callArgs, argVarName)
+				}
 				goParams = append(goParams, goParam)
-				callArgs = append(callArgs, converter.ParamCallExpr(cParam, goParam))
 			}
 
 			// Determine return type for the function signature
 			writer.FunctionHeader(common.FunctionHeader{
-				MethodName: goFuncName,
+				MethodName: goStaticMethod,
 				Parameters: goParams,
 				ReturnType: goReturnType,
 			})
 
 			if overrideInfo, hasOverride := converter.StructOverrides[common.CleanCType(returnTypeC)]; hasOverride {
-				writer.FunctionBody(common.FunctionBody{
-					Rows: []string{
-						fmt.Sprintf("cval := C.%s(%s)", originalName, strings.Join(callArgs, ", ")),
-					},
-				})
+				functionBodyRows = append(functionBodyRows, fmt.Sprintf("cval := C.%s(%s)", originalName, strings.Join(callArgs, ", ")))
 
 				var fieldAssignmentExpressions []string
 				for idx, field := range overrideInfo.Fields {
@@ -230,38 +282,30 @@ func main() {
 					)
 				}
 
+				writer.FunctionBody(common.FunctionBody{Rows: functionBodyRows})
 				if !common.IsVoidReturnType(goReturnType) {
 					writer.ReturnValue(fmt.Sprintf("%s{%s}", goReturnType, strings.Join(fieldAssignmentExpressions, ", ")))
 				} else {
 					writer.VoidReturn()
 				}
 			} else {
-
-				// Non-vector return
 				callExpr := fmt.Sprintf("C.%s(%s)", originalName, strings.Join(callArgs, ", "))
 				if common.IsVoidReturnType(goReturnType) {
-					writer.FunctionBody(common.FunctionBody{Rows: []string{callExpr}})
+					writer.FunctionBody(common.FunctionBody{Rows: append(functionBodyRows, callExpr)})
 					writer.VoidReturn()
 				} else {
 					if strings.HasPrefix(goReturnType, "*") || converter.IsKnownGoType(goReturnType) {
-						// Opaque pointer return
 						pureGoType := common.StripPointer(goReturnType)
 						if converter.IsKnownGoType(pureGoType) && !converter.IsEnum(pureGoType) {
-							// If type is a known Go type we can't cast it directly, and we need to create it from the pointer
-							// e.g. for *Transform we need to:
-							// cval := C.sfTransform_create()
-							// return &Transform{ ptr: cval }
-
-							writer.FunctionBody(common.FunctionBody{Rows: []string{fmt.Sprintf("cval := unsafe.Pointer(%s)", callExpr)}})
-							writer.ReturnValue(fmt.Sprintf("&%s{ptr: cval}", common.StripPointer(goReturnType)))
-
+							functionBodyRows = append(functionBodyRows, fmt.Sprintf("cval := unsafe.Pointer(%s)", callExpr))
+							writer.FunctionBody(common.FunctionBody{Rows: functionBodyRows})
+							writer.ReturnValue(fmt.Sprintf("&%s{ptr: cval}", pureGoType))
 						} else {
-							// For other types, we can directly cast the pointer
+							writer.FunctionBody(common.FunctionBody{Rows: functionBodyRows})
 							writer.ReturnValue(fmt.Sprintf("%s(%s)", goReturnType, callExpr))
 						}
-
 					} else {
-						// Primitive return, int32, float32, etc. (any other type should have been caught earlier)
+						writer.FunctionBody(common.FunctionBody{Rows: functionBodyRows})
 						writer.ReturnValue(callExpr)
 					}
 				}
