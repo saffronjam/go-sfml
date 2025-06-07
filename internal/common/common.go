@@ -5,3 +5,4 @@ const OutputDir = "generated"
 
 const TypesFile = "generated/json/types.json"
 const FunctionsFile = "generated/json/functions.json"
+const MetadataFile = "generated/json/metadata.json"

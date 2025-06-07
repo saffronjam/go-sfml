@@ -2,3345 +2,4000 @@
 
 package sfml
 
-import (
-	"C"
-	"unsafe"
-)
+// #include <stdlib.h>
+// #include <string.h>
+// typedef unsigned int uint;
+//
+// #include <SFML/Config.h>
+// #include <SFML/GPUPreference.h>
+// #include <SFML/Graphics.h>
+// #include <SFML/Graphics/BlendMode.h>
+// #include <SFML/Graphics/CircleShape.h>
+// #include <SFML/Graphics/Color.h>
+// #include <SFML/Graphics/ConvexShape.h>
+// #include <SFML/Graphics/Export.h>
+// #include <SFML/Graphics/Font.h>
+// #include <SFML/Graphics/FontInfo.h>
+// #include <SFML/Graphics/Glsl.h>
+// #include <SFML/Graphics/Glyph.h>
+// #include <SFML/Graphics/Image.h>
+// #include <SFML/Graphics/PrimitiveType.h>
+// #include <SFML/Graphics/Rect.h>
+// #include <SFML/Graphics/RectangleShape.h>
+// #include <SFML/Graphics/RenderStates.h>
+// #include <SFML/Graphics/RenderTexture.h>
+// #include <SFML/Graphics/RenderWindow.h>
+// #include <SFML/Graphics/Shader.h>
+// #include <SFML/Graphics/Shape.h>
+// #include <SFML/Graphics/Sprite.h>
+// #include <SFML/Graphics/Text.h>
+// #include <SFML/Graphics/Texture.h>
+// #include <SFML/Graphics/Transform.h>
+// #include <SFML/Graphics/Transformable.h>
+// #include <SFML/Graphics/Types.h>
+// #include <SFML/Graphics/Vertex.h>
+// #include <SFML/Graphics/VertexArray.h>
+// #include <SFML/Graphics/VertexBuffer.h>
+// #include <SFML/Graphics/View.h>
+// #include <SFML/OpenGL.h>
+// #include <SFML/System.h>
+// #include <SFML/System/Alloc.h>
+// #include <SFML/System/Buffer.h>
+// #include <SFML/System/Clock.h>
+// #include <SFML/System/Export.h>
+// #include <SFML/System/InputStream.h>
+// #include <SFML/System/Mutex.h>
+// #include <SFML/System/Sleep.h>
+// #include <SFML/System/Thread.h>
+// #include <SFML/System/Time.h>
+// #include <SFML/System/Types.h>
+// #include <SFML/System/Vector2.h>
+// #include <SFML/System/Vector3.h>
+// #include <SFML/Window.h>
+// #include <SFML/Window/Clipboard.h>
+// #include <SFML/Window/Context.h>
+// #include <SFML/Window/Cursor.h>
+// #include <SFML/Window/Event.h>
+// #include <SFML/Window/Export.h>
+// #include <SFML/Window/Joystick.h>
+// #include <SFML/Window/JoystickIdentification.h>
+// #include <SFML/Window/Keyboard.h>
+// #include <SFML/Window/Mouse.h>
+// #include <SFML/Window/Sensor.h>
+// #include <SFML/Window/Touch.h>
+// #include <SFML/Window/Types.h>
+// #include <SFML/Window/VideoMode.h>
+// #include <SFML/Window/Vulkan.h>
+// #include <SFML/Window/Window.h>
+// #include <SFML/Window/WindowBase.h>
+// #include <SFML/Window/WindowHandle.h>
+// #cgo LDFLAGS: -lcsfml-graphics -lcsfml-window -lcsfml-system -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lstdc++ -lm -lGL -ludev -lXrandr -lfreetype -lXcursor
+//
+// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseMoveEvent_type(const sfMouseMoveEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseMoveEvent_type(sfMouseMoveEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseWheelScrollEvent_type(const sfMouseWheelScrollEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelScrollEvent_type(sfMouseWheelScrollEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfEvent_type(const sfEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfEvent_type(sfEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+// 
+// static inline sfSizeEvent get_sfSizeEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->size;
+// }
+//
+// 
+// static inline sfKeyEvent get_sfKeyEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->key;
+// }
+//
+// 
+// static inline sfTextEvent get_sfTextEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->text;
+// }
+//
+// 
+// static inline sfMouseMoveEvent get_sfMouseMoveEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->mouseMove;
+// }
+//
+// 
+// static inline sfMouseButtonEvent get_sfMouseButtonEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->mouseButton;
+// }
+//
+// 
+// static inline sfMouseWheelScrollEvent get_sfMouseWheelScrollEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->mouseWheelScroll;
+// }
+//
+// 
+// static inline sfTouchEvent get_sfTouchEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->touch;
+// }
+//
+// 
+// static inline sfSensorEvent get_sfSensorEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->sensor;
+// }
+//
+//
+import "C"
+import "unsafe"
 
 func NewBuffer() *Buffer {
-	cval := unsafe.Pointer(C.sfBuffer_create())
-	return &Buffer{ptr: cval}
+	funcRes0 := C.sfBuffer_create()
+	return NewBufferFromC(funcRes0)
 }
 
 func (b *Buffer) Free() {
-	C.sfBuffer_destroy(b.CPtr())
-	return
+	var0 := b.ToC()
+	C.sfBuffer_destroy(var0)
 }
 
-func (b *Buffer) Data() int32 {
-	return C.sfBuffer_getData(b.CPtr())
+func (b *Buffer) Data() *uint8 {
+	var0 := b.ToC()
+	funcRes0 := C.sfBuffer_getData(var0)
+	res := (*uint8)(funcRes0)
+	return res
 }
 
-func (b *Buffer) Size() int32 {
-	return C.sfBuffer_getSize(b.CPtr())
+func (b *Buffer) Size() uint64 {
+	var0 := b.ToC()
+	funcRes0 := C.sfBuffer_getSize(var0)
+	res := uint64(funcRes0)
+	return res
 }
 
 func (c *CircleShape) Copy() *CircleShape {
-	funcRes0 := unsafe.Pointer(C.sfCircleShape_copy(c.CPtr()))
-	return &CircleShape{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_copy(var0)
+	res := NewCircleShapeFromC(funcRes0)
+	return res
 }
 
 func NewCircleShape() *CircleShape {
-	cval := unsafe.Pointer(C.sfCircleShape_create())
-	return &CircleShape{ptr: cval}
+	funcRes0 := C.sfCircleShape_create()
+	return NewCircleShapeFromC(funcRes0)
 }
 
 func (c *CircleShape) Free() {
-	C.sfCircleShape_destroy(c.CPtr())
-	return
+	var0 := c.ToC()
+	C.sfCircleShape_destroy(var0)
 }
 
-func (c *CircleShape) FillColor() Color {
-	funcRes0 := C.sfCircleShape_getFillColor(c.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (c *CircleShape) FillColor() *Color {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getFillColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (c *CircleShape) GlobalBounds() FloatRect {
-	funcRes0 := C.sfCircleShape_getGlobalBounds(c.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (c *CircleShape) GlobalBounds() *FloatRect {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getGlobalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (c *CircleShape) InverseTransform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfCircleShape_getInverseTransform(c.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getInverseTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (c *CircleShape) LocalBounds() FloatRect {
-	funcRes0 := C.sfCircleShape_getLocalBounds(c.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (c *CircleShape) LocalBounds() *FloatRect {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getLocalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
-func (c *CircleShape) Origin() Vector2f {
-	funcRes0 := C.sfCircleShape_getOrigin(c.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *CircleShape) Origin() *Vector2f {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getOrigin(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (c *CircleShape) OutlineColor() Color {
-	funcRes0 := C.sfCircleShape_getOutlineColor(c.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (c *CircleShape) OutlineColor() *Color {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getOutlineColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
 func (c *CircleShape) OutlineThickness() float32 {
-	return C.sfCircleShape_getOutlineThickness(c.CPtr())
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getOutlineThickness(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (c *CircleShape) Point(index int32) Vector2f {
-	var0 := index
-	funcRes0 := C.sfCircleShape_getPoint(c.CPtr(), var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *CircleShape) Point(index uint64) *Vector2f {
+	var0 := c.ToC()
+	var1 := C.size_t(index)
+	funcRes0 := C.sfCircleShape_getPoint(var0, var1)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (c *CircleShape) PointCount() int32 {
-	return C.sfCircleShape_getPointCount(c.CPtr())
+func (c *CircleShape) PointCount() uint64 {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getPointCount(var0)
+	res := uint64(funcRes0)
+	return res
 }
 
-func (c *CircleShape) Position() Vector2f {
-	funcRes0 := C.sfCircleShape_getPosition(c.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *CircleShape) Position() *Vector2f {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getPosition(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (c *CircleShape) Radius() float32 {
-	return C.sfCircleShape_getRadius(c.CPtr())
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getRadius(var0)
+	res := float32(funcRes0)
+	return res
 }
 
 func (c *CircleShape) Rotation() float32 {
-	return C.sfCircleShape_getRotation(c.CPtr())
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (c *CircleShape) GetScale() Vector2f {
-	funcRes0 := C.sfCircleShape_getScale(c.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *CircleShape) GetScale() *Vector2f {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getScale(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (c *CircleShape) Texture() *Texture {
-	funcRes0 := unsafe.Pointer(C.sfCircleShape_getTexture(c.CPtr()))
-	return &Texture{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getTexture(var0)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
-func (c *CircleShape) TextureRect() IntRect {
-	funcRes0 := C.sfCircleShape_getTextureRect(c.CPtr())
-	return IntRect{Left: int32(funcRes0.left), Top: int32(funcRes0.top), Width: int32(funcRes0.width), Height: int32(funcRes0.height)}
+func (c *CircleShape) TextureRect() *IntRect {
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getTextureRect(var0)
+	res := NewIntRectFromC(funcRes0)
+	return res
 }
 
 func (c *CircleShape) Transform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfCircleShape_getTransform(c.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfCircleShape_getTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
 func (c *CircleShape) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfCircleShape_move(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := offset.ToC()
+	C.sfCircleShape_move(var0, var1)
 }
 
 func (c *CircleShape) Rotate(angle float32) {
-	var0 := angle
-	C.sfCircleShape_rotate(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := C.float(angle)
+	C.sfCircleShape_rotate(var0, var1)
 }
 
 func (c *CircleShape) Scale(factors Vector2f) {
-	var0 := C.sfVector2f{x: C.float(factors), y: C.float(factors)}
-	C.sfCircleShape_scale(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := factors.ToC()
+	C.sfCircleShape_scale(var0, var1)
 }
 
 func (c *CircleShape) SetFillColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfCircleShape_setFillColor(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := color.ToC()
+	C.sfCircleShape_setFillColor(var0, var1)
 }
 
 func (c *CircleShape) SetOrigin(origin Vector2f) {
-	var0 := C.sfVector2f{x: C.float(origin), y: C.float(origin)}
-	C.sfCircleShape_setOrigin(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := origin.ToC()
+	C.sfCircleShape_setOrigin(var0, var1)
 }
 
 func (c *CircleShape) SetOutlineColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfCircleShape_setOutlineColor(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := color.ToC()
+	C.sfCircleShape_setOutlineColor(var0, var1)
 }
 
 func (c *CircleShape) SetOutlineThickness(thickness float32) {
-	var0 := thickness
-	C.sfCircleShape_setOutlineThickness(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := C.float(thickness)
+	C.sfCircleShape_setOutlineThickness(var0, var1)
 }
 
-func (c *CircleShape) SetPointCount(count int32) {
-	var0 := count
-	C.sfCircleShape_setPointCount(c.CPtr(), var0)
-	return
+func (c *CircleShape) SetPointCount(count uint64) {
+	var0 := c.ToC()
+	var1 := C.size_t(count)
+	C.sfCircleShape_setPointCount(var0, var1)
 }
 
 func (c *CircleShape) SetPosition(position Vector2f) {
-	var0 := C.sfVector2f{x: C.float(position), y: C.float(position)}
-	C.sfCircleShape_setPosition(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := position.ToC()
+	C.sfCircleShape_setPosition(var0, var1)
 }
 
 func (c *CircleShape) SetRadius(radius float32) {
-	var0 := radius
-	C.sfCircleShape_setRadius(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := C.float(radius)
+	C.sfCircleShape_setRadius(var0, var1)
 }
 
 func (c *CircleShape) SetRotation(angle float32) {
-	var0 := angle
-	C.sfCircleShape_setRotation(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := C.float(angle)
+	C.sfCircleShape_setRotation(var0, var1)
 }
 
 func (c *CircleShape) SetScale(scale Vector2f) {
-	var0 := C.sfVector2f{x: C.float(scale), y: C.float(scale)}
-	C.sfCircleShape_setScale(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := scale.ToC()
+	C.sfCircleShape_setScale(var0, var1)
 }
 
 func (c *CircleShape) SetTexture(texture *Texture, resetRect bool) {
-	var0 := texture
-	var1 := resetRect
-	C.sfCircleShape_setTexture(c.CPtr(), var0, var1)
-	return
+	var0 := c.ToC()
+	var1 := texture.ToC()
+	var2 := boolToSfBool(resetRect)
+	C.sfCircleShape_setTexture(var0, var1, var2)
 }
 
 func (c *CircleShape) SetTextureRect(rect IntRect) {
-	var0 := C.sfIntRect{left: C.sfInt32(rect), top: C.sfInt32(rect), width: C.sfInt32(rect), height: C.sfInt32(rect)}
-	C.sfCircleShape_setTextureRect(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := rect.ToC()
+	C.sfCircleShape_setTextureRect(var0, var1)
 }
 
-func ClipboardGetString() int32 {
-	return C.sfClipboard_getString()
+func ClipboardGetString() string {
+	return C.GoString(C.sfClipboard_getString())
 }
 
-func ClipboardGetUnicodeString() int32 {
-	return C.sfClipboard_getUnicodeString()
+func ClipboardGetUnicodeString() *uint32 {
+	return (*uint32)(C.sfClipboard_getUnicodeString())
 }
 
 func ClipboardSetString(text string) {
 	var0 := C.CString(text)
 	C.sfClipboard_setString(var0)
-	return
 }
 
-func ClipboardSetUnicodeString(text uint32) {
-	var0 := text
+func ClipboardSetUnicodeString(text *uint32) {
+	var0 := (*C.sfUint32)(text)
 	C.sfClipboard_setUnicodeString(var0)
-	return
 }
 
 func (c *Clock) Copy() *Clock {
-	funcRes0 := unsafe.Pointer(C.sfClock_copy(c.CPtr()))
-	return &Clock{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfClock_copy(var0)
+	res := NewClockFromC(funcRes0)
+	return res
 }
 
 func NewClock() *Clock {
-	cval := unsafe.Pointer(C.sfClock_create())
-	return &Clock{ptr: cval}
+	funcRes0 := C.sfClock_create()
+	return NewClockFromC(funcRes0)
 }
 
 func (c *Clock) Free() {
-	C.sfClock_destroy(c.CPtr())
-	return
+	var0 := c.ToC()
+	C.sfClock_destroy(var0)
 }
 
-func (c *Clock) ElapsedTime() Time {
-	funcRes0 := C.sfClock_getElapsedTime(c.CPtr())
-	return Time{Microseconds: int64(funcRes0.microseconds)}
+func (c *Clock) ElapsedTime() *Time {
+	var0 := c.ToC()
+	funcRes0 := C.sfClock_getElapsedTime(var0)
+	res := NewTimeFromC(funcRes0)
+	return res
 }
 
-func (c *Clock) Restart() Time {
-	funcRes0 := C.sfClock_restart(c.CPtr())
-	return Time{Microseconds: int64(funcRes0.microseconds)}
+func (c *Clock) Restart() *Time {
+	var0 := c.ToC()
+	funcRes0 := C.sfClock_restart(var0)
+	res := NewTimeFromC(funcRes0)
+	return res
 }
 
-func (c Color) Add(color2 Color) Color {
-	var0 := C.sfColor{r: C.sfUint8(color2), g: C.sfUint8(color2), b: C.sfUint8(color2), a: C.sfUint8(color2)}
-	funcRes0 := C.sfColor_add(c, var0)
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (c *Color) Add(color2 Color) *Color {
+	var0 := c.ToC()
+	var1 := color2.ToC()
+	funcRes0 := C.sfColor_add(var0, var1)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func ColorFromInteger(color uint32) Color {
-	var0 := color
-	cval := C.sfColor_fromInteger(var0)
-	return Color{R: uint8(cval.r), G: uint8(cval.g), B: uint8(cval.b), A: uint8(cval.a)}
+func ColorFromInteger(color uint32) *Color {
+	var0 := C.sfUint32(color)
+	funcRes0 := C.sfColor_fromInteger(var0)
+	return NewColorFromC(funcRes0)
 }
 
-func ColorFromRgb(red uint8, green uint8, blue uint8) Color {
-	var0 := red
-	var1 := green
-	var2 := blue
-	cval := C.sfColor_fromRGB(var0, var1, var2)
-	return Color{R: uint8(cval.r), G: uint8(cval.g), B: uint8(cval.b), A: uint8(cval.a)}
+func ColorFromRgb(red uint8, green uint8, blue uint8) *Color {
+	var0 := C.sfUint8(red)
+	var1 := C.sfUint8(green)
+	var2 := C.sfUint8(blue)
+	funcRes0 := C.sfColor_fromRGB(var0, var1, var2)
+	return NewColorFromC(funcRes0)
 }
 
-func ColorFromRgba(red uint8, green uint8, blue uint8, alpha uint8) Color {
-	var0 := red
-	var1 := green
-	var2 := blue
-	var3 := alpha
-	cval := C.sfColor_fromRGBA(var0, var1, var2, var3)
-	return Color{R: uint8(cval.r), G: uint8(cval.g), B: uint8(cval.b), A: uint8(cval.a)}
+func ColorFromRgba(red uint8, green uint8, blue uint8, alpha uint8) *Color {
+	var0 := C.sfUint8(red)
+	var1 := C.sfUint8(green)
+	var2 := C.sfUint8(blue)
+	var3 := C.sfUint8(alpha)
+	funcRes0 := C.sfColor_fromRGBA(var0, var1, var2, var3)
+	return NewColorFromC(funcRes0)
 }
 
-func (c Color) Modulate(color2 Color) Color {
-	var0 := C.sfColor{r: C.sfUint8(color2), g: C.sfUint8(color2), b: C.sfUint8(color2), a: C.sfUint8(color2)}
-	funcRes0 := C.sfColor_modulate(c, var0)
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (c *Color) Modulate(color2 Color) *Color {
+	var0 := c.ToC()
+	var1 := color2.ToC()
+	funcRes0 := C.sfColor_modulate(var0, var1)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (c Color) Subtract(color2 Color) Color {
-	var0 := C.sfColor{r: C.sfUint8(color2), g: C.sfUint8(color2), b: C.sfUint8(color2), a: C.sfUint8(color2)}
-	funcRes0 := C.sfColor_subtract(c, var0)
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (c *Color) Subtract(color2 Color) *Color {
+	var0 := c.ToC()
+	var1 := color2.ToC()
+	funcRes0 := C.sfColor_subtract(var0, var1)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (c Color) ToInteger() int32 {
-	return C.sfColor_toInteger(c)
+func (c *Color) ToInteger() uint32 {
+	var0 := c.ToC()
+	funcRes0 := C.sfColor_toInteger(var0)
+	res := uint32(funcRes0)
+	return res
 }
 
 func NewContext() *Context {
-	cval := unsafe.Pointer(C.sfContext_create())
-	return &Context{ptr: cval}
+	funcRes0 := C.sfContext_create()
+	return NewContextFromC(funcRes0)
 }
 
 func (c *Context) Free() {
-	C.sfContext_destroy(c.CPtr())
-	return
+	var0 := c.ToC()
+	C.sfContext_destroy(var0)
 }
 
-func ContextGetActiveContextId() int32 {
-	return C.sfContext_getActiveContextId()
+func ContextGetActiveContextId() uint64 {
+	return uint64(C.sfContext_getActiveContextId())
 }
 
-func ContextGetFunction(name string) int32 {
-	var0 := C.CString(name)
-	return C.sfContext_getFunction(var0)
-}
-
-func (c *Context) Settings() ContextSettings {
-	funcRes0 := C.sfContext_getSettings(c.CPtr())
-	return ContextSettings{DepthBits: uint32(funcRes0.depthBits), StencilBits: uint32(funcRes0.stencilBits), AntialiasingLevel: uint32(funcRes0.antialiasingLevel), MajorVersion: uint32(funcRes0.majorVersion), MinorVersion: uint32(funcRes0.minorVersion), AttributeFlags: uint32(funcRes0.attributeFlags), SRgbCapable: bool(funcRes0.sRgbCapable)}
+func (c *Context) Settings() *ContextSettings {
+	var0 := c.ToC()
+	funcRes0 := C.sfContext_getSettings(var0)
+	res := NewContextSettingsFromC(funcRes0)
+	return res
 }
 
 func ContextIsExtensionAvailable(name string) bool {
 	var0 := C.CString(name)
-	return C.sfContext_isExtensionAvailable(var0)
+	return sfBoolToBool(C.sfContext_isExtensionAvailable(var0))
 }
 
 func (c *Context) SetActive(active bool) bool {
-	var0 := active
-	return C.sfContext_setActive(c.CPtr(), var0)
+	var0 := c.ToC()
+	var1 := boolToSfBool(active)
+	funcRes0 := C.sfContext_setActive(var0, var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (c *ConvexShape) Copy() *ConvexShape {
-	funcRes0 := unsafe.Pointer(C.sfConvexShape_copy(c.CPtr()))
-	return &ConvexShape{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_copy(var0)
+	res := NewConvexShapeFromC(funcRes0)
+	return res
 }
 
 func NewConvexShape() *ConvexShape {
-	cval := unsafe.Pointer(C.sfConvexShape_create())
-	return &ConvexShape{ptr: cval}
+	funcRes0 := C.sfConvexShape_create()
+	return NewConvexShapeFromC(funcRes0)
 }
 
 func (c *ConvexShape) Free() {
-	C.sfConvexShape_destroy(c.CPtr())
-	return
+	var0 := c.ToC()
+	C.sfConvexShape_destroy(var0)
 }
 
-func (c *ConvexShape) FillColor() Color {
-	funcRes0 := C.sfConvexShape_getFillColor(c.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (c *ConvexShape) FillColor() *Color {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getFillColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) GlobalBounds() FloatRect {
-	funcRes0 := C.sfConvexShape_getGlobalBounds(c.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (c *ConvexShape) GlobalBounds() *FloatRect {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getGlobalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (c *ConvexShape) InverseTransform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfConvexShape_getInverseTransform(c.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getInverseTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) LocalBounds() FloatRect {
-	funcRes0 := C.sfConvexShape_getLocalBounds(c.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (c *ConvexShape) LocalBounds() *FloatRect {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getLocalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) Origin() Vector2f {
-	funcRes0 := C.sfConvexShape_getOrigin(c.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *ConvexShape) Origin() *Vector2f {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getOrigin(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) OutlineColor() Color {
-	funcRes0 := C.sfConvexShape_getOutlineColor(c.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (c *ConvexShape) OutlineColor() *Color {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getOutlineColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
 func (c *ConvexShape) OutlineThickness() float32 {
-	return C.sfConvexShape_getOutlineThickness(c.CPtr())
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getOutlineThickness(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) Point(index int32) Vector2f {
-	var0 := index
-	funcRes0 := C.sfConvexShape_getPoint(c.CPtr(), var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *ConvexShape) Point(index uint64) *Vector2f {
+	var0 := c.ToC()
+	var1 := C.size_t(index)
+	funcRes0 := C.sfConvexShape_getPoint(var0, var1)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) PointCount() int32 {
-	return C.sfConvexShape_getPointCount(c.CPtr())
+func (c *ConvexShape) PointCount() uint64 {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getPointCount(var0)
+	res := uint64(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) Position() Vector2f {
-	funcRes0 := C.sfConvexShape_getPosition(c.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *ConvexShape) Position() *Vector2f {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getPosition(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (c *ConvexShape) Rotation() float32 {
-	return C.sfConvexShape_getRotation(c.CPtr())
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) GetScale() Vector2f {
-	funcRes0 := C.sfConvexShape_getScale(c.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (c *ConvexShape) GetScale() *Vector2f {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getScale(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (c *ConvexShape) Texture() *Texture {
-	funcRes0 := unsafe.Pointer(C.sfConvexShape_getTexture(c.CPtr()))
-	return &Texture{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getTexture(var0)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
-func (c *ConvexShape) TextureRect() IntRect {
-	funcRes0 := C.sfConvexShape_getTextureRect(c.CPtr())
-	return IntRect{Left: int32(funcRes0.left), Top: int32(funcRes0.top), Width: int32(funcRes0.width), Height: int32(funcRes0.height)}
+func (c *ConvexShape) TextureRect() *IntRect {
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getTextureRect(var0)
+	res := NewIntRectFromC(funcRes0)
+	return res
 }
 
 func (c *ConvexShape) Transform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfConvexShape_getTransform(c.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := c.ToC()
+	funcRes0 := C.sfConvexShape_getTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
 func (c *ConvexShape) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfConvexShape_move(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := offset.ToC()
+	C.sfConvexShape_move(var0, var1)
 }
 
 func (c *ConvexShape) Rotate(angle float32) {
-	var0 := angle
-	C.sfConvexShape_rotate(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := C.float(angle)
+	C.sfConvexShape_rotate(var0, var1)
 }
 
 func (c *ConvexShape) Scale(factors Vector2f) {
-	var0 := C.sfVector2f{x: C.float(factors), y: C.float(factors)}
-	C.sfConvexShape_scale(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := factors.ToC()
+	C.sfConvexShape_scale(var0, var1)
 }
 
 func (c *ConvexShape) SetFillColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfConvexShape_setFillColor(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := color.ToC()
+	C.sfConvexShape_setFillColor(var0, var1)
 }
 
 func (c *ConvexShape) SetOrigin(origin Vector2f) {
-	var0 := C.sfVector2f{x: C.float(origin), y: C.float(origin)}
-	C.sfConvexShape_setOrigin(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := origin.ToC()
+	C.sfConvexShape_setOrigin(var0, var1)
 }
 
 func (c *ConvexShape) SetOutlineColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfConvexShape_setOutlineColor(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := color.ToC()
+	C.sfConvexShape_setOutlineColor(var0, var1)
 }
 
 func (c *ConvexShape) SetOutlineThickness(thickness float32) {
-	var0 := thickness
-	C.sfConvexShape_setOutlineThickness(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := C.float(thickness)
+	C.sfConvexShape_setOutlineThickness(var0, var1)
 }
 
-func (c *ConvexShape) SetPoint(index int32, point Vector2f) {
-	var0 := index
-	var1 := C.sfVector2f{x: C.float(point), y: C.float(point)}
-	C.sfConvexShape_setPoint(c.CPtr(), var0, var1)
-	return
+func (c *ConvexShape) SetPoint(index uint64, point Vector2f) {
+	var0 := c.ToC()
+	var1 := C.size_t(index)
+	var2 := point.ToC()
+	C.sfConvexShape_setPoint(var0, var1, var2)
 }
 
-func (c *ConvexShape) SetPointCount(count int32) {
-	var0 := count
-	C.sfConvexShape_setPointCount(c.CPtr(), var0)
-	return
+func (c *ConvexShape) SetPointCount(count uint64) {
+	var0 := c.ToC()
+	var1 := C.size_t(count)
+	C.sfConvexShape_setPointCount(var0, var1)
 }
 
 func (c *ConvexShape) SetPosition(position Vector2f) {
-	var0 := C.sfVector2f{x: C.float(position), y: C.float(position)}
-	C.sfConvexShape_setPosition(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := position.ToC()
+	C.sfConvexShape_setPosition(var0, var1)
 }
 
 func (c *ConvexShape) SetRotation(angle float32) {
-	var0 := angle
-	C.sfConvexShape_setRotation(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := C.float(angle)
+	C.sfConvexShape_setRotation(var0, var1)
 }
 
 func (c *ConvexShape) SetScale(scale Vector2f) {
-	var0 := C.sfVector2f{x: C.float(scale), y: C.float(scale)}
-	C.sfConvexShape_setScale(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := scale.ToC()
+	C.sfConvexShape_setScale(var0, var1)
 }
 
 func (c *ConvexShape) SetTexture(texture *Texture, resetRect bool) {
-	var0 := texture
-	var1 := resetRect
-	C.sfConvexShape_setTexture(c.CPtr(), var0, var1)
-	return
+	var0 := c.ToC()
+	var1 := texture.ToC()
+	var2 := boolToSfBool(resetRect)
+	C.sfConvexShape_setTexture(var0, var1, var2)
 }
 
 func (c *ConvexShape) SetTextureRect(rect IntRect) {
-	var0 := C.sfIntRect{left: C.sfInt32(rect), top: C.sfInt32(rect), width: C.sfInt32(rect), height: C.sfInt32(rect)}
-	C.sfConvexShape_setTextureRect(c.CPtr(), var0)
-	return
+	var0 := c.ToC()
+	var1 := rect.ToC()
+	C.sfConvexShape_setTextureRect(var0, var1)
 }
 
-func NewCursorFromPixels(pixels uint8, size Vector2u, hotspot Vector2u) *Cursor {
-	var0 := pixels
-	var1 := C.sfVector2u{x: C.sfUint32(size), y: C.sfUint32(size)}
-	var2 := C.sfVector2u{x: C.sfUint32(hotspot), y: C.sfUint32(hotspot)}
-	cval := unsafe.Pointer(C.sfCursor_createFromPixels(var0, var1, var2))
-	return &Cursor{ptr: cval}
+func NewCursorFromPixels(pixels *uint8, size Vector2u, hotspot Vector2u) *Cursor {
+	var0 := (*C.sfUint8)(pixels)
+	var1 := size.ToC()
+	var2 := hotspot.ToC()
+	funcRes0 := C.sfCursor_createFromPixels(var0, var1, var2)
+	return NewCursorFromC(funcRes0)
 }
 
 func NewCursorFromSystem(cursorType CursorType) *Cursor {
-	var0 := cursorType
-	cval := unsafe.Pointer(C.sfCursor_createFromSystem(var0))
-	return &Cursor{ptr: cval}
+	var0 := C.sfCursorType(cursorType)
+	funcRes0 := C.sfCursor_createFromSystem(var0)
+	return NewCursorFromC(funcRes0)
 }
 
 func (c *Cursor) Free() {
-	C.sfCursor_destroy(c.CPtr())
-	return
+	var0 := c.ToC()
+	C.sfCursor_destroy(var0)
 }
 
 func (f *FloatRect) Contains(x float32, y float32) bool {
-	var0 := C.sfFloatRect{left: C.float(f.Left), top: C.float(f.Top), width: C.float(f.Width), height: C.float(f.Height)}
-	var1 := x
-	var2 := y
-	return C.sfFloatRect_contains(&var0, var1, var2)
+	var0 := f.ToC()
+	var1 := C.float(x)
+	var2 := C.float(y)
+	funcRes0 := C.sfFloatRect_contains(&var0, var1, var2)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
-func (f *FloatRect) Position() Vector2f {
-	var0 := C.sfFloatRect{left: C.float(f.Left), top: C.float(f.Top), width: C.float(f.Width), height: C.float(f.Height)}
+func (f *FloatRect) Position() *Vector2f {
+	var0 := f.ToC()
 	funcRes0 := C.sfFloatRect_getPosition(&var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (f *FloatRect) Size() Vector2f {
-	var0 := C.sfFloatRect{left: C.float(f.Left), top: C.float(f.Top), width: C.float(f.Width), height: C.float(f.Height)}
+func (f *FloatRect) Size() *Vector2f {
+	var0 := f.ToC()
 	funcRes0 := C.sfFloatRect_getSize(&var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (f *FloatRect) Intersects(rect2 *FloatRect, intersection *FloatRect) bool {
-	var0 := C.sfFloatRect{left: C.float(f.Left), top: C.float(f.Top), width: C.float(f.Width), height: C.float(f.Height)}
-	var1 := C.sfFloatRect{left: C.float(rect2), top: C.float(rect2), width: C.float(rect2), height: C.float(rect2)}
-	var2 := C.sfFloatRect{left: C.float(intersection), top: C.float(intersection), width: C.float(intersection), height: C.float(intersection)}
-	return C.sfFloatRect_intersects(&var0, &var1, &var2)
+func (f *FloatRect) Intersects(rect2 *FloatRect) (*FloatRect, bool) {
+	var0 := f.ToC()
+	var1 := rect2.ToC()
+	returnParam := C.sfFloatRect{}
+	funcRes0 := C.sfFloatRect_intersects(&var0, &var1, &returnParam)
+	returnParamRes := NewFloatRectFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 
 func (f *Font) Copy() *Font {
-	funcRes0 := unsafe.Pointer(C.sfFont_copy(f.CPtr()))
-	return &Font{ptr: funcRes0}
+	var0 := f.ToC()
+	funcRes0 := C.sfFont_copy(var0)
+	res := NewFontFromC(funcRes0)
+	return res
 }
 
 func NewFontFromFile(filename string) *Font {
 	var0 := C.CString(filename)
-	cval := unsafe.Pointer(C.sfFont_createFromFile(var0))
-	return &Font{ptr: cval}
+	funcRes0 := C.sfFont_createFromFile(var0)
+	return NewFontFromC(funcRes0)
 }
 
-func NewFontFromMemory(data int32, sizeInBytes int32) *Font {
-	var0 := data
-	var1 := sizeInBytes
-	cval := unsafe.Pointer(C.sfFont_createFromMemory(var0, var1))
-	return &Font{ptr: cval}
+func NewFontFromMemory(data uintptr, sizeInBytes uint64) *Font {
+	var0 := unsafe.Pointer(data)
+	var1 := C.size_t(sizeInBytes)
+	funcRes0 := C.sfFont_createFromMemory(var0, var1)
+	return NewFontFromC(funcRes0)
 }
 
 func NewFontFromStream(stream *InputStream) *Font {
-	var0 := stream
-	cval := unsafe.Pointer(C.sfFont_createFromStream(var0))
-	return &Font{ptr: cval}
+	var0 := stream.ToC()
+	funcRes0 := C.sfFont_createFromStream(var0)
+	return NewFontFromC(funcRes0)
 }
 
 func (f *Font) Free() {
-	C.sfFont_destroy(f.CPtr())
-	return
+	var0 := f.ToC()
+	C.sfFont_destroy(var0)
 }
 
 func (f *Font) BoldKerning(first uint32, second uint32, characterSize int32) float32 {
-	var0 := first
-	var1 := second
-	var2 := characterSize
-	return C.sfFont_getBoldKerning(f.CPtr(), var0, var1, var2)
+	var0 := f.ToC()
+	var1 := C.sfUint32(first)
+	var2 := C.sfUint32(second)
+	var3 := C.uint(characterSize)
+	funcRes0 := C.sfFont_getBoldKerning(var0, var1, var2, var3)
+	res := float32(funcRes0)
+	return res
 }
 
-func (f *Font) Glyph(codePoint uint32, characterSize int32, bold bool, outlineThickness float32) Glyph {
-	var0 := codePoint
-	var1 := characterSize
-	var2 := bold
-	var3 := outlineThickness
-	funcRes0 := C.sfFont_getGlyph(f.CPtr(), var0, var1, var2, var3)
-	return Glyph{Advance: float32(funcRes0.advance), Bounds: FloatRect(funcRes0.bounds), TextureRect: IntRect(funcRes0.textureRect)}
+func (f *Font) Glyph(codePoint uint32, characterSize int32, bold bool, outlineThickness float32) *Glyph {
+	var0 := f.ToC()
+	var1 := C.sfUint32(codePoint)
+	var2 := C.uint(characterSize)
+	var3 := boolToSfBool(bold)
+	var4 := C.float(outlineThickness)
+	funcRes0 := C.sfFont_getGlyph(var0, var1, var2, var3, var4)
+	res := NewGlyphFromC(funcRes0)
+	return res
 }
 
-func (f *Font) Info() FontInfo {
-	funcRes0 := C.sfFont_getInfo(f.CPtr())
-	return FontInfo{Family: string(funcRes0.family)}
+func (f *Font) Info() *FontInfo {
+	var0 := f.ToC()
+	funcRes0 := C.sfFont_getInfo(var0)
+	res := NewFontInfoFromC(funcRes0)
+	return res
 }
 
 func (f *Font) Kerning(first uint32, second uint32, characterSize int32) float32 {
-	var0 := first
-	var1 := second
-	var2 := characterSize
-	return C.sfFont_getKerning(f.CPtr(), var0, var1, var2)
+	var0 := f.ToC()
+	var1 := C.sfUint32(first)
+	var2 := C.sfUint32(second)
+	var3 := C.uint(characterSize)
+	funcRes0 := C.sfFont_getKerning(var0, var1, var2, var3)
+	res := float32(funcRes0)
+	return res
 }
 
 func (f *Font) LineSpacing(characterSize int32) float32 {
-	var0 := characterSize
-	return C.sfFont_getLineSpacing(f.CPtr(), var0)
+	var0 := f.ToC()
+	var1 := C.uint(characterSize)
+	funcRes0 := C.sfFont_getLineSpacing(var0, var1)
+	res := float32(funcRes0)
+	return res
 }
 
 func (f *Font) Texture(characterSize int32) *Texture {
-	var0 := characterSize
-	funcRes0 := unsafe.Pointer(C.sfFont_getTexture(f.CPtr(), var0))
-	return &Texture{ptr: funcRes0}
+	var0 := f.ToC()
+	var1 := C.uint(characterSize)
+	funcRes0 := C.sfFont_getTexture(var0, var1)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
 func (f *Font) UnderlinePosition(characterSize int32) float32 {
-	var0 := characterSize
-	return C.sfFont_getUnderlinePosition(f.CPtr(), var0)
+	var0 := f.ToC()
+	var1 := C.uint(characterSize)
+	funcRes0 := C.sfFont_getUnderlinePosition(var0, var1)
+	res := float32(funcRes0)
+	return res
 }
 
 func (f *Font) UnderlineThickness(characterSize int32) float32 {
-	var0 := characterSize
-	return C.sfFont_getUnderlineThickness(f.CPtr(), var0)
+	var0 := f.ToC()
+	var1 := C.uint(characterSize)
+	funcRes0 := C.sfFont_getUnderlineThickness(var0, var1)
+	res := float32(funcRes0)
+	return res
 }
 
 func (f *Font) HasGlyph(codePoint uint32) bool {
-	var0 := codePoint
-	return C.sfFont_hasGlyph(f.CPtr(), var0)
+	var0 := f.ToC()
+	var1 := C.sfUint32(codePoint)
+	funcRes0 := C.sfFont_hasGlyph(var0, var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (f *Font) IsSmooth() bool {
-	return C.sfFont_isSmooth(f.CPtr())
+	var0 := f.ToC()
+	funcRes0 := C.sfFont_isSmooth(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (f *Font) SetSmooth(smooth bool) {
-	var0 := smooth
-	C.sfFont_setSmooth(f.CPtr(), var0)
-	return
+	var0 := f.ToC()
+	var1 := boolToSfBool(smooth)
+	C.sfFont_setSmooth(var0, var1)
 }
 
 func (i *Image) Copy() *Image {
-	funcRes0 := unsafe.Pointer(C.sfImage_copy(i.CPtr()))
-	return &Image{ptr: funcRes0}
+	var0 := i.ToC()
+	funcRes0 := C.sfImage_copy(var0)
+	res := NewImageFromC(funcRes0)
+	return res
 }
 
 func (i *Image) CopyImage(source *Image, destX int32, destY int32, sourceRect IntRect, applyAlpha bool) {
-	var0 := source
-	var1 := destX
-	var2 := destY
-	var3 := C.sfIntRect{left: C.sfInt32(sourceRect), top: C.sfInt32(sourceRect), width: C.sfInt32(sourceRect), height: C.sfInt32(sourceRect)}
-	var4 := applyAlpha
-	C.sfImage_copyImage(i.CPtr(), var0, var1, var2, var3, var4)
-	return
+	var0 := i.ToC()
+	var1 := source.ToC()
+	var2 := C.uint(destX)
+	var3 := C.uint(destY)
+	var4 := sourceRect.ToC()
+	var5 := boolToSfBool(applyAlpha)
+	C.sfImage_copyImage(var0, var1, var2, var3, var4, var5)
 }
 
 func NewImage(width int32, height int32) *Image {
-	var0 := width
-	var1 := height
-	cval := unsafe.Pointer(C.sfImage_create(var0, var1))
-	return &Image{ptr: cval}
+	var0 := C.uint(width)
+	var1 := C.uint(height)
+	funcRes0 := C.sfImage_create(var0, var1)
+	return NewImageFromC(funcRes0)
 }
 
 func NewImageFromColor(width int32, height int32, color Color) *Image {
-	var0 := width
-	var1 := height
-	var2 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	cval := unsafe.Pointer(C.sfImage_createFromColor(var0, var1, var2))
-	return &Image{ptr: cval}
+	var0 := C.uint(width)
+	var1 := C.uint(height)
+	var2 := color.ToC()
+	funcRes0 := C.sfImage_createFromColor(var0, var1, var2)
+	return NewImageFromC(funcRes0)
 }
 
 func NewImageFromFile(filename string) *Image {
 	var0 := C.CString(filename)
-	cval := unsafe.Pointer(C.sfImage_createFromFile(var0))
-	return &Image{ptr: cval}
+	funcRes0 := C.sfImage_createFromFile(var0)
+	return NewImageFromC(funcRes0)
 }
 
-func NewImageFromMemory(data int32, size int32) *Image {
-	var0 := data
-	var1 := size
-	cval := unsafe.Pointer(C.sfImage_createFromMemory(var0, var1))
-	return &Image{ptr: cval}
+func NewImageFromMemory(data uintptr, size uint64) *Image {
+	var0 := unsafe.Pointer(data)
+	var1 := C.size_t(size)
+	funcRes0 := C.sfImage_createFromMemory(var0, var1)
+	return NewImageFromC(funcRes0)
 }
 
-func NewImageFromPixels(width int32, height int32, pixels uint8) *Image {
-	var0 := width
-	var1 := height
-	var2 := pixels
-	cval := unsafe.Pointer(C.sfImage_createFromPixels(var0, var1, var2))
-	return &Image{ptr: cval}
+func NewImageFromPixels(width int32, height int32, pixels *uint8) *Image {
+	var0 := C.uint(width)
+	var1 := C.uint(height)
+	var2 := (*C.sfUint8)(pixels)
+	funcRes0 := C.sfImage_createFromPixels(var0, var1, var2)
+	return NewImageFromC(funcRes0)
 }
 
 func NewImageFromStream(stream *InputStream) *Image {
-	var0 := stream
-	cval := unsafe.Pointer(C.sfImage_createFromStream(var0))
-	return &Image{ptr: cval}
+	var0 := stream.ToC()
+	funcRes0 := C.sfImage_createFromStream(var0)
+	return NewImageFromC(funcRes0)
 }
 
 func (i *Image) NewMaskFromColor(color Color, alpha uint8) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	var1 := alpha
-	C.sfImage_createMaskFromColor(i.CPtr(), var0, var1)
-	return
+	var0 := i.ToC()
+	var1 := color.ToC()
+	var2 := C.sfUint8(alpha)
+	C.sfImage_createMaskFromColor(var0, var1, var2)
 }
 
 func (i *Image) Free() {
-	C.sfImage_destroy(i.CPtr())
-	return
+	var0 := i.ToC()
+	C.sfImage_destroy(var0)
 }
 
 func (i *Image) FlipHorizontally() {
-	C.sfImage_flipHorizontally(i.CPtr())
-	return
+	var0 := i.ToC()
+	C.sfImage_flipHorizontally(var0)
 }
 
 func (i *Image) FlipVertically() {
-	C.sfImage_flipVertically(i.CPtr())
-	return
+	var0 := i.ToC()
+	C.sfImage_flipVertically(var0)
 }
 
-func (i *Image) Pixel(x int32, y int32) Color {
-	var0 := x
-	var1 := y
-	funcRes0 := C.sfImage_getPixel(i.CPtr(), var0, var1)
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (i *Image) Pixel(x int32, y int32) *Color {
+	var0 := i.ToC()
+	var1 := C.uint(x)
+	var2 := C.uint(y)
+	funcRes0 := C.sfImage_getPixel(var0, var1, var2)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (i *Image) PixelsPtr() int32 {
-	return C.sfImage_getPixelsPtr(i.CPtr())
+func (i *Image) PixelsPtr() *uint8 {
+	var0 := i.ToC()
+	funcRes0 := C.sfImage_getPixelsPtr(var0)
+	res := (*uint8)(funcRes0)
+	return res
 }
 
-func (i *Image) Size() Vector2u {
-	funcRes0 := C.sfImage_getSize(i.CPtr())
-	return Vector2u{X: uint32(funcRes0.x), Y: uint32(funcRes0.y)}
+func (i *Image) Size() *Vector2u {
+	var0 := i.ToC()
+	funcRes0 := C.sfImage_getSize(var0)
+	res := NewVector2uFromC(funcRes0)
+	return res
 }
 
 func (i *Image) SaveToFile(filename string) bool {
-	var0 := C.CString(filename)
-	return C.sfImage_saveToFile(i.CPtr(), var0)
+	var0 := i.ToC()
+	var1 := C.CString(filename)
+	funcRes0 := C.sfImage_saveToFile(var0, var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (i *Image) SaveToMemory(output *Buffer, format string) bool {
-	var0 := output
-	var1 := C.CString(format)
-	return C.sfImage_saveToMemory(i.CPtr(), var0, var1)
+	var0 := i.ToC()
+	var1 := output.ToC()
+	var2 := C.CString(format)
+	funcRes0 := C.sfImage_saveToMemory(var0, var1, var2)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (i *Image) SetPixel(x int32, y int32, color Color) {
-	var0 := x
-	var1 := y
-	var2 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfImage_setPixel(i.CPtr(), var0, var1, var2)
-	return
+	var0 := i.ToC()
+	var1 := C.uint(x)
+	var2 := C.uint(y)
+	var3 := color.ToC()
+	C.sfImage_setPixel(var0, var1, var2, var3)
 }
 
 func (i *IntRect) Contains(x int32, y int32) bool {
-	var0 := C.sfIntRect{left: C.sfInt32(i.Left), top: C.sfInt32(i.Top), width: C.sfInt32(i.Width), height: C.sfInt32(i.Height)}
-	var1 := x
-	var2 := y
-	return C.sfIntRect_contains(&var0, var1, var2)
+	var0 := i.ToC()
+	var1 := C.int(x)
+	var2 := C.int(y)
+	funcRes0 := C.sfIntRect_contains(&var0, var1, var2)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
-func (i *IntRect) Position() Vector2i {
-	var0 := C.sfIntRect{left: C.sfInt32(i.Left), top: C.sfInt32(i.Top), width: C.sfInt32(i.Width), height: C.sfInt32(i.Height)}
+func (i *IntRect) Position() *Vector2i {
+	var0 := i.ToC()
 	funcRes0 := C.sfIntRect_getPosition(&var0)
-	return Vector2i{X: int32(funcRes0.x), Y: int32(funcRes0.y)}
+	res := NewVector2iFromC(funcRes0)
+	return res
 }
 
-func (i *IntRect) Size() Vector2i {
-	var0 := C.sfIntRect{left: C.sfInt32(i.Left), top: C.sfInt32(i.Top), width: C.sfInt32(i.Width), height: C.sfInt32(i.Height)}
+func (i *IntRect) Size() *Vector2i {
+	var0 := i.ToC()
 	funcRes0 := C.sfIntRect_getSize(&var0)
-	return Vector2i{X: int32(funcRes0.x), Y: int32(funcRes0.y)}
+	res := NewVector2iFromC(funcRes0)
+	return res
 }
 
-func (i *IntRect) Intersects(rect2 *IntRect, intersection *IntRect) bool {
-	var0 := C.sfIntRect{left: C.sfInt32(i.Left), top: C.sfInt32(i.Top), width: C.sfInt32(i.Width), height: C.sfInt32(i.Height)}
-	var1 := C.sfIntRect{left: C.sfInt32(rect2), top: C.sfInt32(rect2), width: C.sfInt32(rect2), height: C.sfInt32(rect2)}
-	var2 := C.sfIntRect{left: C.sfInt32(intersection), top: C.sfInt32(intersection), width: C.sfInt32(intersection), height: C.sfInt32(intersection)}
-	return C.sfIntRect_intersects(&var0, &var1, &var2)
+func (i *IntRect) Intersects(rect2 *IntRect) (*IntRect, bool) {
+	var0 := i.ToC()
+	var1 := rect2.ToC()
+	returnParam := C.sfIntRect{}
+	funcRes0 := C.sfIntRect_intersects(&var0, &var1, &returnParam)
+	returnParamRes := NewIntRectFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 
 func KeyboardDelocalize(key KeyCode) Scancode {
-	var0 := key
+	var0 := C.sfKeyCode(key)
 	return Scancode(C.sfKeyboard_delocalize(var0))
 }
 
-func KeyboardGetDescription(code Scancode) int32 {
-	var0 := code
-	return C.sfKeyboard_getDescription(var0)
+func KeyboardGetDescription(code Scancode) string {
+	var0 := C.sfScancode(code)
+	return C.GoString(C.sfKeyboard_getDescription(var0))
 }
 
 func KeyboardIsKeyPressed(key KeyCode) bool {
-	var0 := key
-	return C.sfKeyboard_isKeyPressed(var0)
+	var0 := C.sfKeyCode(key)
+	return sfBoolToBool(C.sfKeyboard_isKeyPressed(var0))
 }
 
 func KeyboardIsScancodePressed(code Scancode) bool {
-	var0 := code
-	return C.sfKeyboard_isScancodePressed(var0)
+	var0 := C.sfScancode(code)
+	return sfBoolToBool(C.sfKeyboard_isScancodePressed(var0))
 }
 
 func KeyboardLocalize(code Scancode) KeyCode {
-	var0 := code
+	var0 := C.sfScancode(code)
 	return KeyCode(C.sfKeyboard_localize(var0))
 }
 
 func KeyboardSetVirtualKeyboardVisible(visible bool) {
-	var0 := visible
+	var0 := boolToSfBool(visible)
 	C.sfKeyboard_setVirtualKeyboardVisible(var0)
-	return
 }
 
-func MouseGetPosition(relativeTo *Window) Vector2i {
-	var0 := relativeTo
-	cval := C.sfMouse_getPosition(var0)
-	return Vector2i{X: int32(cval.x), Y: int32(cval.y)}
+func MouseGetPosition(relativeTo *Window) *Vector2i {
+	var0 := relativeTo.ToC()
+	funcRes0 := C.sfMouse_getPosition(var0)
+	return NewVector2iFromC(funcRes0)
 }
 
-func MouseGetPositionRenderWindow(relativeTo *RenderWindow) Vector2i {
-	var0 := relativeTo
-	cval := C.sfMouse_getPositionRenderWindow(var0)
-	return Vector2i{X: int32(cval.x), Y: int32(cval.y)}
+func MouseGetPositionRenderWindow(relativeTo *RenderWindow) *Vector2i {
+	var0 := relativeTo.ToC()
+	funcRes0 := C.sfMouse_getPositionRenderWindow(var0)
+	return NewVector2iFromC(funcRes0)
 }
 
-func MouseGetPositionWindowBase(relativeTo *WindowBase) Vector2i {
-	var0 := relativeTo
-	cval := C.sfMouse_getPositionWindowBase(var0)
-	return Vector2i{X: int32(cval.x), Y: int32(cval.y)}
+func MouseGetPositionWindowBase(relativeTo *WindowBase) *Vector2i {
+	var0 := relativeTo.ToC()
+	funcRes0 := C.sfMouse_getPositionWindowBase(var0)
+	return NewVector2iFromC(funcRes0)
 }
 
 func MouseIsButtonPressed(button MouseButton) bool {
-	var0 := button
-	return C.sfMouse_isButtonPressed(var0)
+	var0 := C.sfMouseButton(button)
+	return sfBoolToBool(C.sfMouse_isButtonPressed(var0))
 }
 
 func MouseSetPosition(position Vector2i, relativeTo *Window) {
-	var0 := C.sfVector2i{x: C.int(position), y: C.int(position)}
-	var1 := relativeTo
+	var0 := position.ToC()
+	var1 := relativeTo.ToC()
 	C.sfMouse_setPosition(var0, var1)
-	return
 }
 
 func MouseSetPositionRenderWindow(position Vector2i, relativeTo *RenderWindow) {
-	var0 := C.sfVector2i{x: C.int(position), y: C.int(position)}
-	var1 := relativeTo
+	var0 := position.ToC()
+	var1 := relativeTo.ToC()
 	C.sfMouse_setPositionRenderWindow(var0, var1)
-	return
 }
 
 func MouseSetPositionWindowBase(position Vector2i, relativeTo *WindowBase) {
-	var0 := C.sfVector2i{x: C.int(position), y: C.int(position)}
-	var1 := relativeTo
+	var0 := position.ToC()
+	var1 := relativeTo.ToC()
 	C.sfMouse_setPositionWindowBase(var0, var1)
-	return
 }
 
 func NewMutex() *Mutex {
-	cval := unsafe.Pointer(C.sfMutex_create())
-	return &Mutex{ptr: cval}
+	funcRes0 := C.sfMutex_create()
+	return NewMutexFromC(funcRes0)
 }
 
 func (m *Mutex) Free() {
-	C.sfMutex_destroy(m.CPtr())
-	return
+	var0 := m.ToC()
+	C.sfMutex_destroy(var0)
 }
 
 func (m *Mutex) Lock() {
-	C.sfMutex_lock(m.CPtr())
-	return
+	var0 := m.ToC()
+	C.sfMutex_lock(var0)
 }
 
 func (m *Mutex) Unlock() {
-	C.sfMutex_unlock(m.CPtr())
-	return
+	var0 := m.ToC()
+	C.sfMutex_unlock(var0)
 }
 
 func (r *RectangleShape) Copy() *RectangleShape {
-	funcRes0 := unsafe.Pointer(C.sfRectangleShape_copy(r.CPtr()))
-	return &RectangleShape{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_copy(var0)
+	res := NewRectangleShapeFromC(funcRes0)
+	return res
 }
 
 func NewRectangleShape() *RectangleShape {
-	cval := unsafe.Pointer(C.sfRectangleShape_create())
-	return &RectangleShape{ptr: cval}
+	funcRes0 := C.sfRectangleShape_create()
+	return NewRectangleShapeFromC(funcRes0)
 }
 
 func (r *RectangleShape) Free() {
-	C.sfRectangleShape_destroy(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRectangleShape_destroy(var0)
 }
 
-func (r *RectangleShape) FillColor() Color {
-	funcRes0 := C.sfRectangleShape_getFillColor(r.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (r *RectangleShape) FillColor() *Color {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getFillColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) GlobalBounds() FloatRect {
-	funcRes0 := C.sfRectangleShape_getGlobalBounds(r.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (r *RectangleShape) GlobalBounds() *FloatRect {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getGlobalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (r *RectangleShape) InverseTransform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfRectangleShape_getInverseTransform(r.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getInverseTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) LocalBounds() FloatRect {
-	funcRes0 := C.sfRectangleShape_getLocalBounds(r.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (r *RectangleShape) LocalBounds() *FloatRect {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getLocalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) Origin() Vector2f {
-	funcRes0 := C.sfRectangleShape_getOrigin(r.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (r *RectangleShape) Origin() *Vector2f {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getOrigin(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) OutlineColor() Color {
-	funcRes0 := C.sfRectangleShape_getOutlineColor(r.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (r *RectangleShape) OutlineColor() *Color {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getOutlineColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
 func (r *RectangleShape) OutlineThickness() float32 {
-	return C.sfRectangleShape_getOutlineThickness(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getOutlineThickness(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) Point(index int32) Vector2f {
-	var0 := index
-	funcRes0 := C.sfRectangleShape_getPoint(r.CPtr(), var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (r *RectangleShape) Point(index uint64) *Vector2f {
+	var0 := r.ToC()
+	var1 := C.size_t(index)
+	funcRes0 := C.sfRectangleShape_getPoint(var0, var1)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) PointCount() int32 {
-	return C.sfRectangleShape_getPointCount(r.CPtr())
+func (r *RectangleShape) PointCount() uint64 {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getPointCount(var0)
+	res := uint64(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) Position() Vector2f {
-	funcRes0 := C.sfRectangleShape_getPosition(r.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (r *RectangleShape) Position() *Vector2f {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getPosition(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (r *RectangleShape) Rotation() float32 {
-	return C.sfRectangleShape_getRotation(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) GetScale() Vector2f {
-	funcRes0 := C.sfRectangleShape_getScale(r.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (r *RectangleShape) GetScale() *Vector2f {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getScale(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) Size() Vector2f {
-	funcRes0 := C.sfRectangleShape_getSize(r.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (r *RectangleShape) Size() *Vector2f {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getSize(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (r *RectangleShape) Texture() *Texture {
-	funcRes0 := unsafe.Pointer(C.sfRectangleShape_getTexture(r.CPtr()))
-	return &Texture{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getTexture(var0)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
-func (r *RectangleShape) TextureRect() IntRect {
-	funcRes0 := C.sfRectangleShape_getTextureRect(r.CPtr())
-	return IntRect{Left: int32(funcRes0.left), Top: int32(funcRes0.top), Width: int32(funcRes0.width), Height: int32(funcRes0.height)}
+func (r *RectangleShape) TextureRect() *IntRect {
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getTextureRect(var0)
+	res := NewIntRectFromC(funcRes0)
+	return res
 }
 
 func (r *RectangleShape) Transform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfRectangleShape_getTransform(r.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRectangleShape_getTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
 func (r *RectangleShape) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfRectangleShape_move(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := offset.ToC()
+	C.sfRectangleShape_move(var0, var1)
 }
 
 func (r *RectangleShape) Rotate(angle float32) {
-	var0 := angle
-	C.sfRectangleShape_rotate(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := C.float(angle)
+	C.sfRectangleShape_rotate(var0, var1)
 }
 
 func (r *RectangleShape) Scale(factors Vector2f) {
-	var0 := C.sfVector2f{x: C.float(factors), y: C.float(factors)}
-	C.sfRectangleShape_scale(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := factors.ToC()
+	C.sfRectangleShape_scale(var0, var1)
 }
 
 func (r *RectangleShape) SetFillColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfRectangleShape_setFillColor(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := color.ToC()
+	C.sfRectangleShape_setFillColor(var0, var1)
 }
 
 func (r *RectangleShape) SetOrigin(origin Vector2f) {
-	var0 := C.sfVector2f{x: C.float(origin), y: C.float(origin)}
-	C.sfRectangleShape_setOrigin(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := origin.ToC()
+	C.sfRectangleShape_setOrigin(var0, var1)
 }
 
 func (r *RectangleShape) SetOutlineColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfRectangleShape_setOutlineColor(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := color.ToC()
+	C.sfRectangleShape_setOutlineColor(var0, var1)
 }
 
 func (r *RectangleShape) SetOutlineThickness(thickness float32) {
-	var0 := thickness
-	C.sfRectangleShape_setOutlineThickness(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := C.float(thickness)
+	C.sfRectangleShape_setOutlineThickness(var0, var1)
 }
 
 func (r *RectangleShape) SetPosition(position Vector2f) {
-	var0 := C.sfVector2f{x: C.float(position), y: C.float(position)}
-	C.sfRectangleShape_setPosition(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := position.ToC()
+	C.sfRectangleShape_setPosition(var0, var1)
 }
 
 func (r *RectangleShape) SetRotation(angle float32) {
-	var0 := angle
-	C.sfRectangleShape_setRotation(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := C.float(angle)
+	C.sfRectangleShape_setRotation(var0, var1)
 }
 
 func (r *RectangleShape) SetScale(scale Vector2f) {
-	var0 := C.sfVector2f{x: C.float(scale), y: C.float(scale)}
-	C.sfRectangleShape_setScale(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := scale.ToC()
+	C.sfRectangleShape_setScale(var0, var1)
 }
 
 func (r *RectangleShape) SetSize(size Vector2f) {
-	var0 := C.sfVector2f{x: C.float(size), y: C.float(size)}
-	C.sfRectangleShape_setSize(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := size.ToC()
+	C.sfRectangleShape_setSize(var0, var1)
 }
 
 func (r *RectangleShape) SetTexture(texture *Texture, resetRect bool) {
-	var0 := texture
-	var1 := resetRect
-	C.sfRectangleShape_setTexture(r.CPtr(), var0, var1)
-	return
+	var0 := r.ToC()
+	var1 := texture.ToC()
+	var2 := boolToSfBool(resetRect)
+	C.sfRectangleShape_setTexture(var0, var1, var2)
 }
 
 func (r *RectangleShape) SetTextureRect(rect IntRect) {
-	var0 := C.sfIntRect{left: C.sfInt32(rect), top: C.sfInt32(rect), width: C.sfInt32(rect), height: C.sfInt32(rect)}
-	C.sfRectangleShape_setTextureRect(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := rect.ToC()
+	C.sfRectangleShape_setTextureRect(var0, var1)
 }
 
-func RenderStatesDefault() RenderStates {
-	cval := C.sfRenderStates_default()
-	return RenderStates{BlendMode: BlendMode(cval.blendMode), Transform: Transform(cval.transform), Texture: Texture(cval.texture), Shader: Shader(cval.shader)}
+func RenderStatesDefault() *RenderStates {
+	funcRes0 := C.sfRenderStates_default()
+	return NewRenderStatesFromC(funcRes0)
 }
 
 func (r *RenderTexture) Clear(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfRenderTexture_clear(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := color.ToC()
+	C.sfRenderTexture_clear(var0, var1)
 }
 
 func NewRenderTexture(width int32, height int32, depthBuffer bool) *RenderTexture {
-	var0 := width
-	var1 := height
-	var2 := depthBuffer
-	cval := unsafe.Pointer(C.sfRenderTexture_create(var0, var1, var2))
-	return &RenderTexture{ptr: cval}
+	var0 := C.uint(width)
+	var1 := C.uint(height)
+	var2 := boolToSfBool(depthBuffer)
+	funcRes0 := C.sfRenderTexture_create(var0, var1, var2)
+	return NewRenderTextureFromC(funcRes0)
 }
 
 func NewRenderTextureWithSettings(width int32, height int32, settings *ContextSettings) *RenderTexture {
-	var0 := width
-	var1 := height
-	var2 := C.sfContextSettings{depthBits: C.sfUint(settings), stencilBits: C.sfUint(settings), antialiasingLevel: C.sfUint(settings), majorVersion: C.sfUint(settings), minorVersion: C.sfUint(settings), attributeFlags: C.sfUint32(settings), sRgbCapable: C.sfBool(settings)}
-	cval := unsafe.Pointer(C.sfRenderTexture_createWithSettings(var0, var1, &var2))
-	return &RenderTexture{ptr: cval}
+	var0 := C.uint(width)
+	var1 := C.uint(height)
+	var2 := settings.ToC()
+	funcRes0 := C.sfRenderTexture_createWithSettings(var0, var1, &var2)
+	return NewRenderTextureFromC(funcRes0)
 }
 
 func (r *RenderTexture) Free() {
-	C.sfRenderTexture_destroy(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderTexture_destroy(var0)
 }
 
 func (r *RenderTexture) Display() {
-	C.sfRenderTexture_display(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderTexture_display(var0)
 }
 
 func (r *RenderTexture) DrawCircleShape(object *CircleShape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawCircleShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawCircleShape(var0, var1, &var2)
 }
 
 func (r *RenderTexture) DrawConvexShape(object *ConvexShape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawConvexShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawConvexShape(var0, var1, &var2)
 }
 
-func (r *RenderTexture) DrawPrimitives(vertices *Vertex, vertexCount int32, primitiveType PrimitiveType, states *RenderStates) {
-	var0 := vertices
-	var1 := vertexCount
-	var2 := primitiveType
-	var3 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawPrimitives(r.CPtr(), var0, var1, var2, &var3)
-	return
+func (r *RenderTexture) DrawPrimitives(vertices *Vertex, vertexCount uint64, primitiveType PrimitiveType, states *RenderStates) {
+	var0 := r.ToC()
+	var1 := vertices.ToC()
+	var2 := C.size_t(vertexCount)
+	var3 := C.sfPrimitiveType(primitiveType)
+	var4 := states.ToC()
+	C.sfRenderTexture_drawPrimitives(var0, &var1, var2, var3, &var4)
 }
 
 func (r *RenderTexture) DrawRectangleShape(object *RectangleShape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawRectangleShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawRectangleShape(var0, var1, &var2)
 }
 
 func (r *RenderTexture) DrawShape(object *Shape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawShape(var0, var1, &var2)
 }
 
 func (r *RenderTexture) DrawSprite(object *Sprite, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawSprite(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawSprite(var0, var1, &var2)
 }
 
 func (r *RenderTexture) DrawText(object *Text, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawText(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawText(var0, var1, &var2)
 }
 
 func (r *RenderTexture) DrawVertexArray(object *VertexArray, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawVertexArray(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawVertexArray(var0, var1, &var2)
 }
 
 func (r *RenderTexture) DrawVertexBuffer(object *VertexBuffer, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawVertexBuffer(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderTexture_drawVertexBuffer(var0, var1, &var2)
 }
 
-func (r *RenderTexture) DrawVertexBufferRange(object *VertexBuffer, firstVertex int32, vertexCount int32, states *RenderStates) {
-	var0 := object
-	var1 := firstVertex
-	var2 := vertexCount
-	var3 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderTexture_drawVertexBufferRange(r.CPtr(), var0, var1, var2, &var3)
-	return
+func (r *RenderTexture) DrawVertexBufferRange(object *VertexBuffer, firstVertex uint64, vertexCount uint64, states *RenderStates) {
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := C.size_t(firstVertex)
+	var3 := C.size_t(vertexCount)
+	var4 := states.ToC()
+	C.sfRenderTexture_drawVertexBufferRange(var0, var1, var2, var3, &var4)
 }
 
 func (r *RenderTexture) GenerateMipmap() bool {
-	return C.sfRenderTexture_generateMipmap(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_generateMipmap(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) DefaultView() *View {
-	funcRes0 := unsafe.Pointer(C.sfRenderTexture_getDefaultView(r.CPtr()))
-	return &View{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_getDefaultView(var0)
+	res := NewViewFromC(funcRes0)
+	return res
 }
 
 func RenderTextureGetMaximumAntialiasingLevel() int32 {
-	return C.sfRenderTexture_getMaximumAntialiasingLevel()
+	return int32(C.sfRenderTexture_getMaximumAntialiasingLevel())
 }
 
-func (r *RenderTexture) Size() Vector2u {
-	funcRes0 := C.sfRenderTexture_getSize(r.CPtr())
-	return Vector2u{X: uint32(funcRes0.x), Y: uint32(funcRes0.y)}
+func (r *RenderTexture) Size() *Vector2u {
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_getSize(var0)
+	res := NewVector2uFromC(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) Texture() *Texture {
-	funcRes0 := unsafe.Pointer(C.sfRenderTexture_getTexture(r.CPtr()))
-	return &Texture{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_getTexture(var0)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) View() *View {
-	funcRes0 := unsafe.Pointer(C.sfRenderTexture_getView(r.CPtr()))
-	return &View{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_getView(var0)
+	res := NewViewFromC(funcRes0)
+	return res
 }
 
-func (r *RenderTexture) Viewport(view *View) IntRect {
-	var0 := view
-	funcRes0 := C.sfRenderTexture_getViewport(r.CPtr(), var0)
-	return IntRect{Left: int32(funcRes0.left), Top: int32(funcRes0.top), Width: int32(funcRes0.width), Height: int32(funcRes0.height)}
+func (r *RenderTexture) Viewport(view *View) *IntRect {
+	var0 := r.ToC()
+	var1 := view.ToC()
+	funcRes0 := C.sfRenderTexture_getViewport(var0, var1)
+	res := NewIntRectFromC(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) IsRepeated() bool {
-	return C.sfRenderTexture_isRepeated(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_isRepeated(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) IsSmooth() bool {
-	return C.sfRenderTexture_isSmooth(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_isSmooth(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) IsSrgb() bool {
-	return C.sfRenderTexture_isSrgb(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderTexture_isSrgb(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
-func (r *RenderTexture) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
-	var0 := C.sfVector2f{x: C.float(point), y: C.float(point)}
-	var1 := view
-	funcRes0 := C.sfRenderTexture_mapCoordsToPixel(r.CPtr(), var0, var1)
-	return Vector2i{X: int32(funcRes0.x), Y: int32(funcRes0.y)}
+func (r *RenderTexture) MapCoordsToPixel(point Vector2f, view *View) *Vector2i {
+	var0 := r.ToC()
+	var1 := point.ToC()
+	var2 := view.ToC()
+	funcRes0 := C.sfRenderTexture_mapCoordsToPixel(var0, var1, var2)
+	res := NewVector2iFromC(funcRes0)
+	return res
 }
 
-func (r *RenderTexture) MapPixelToCoords(point Vector2i, view *View) Vector2f {
-	var0 := C.sfVector2i{x: C.int(point), y: C.int(point)}
-	var1 := view
-	funcRes0 := C.sfRenderTexture_mapPixelToCoords(r.CPtr(), var0, var1)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (r *RenderTexture) MapPixelToCoords(point Vector2i, view *View) *Vector2f {
+	var0 := r.ToC()
+	var1 := point.ToC()
+	var2 := view.ToC()
+	funcRes0 := C.sfRenderTexture_mapPixelToCoords(var0, var1, var2)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) PopGlsTates() {
-	C.sfRenderTexture_popGLStates(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderTexture_popGLStates(var0)
 }
 
 func (r *RenderTexture) PushGlsTates() {
-	C.sfRenderTexture_pushGLStates(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderTexture_pushGLStates(var0)
 }
 
 func (r *RenderTexture) ResetGlsTates() {
-	C.sfRenderTexture_resetGLStates(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderTexture_resetGLStates(var0)
 }
 
 func (r *RenderTexture) SetActive(active bool) bool {
-	var0 := active
-	return C.sfRenderTexture_setActive(r.CPtr(), var0)
+	var0 := r.ToC()
+	var1 := boolToSfBool(active)
+	funcRes0 := C.sfRenderTexture_setActive(var0, var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (r *RenderTexture) SetRepeated(repeated bool) {
-	var0 := repeated
-	C.sfRenderTexture_setRepeated(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := boolToSfBool(repeated)
+	C.sfRenderTexture_setRepeated(var0, var1)
 }
 
 func (r *RenderTexture) SetSmooth(smooth bool) {
-	var0 := smooth
-	C.sfRenderTexture_setSmooth(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := boolToSfBool(smooth)
+	C.sfRenderTexture_setSmooth(var0, var1)
 }
 
 func (r *RenderTexture) SetView(view *View) {
-	var0 := view
-	C.sfRenderTexture_setView(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := view.ToC()
+	C.sfRenderTexture_setView(var0, var1)
 }
 
 func (r *RenderWindow) Capture() *Image {
-	funcRes0 := unsafe.Pointer(C.sfRenderWindow_capture(r.CPtr()))
-	return &Image{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_capture(var0)
+	res := NewImageFromC(funcRes0)
+	return res
 }
 
 func (r *RenderWindow) Clear(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfRenderWindow_clear(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := color.ToC()
+	C.sfRenderWindow_clear(var0, var1)
 }
 
 func (r *RenderWindow) Close() {
-	C.sfRenderWindow_close(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderWindow_close(var0)
 }
 
 func NewRenderWindow(mode VideoMode, title string, style uint32, settings *ContextSettings) *RenderWindow {
-	var0 := C.sfVideoMode{width: C.sfUint(mode), height: C.sfUint(mode), bitsPerPixel: C.sfUint(mode)}
+	var0 := mode.ToC()
 	var1 := C.CString(title)
-	var2 := style
-	var3 := C.sfContextSettings{depthBits: C.sfUint(settings), stencilBits: C.sfUint(settings), antialiasingLevel: C.sfUint(settings), majorVersion: C.sfUint(settings), minorVersion: C.sfUint(settings), attributeFlags: C.sfUint32(settings), sRgbCapable: C.sfBool(settings)}
-	cval := unsafe.Pointer(C.sfRenderWindow_create(var0, var1, var2, &var3))
-	return &RenderWindow{ptr: cval}
+	var2 := C.sfUint32(style)
+	var3 := settings.ToC()
+	funcRes0 := C.sfRenderWindow_create(var0, var1, var2, &var3)
+	return NewRenderWindowFromC(funcRes0)
 }
 
 func NewRenderWindowFromHandle(handle uintptr, settings *ContextSettings) *RenderWindow {
-	var0 := handle
-	var1 := C.sfContextSettings{depthBits: C.sfUint(settings), stencilBits: C.sfUint(settings), antialiasingLevel: C.sfUint(settings), majorVersion: C.sfUint(settings), minorVersion: C.sfUint(settings), attributeFlags: C.sfUint32(settings), sRgbCapable: C.sfBool(settings)}
-	cval := unsafe.Pointer(C.sfRenderWindow_createFromHandle(var0, &var1))
-	return &RenderWindow{ptr: cval}
+	var0 := C.sfWindowHandle(handle)
+	var1 := settings.ToC()
+	funcRes0 := C.sfRenderWindow_createFromHandle(var0, &var1)
+	return NewRenderWindowFromC(funcRes0)
 }
 
-func NewRenderWindowUnicode(mode VideoMode, title uint32, style uint32, settings *ContextSettings) *RenderWindow {
-	var0 := C.sfVideoMode{width: C.sfUint(mode), height: C.sfUint(mode), bitsPerPixel: C.sfUint(mode)}
-	var1 := title
-	var2 := style
-	var3 := C.sfContextSettings{depthBits: C.sfUint(settings), stencilBits: C.sfUint(settings), antialiasingLevel: C.sfUint(settings), majorVersion: C.sfUint(settings), minorVersion: C.sfUint(settings), attributeFlags: C.sfUint32(settings), sRgbCapable: C.sfBool(settings)}
-	cval := unsafe.Pointer(C.sfRenderWindow_createUnicode(var0, var1, var2, &var3))
-	return &RenderWindow{ptr: cval}
-}
-
-func (r *RenderWindow) NewVulkanSurface(instance int32, surface int32, allocator int32) bool {
-	var0 := instance
-	var1 := surface
-	var2 := allocator
-	return C.sfRenderWindow_createVulkanSurface(r.CPtr(), var0, var1, var2)
+func NewRenderWindowUnicode(mode VideoMode, title *uint32, style uint32, settings *ContextSettings) *RenderWindow {
+	var0 := mode.ToC()
+	var1 := (*C.sfUint32)(title)
+	var2 := C.sfUint32(style)
+	var3 := settings.ToC()
+	funcRes0 := C.sfRenderWindow_createUnicode(var0, var1, var2, &var3)
+	return NewRenderWindowFromC(funcRes0)
 }
 
 func (r *RenderWindow) Free() {
-	C.sfRenderWindow_destroy(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderWindow_destroy(var0)
 }
 
 func (r *RenderWindow) Display() {
-	C.sfRenderWindow_display(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderWindow_display(var0)
 }
 
 func (r *RenderWindow) DrawCircleShape(object *CircleShape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawCircleShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawCircleShape(var0, var1, &var2)
 }
 
 func (r *RenderWindow) DrawConvexShape(object *ConvexShape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawConvexShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawConvexShape(var0, var1, &var2)
 }
 
-func (r *RenderWindow) DrawPrimitives(vertices *Vertex, vertexCount int32, primitiveType PrimitiveType, states *RenderStates) {
-	var0 := vertices
-	var1 := vertexCount
-	var2 := primitiveType
-	var3 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawPrimitives(r.CPtr(), var0, var1, var2, &var3)
-	return
+func (r *RenderWindow) DrawPrimitives(vertices *Vertex, vertexCount uint64, primitiveType PrimitiveType, states *RenderStates) {
+	var0 := r.ToC()
+	var1 := vertices.ToC()
+	var2 := C.size_t(vertexCount)
+	var3 := C.sfPrimitiveType(primitiveType)
+	var4 := states.ToC()
+	C.sfRenderWindow_drawPrimitives(var0, &var1, var2, var3, &var4)
 }
 
 func (r *RenderWindow) DrawRectangleShape(object *RectangleShape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawRectangleShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawRectangleShape(var0, var1, &var2)
 }
 
 func (r *RenderWindow) DrawShape(object *Shape, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawShape(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawShape(var0, var1, &var2)
 }
 
 func (r *RenderWindow) DrawSprite(object *Sprite, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawSprite(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawSprite(var0, var1, &var2)
 }
 
 func (r *RenderWindow) DrawText(object *Text, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawText(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawText(var0, var1, &var2)
 }
 
 func (r *RenderWindow) DrawVertexArray(object *VertexArray, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawVertexArray(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawVertexArray(var0, var1, &var2)
 }
 
 func (r *RenderWindow) DrawVertexBuffer(object *VertexBuffer, states *RenderStates) {
-	var0 := object
-	var1 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawVertexBuffer(r.CPtr(), var0, &var1)
-	return
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := states.ToC()
+	C.sfRenderWindow_drawVertexBuffer(var0, var1, &var2)
 }
 
-func (r *RenderWindow) DrawVertexBufferRange(object *VertexBuffer, firstVertex int32, vertexCount int32, states *RenderStates) {
-	var0 := object
-	var1 := firstVertex
-	var2 := vertexCount
-	var3 := C.sfRenderStates{blendMode: C.sfBlendMode{colorSrcFactor: C.sfBlendFactor(states.BlendMode.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(states.BlendMode.ColorDstFactor), colorEquation: C.sfBlendEquation(states.BlendMode.ColorEquation), alphaSrcFactor: C.sfBlendFactor(states.BlendMode.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(states.BlendMode.AlphaDstFactor), alphaEquation: C.sfBlendEquation(states.BlendMode.AlphaEquation)}, transform: C.sfTransform(states), texture: C.sfTexture(states), shader: C.sfShader(states)}
-	C.sfRenderWindow_drawVertexBufferRange(r.CPtr(), var0, var1, var2, &var3)
-	return
+func (r *RenderWindow) DrawVertexBufferRange(object *VertexBuffer, firstVertex uint64, vertexCount uint64, states *RenderStates) {
+	var0 := r.ToC()
+	var1 := object.ToC()
+	var2 := C.size_t(firstVertex)
+	var3 := C.size_t(vertexCount)
+	var4 := states.ToC()
+	C.sfRenderWindow_drawVertexBufferRange(var0, var1, var2, var3, &var4)
 }
 
 func (r *RenderWindow) DefaultView() *View {
-	funcRes0 := unsafe.Pointer(C.sfRenderWindow_getDefaultView(r.CPtr()))
-	return &View{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_getDefaultView(var0)
+	res := NewViewFromC(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) Position() Vector2i {
-	funcRes0 := C.sfRenderWindow_getPosition(r.CPtr())
-	return Vector2i{X: int32(funcRes0.x), Y: int32(funcRes0.y)}
+func (r *RenderWindow) Position() *Vector2i {
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_getPosition(var0)
+	res := NewVector2iFromC(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) Settings() ContextSettings {
-	funcRes0 := C.sfRenderWindow_getSettings(r.CPtr())
-	return ContextSettings{DepthBits: uint32(funcRes0.depthBits), StencilBits: uint32(funcRes0.stencilBits), AntialiasingLevel: uint32(funcRes0.antialiasingLevel), MajorVersion: uint32(funcRes0.majorVersion), MinorVersion: uint32(funcRes0.minorVersion), AttributeFlags: uint32(funcRes0.attributeFlags), SRgbCapable: bool(funcRes0.sRgbCapable)}
+func (r *RenderWindow) Settings() *ContextSettings {
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_getSettings(var0)
+	res := NewContextSettingsFromC(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) Size() Vector2u {
-	funcRes0 := C.sfRenderWindow_getSize(r.CPtr())
-	return Vector2u{X: uint32(funcRes0.x), Y: uint32(funcRes0.y)}
+func (r *RenderWindow) Size() *Vector2u {
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_getSize(var0)
+	res := NewVector2uFromC(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) SystemHandle() int32 {
-	return C.sfRenderWindow_getSystemHandle(r.CPtr())
+func (r *RenderWindow) SystemHandle() uintptr {
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_getSystemHandle(var0)
+	res := uintptr(funcRes0)
+	return res
 }
 
 func (r *RenderWindow) View() *View {
-	funcRes0 := unsafe.Pointer(C.sfRenderWindow_getView(r.CPtr()))
-	return &View{ptr: funcRes0}
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_getView(var0)
+	res := NewViewFromC(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) Viewport(view *View) IntRect {
-	var0 := view
-	funcRes0 := C.sfRenderWindow_getViewport(r.CPtr(), var0)
-	return IntRect{Left: int32(funcRes0.left), Top: int32(funcRes0.top), Width: int32(funcRes0.width), Height: int32(funcRes0.height)}
+func (r *RenderWindow) Viewport(view *View) *IntRect {
+	var0 := r.ToC()
+	var1 := view.ToC()
+	funcRes0 := C.sfRenderWindow_getViewport(var0, var1)
+	res := NewIntRectFromC(funcRes0)
+	return res
 }
 
 func (r *RenderWindow) HasFocus() bool {
-	return C.sfRenderWindow_hasFocus(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_hasFocus(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (r *RenderWindow) IsOpen() bool {
-	return C.sfRenderWindow_isOpen(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_isOpen(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (r *RenderWindow) IsSrgb() bool {
-	return C.sfRenderWindow_isSrgb(r.CPtr())
+	var0 := r.ToC()
+	funcRes0 := C.sfRenderWindow_isSrgb(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) Vector2i {
-	var0 := C.sfVector2f{x: C.float(point), y: C.float(point)}
-	var1 := view
-	funcRes0 := C.sfRenderWindow_mapCoordsToPixel(r.CPtr(), var0, var1)
-	return Vector2i{X: int32(funcRes0.x), Y: int32(funcRes0.y)}
+func (r *RenderWindow) MapCoordsToPixel(point Vector2f, view *View) *Vector2i {
+	var0 := r.ToC()
+	var1 := point.ToC()
+	var2 := view.ToC()
+	funcRes0 := C.sfRenderWindow_mapCoordsToPixel(var0, var1, var2)
+	res := NewVector2iFromC(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) MapPixelToCoords(point Vector2i, view *View) Vector2f {
-	var0 := C.sfVector2i{x: C.int(point), y: C.int(point)}
-	var1 := view
-	funcRes0 := C.sfRenderWindow_mapPixelToCoords(r.CPtr(), var0, var1)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (r *RenderWindow) MapPixelToCoords(point Vector2i, view *View) *Vector2f {
+	var0 := r.ToC()
+	var1 := point.ToC()
+	var2 := view.ToC()
+	funcRes0 := C.sfRenderWindow_mapPixelToCoords(var0, var1, var2)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (r *RenderWindow) PollEvent(event *Event) bool {
-	var0 := event
-	return C.sfRenderWindow_pollEvent(r.CPtr(), var0)
+func (r *RenderWindow) PollEvent() (Event, bool) {
+	var0 := r.ToC()
+	returnParam := C.sfEvent{}
+	funcRes0 := C.sfRenderWindow_pollEvent(var0, &returnParam)
+	returnParamRes := NewEventFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 
 func (r *RenderWindow) PopGlsTates() {
-	C.sfRenderWindow_popGLStates(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderWindow_popGLStates(var0)
 }
 
 func (r *RenderWindow) PushGlsTates() {
-	C.sfRenderWindow_pushGLStates(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderWindow_pushGLStates(var0)
 }
 
 func (r *RenderWindow) RequestFocus() {
-	C.sfRenderWindow_requestFocus(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderWindow_requestFocus(var0)
 }
 
 func (r *RenderWindow) ResetGlsTates() {
-	C.sfRenderWindow_resetGLStates(r.CPtr())
-	return
+	var0 := r.ToC()
+	C.sfRenderWindow_resetGLStates(var0)
 }
 
 func (r *RenderWindow) SetActive(active bool) bool {
-	var0 := active
-	return C.sfRenderWindow_setActive(r.CPtr(), var0)
+	var0 := r.ToC()
+	var1 := boolToSfBool(active)
+	funcRes0 := C.sfRenderWindow_setActive(var0, var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (r *RenderWindow) SetFramerateLimit(limit int32) {
-	var0 := limit
-	C.sfRenderWindow_setFramerateLimit(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := C.uint(limit)
+	C.sfRenderWindow_setFramerateLimit(var0, var1)
 }
 
-func (r *RenderWindow) SetIcon(width int32, height int32, pixels uint8) {
-	var0 := width
-	var1 := height
-	var2 := pixels
-	C.sfRenderWindow_setIcon(r.CPtr(), var0, var1, var2)
-	return
+func (r *RenderWindow) SetIcon(width int32, height int32, pixels *uint8) {
+	var0 := r.ToC()
+	var1 := C.uint(width)
+	var2 := C.uint(height)
+	var3 := (*C.sfUint8)(pixels)
+	C.sfRenderWindow_setIcon(var0, var1, var2, var3)
 }
 
 func (r *RenderWindow) SetJoystickThreshold(threshold float32) {
-	var0 := threshold
-	C.sfRenderWindow_setJoystickThreshold(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := C.float(threshold)
+	C.sfRenderWindow_setJoystickThreshold(var0, var1)
 }
 
 func (r *RenderWindow) SetKeyRepeatEnabled(enabled bool) {
-	var0 := enabled
-	C.sfRenderWindow_setKeyRepeatEnabled(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := boolToSfBool(enabled)
+	C.sfRenderWindow_setKeyRepeatEnabled(var0, var1)
 }
 
 func (r *RenderWindow) SetMouseCursor(cursor *Cursor) {
-	var0 := cursor
-	C.sfRenderWindow_setMouseCursor(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := cursor.ToC()
+	C.sfRenderWindow_setMouseCursor(var0, var1)
 }
 
 func (r *RenderWindow) SetMouseCursorGrabbed(grabbed bool) {
-	var0 := grabbed
-	C.sfRenderWindow_setMouseCursorGrabbed(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := boolToSfBool(grabbed)
+	C.sfRenderWindow_setMouseCursorGrabbed(var0, var1)
 }
 
 func (r *RenderWindow) SetMouseCursorVisible(show bool) {
-	var0 := show
-	C.sfRenderWindow_setMouseCursorVisible(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := boolToSfBool(show)
+	C.sfRenderWindow_setMouseCursorVisible(var0, var1)
 }
 
 func (r *RenderWindow) SetPosition(position Vector2i) {
-	var0 := C.sfVector2i{x: C.int(position), y: C.int(position)}
-	C.sfRenderWindow_setPosition(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := position.ToC()
+	C.sfRenderWindow_setPosition(var0, var1)
 }
 
 func (r *RenderWindow) SetSize(size Vector2u) {
-	var0 := C.sfVector2u{x: C.sfUint32(size), y: C.sfUint32(size)}
-	C.sfRenderWindow_setSize(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := size.ToC()
+	C.sfRenderWindow_setSize(var0, var1)
 }
 
 func (r *RenderWindow) SetTitle(title string) {
-	var0 := C.CString(title)
-	C.sfRenderWindow_setTitle(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := C.CString(title)
+	C.sfRenderWindow_setTitle(var0, var1)
 }
 
-func (r *RenderWindow) SetUnicodeTitle(title uint32) {
-	var0 := title
-	C.sfRenderWindow_setUnicodeTitle(r.CPtr(), var0)
-	return
+func (r *RenderWindow) SetUnicodeTitle(title *uint32) {
+	var0 := r.ToC()
+	var1 := (*C.sfUint32)(title)
+	C.sfRenderWindow_setUnicodeTitle(var0, var1)
 }
 
 func (r *RenderWindow) SetVerticalSyncEnabled(enabled bool) {
-	var0 := enabled
-	C.sfRenderWindow_setVerticalSyncEnabled(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := boolToSfBool(enabled)
+	C.sfRenderWindow_setVerticalSyncEnabled(var0, var1)
 }
 
 func (r *RenderWindow) SetView(view *View) {
-	var0 := view
-	C.sfRenderWindow_setView(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := view.ToC()
+	C.sfRenderWindow_setView(var0, var1)
 }
 
 func (r *RenderWindow) SetVisible(visible bool) {
-	var0 := visible
-	C.sfRenderWindow_setVisible(r.CPtr(), var0)
-	return
+	var0 := r.ToC()
+	var1 := boolToSfBool(visible)
+	C.sfRenderWindow_setVisible(var0, var1)
 }
 
-func (r *RenderWindow) WaitEvent(event *Event) bool {
-	var0 := event
-	return C.sfRenderWindow_waitEvent(r.CPtr(), var0)
+func (r *RenderWindow) WaitEvent() (Event, bool) {
+	var0 := r.ToC()
+	returnParam := C.sfEvent{}
+	funcRes0 := C.sfRenderWindow_waitEvent(var0, &returnParam)
+	returnParamRes := NewEventFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 
-func SensorGetValue(sensor SensorType) Vector3f {
-	var0 := sensor
-	cval := C.sfSensor_getValue(var0)
-	return Vector3f{X: float32(cval.x), Y: float32(cval.y), Z: float32(cval.z)}
+func SensorGetValue(sensor SensorType) *Vector3f {
+	var0 := C.sfSensorType(sensor)
+	funcRes0 := C.sfSensor_getValue(var0)
+	return NewVector3fFromC(funcRes0)
 }
 
 func SensorIsAvailable(sensor SensorType) bool {
-	var0 := sensor
-	return C.sfSensor_isAvailable(var0)
+	var0 := C.sfSensorType(sensor)
+	return sfBoolToBool(C.sfSensor_isAvailable(var0))
 }
 
 func SensorSetEnabled(sensor SensorType, enabled bool) {
-	var0 := sensor
-	var1 := enabled
+	var0 := C.sfSensorType(sensor)
+	var1 := boolToSfBool(enabled)
 	C.sfSensor_setEnabled(var0, var1)
-	return
 }
 
 func (s *Shader) Bind() {
-	C.sfShader_bind(s.CPtr())
-	return
+	var0 := s.ToC()
+	C.sfShader_bind(var0)
 }
 
 func NewShaderFromFile(vertexShaderFilename string, geometryShaderFilename string, fragmentShaderFilename string) *Shader {
 	var0 := C.CString(vertexShaderFilename)
 	var1 := C.CString(geometryShaderFilename)
 	var2 := C.CString(fragmentShaderFilename)
-	cval := unsafe.Pointer(C.sfShader_createFromFile(var0, var1, var2))
-	return &Shader{ptr: cval}
+	funcRes0 := C.sfShader_createFromFile(var0, var1, var2)
+	return NewShaderFromC(funcRes0)
 }
 
 func NewShaderFromMemory(vertexShader string, geometryShader string, fragmentShader string) *Shader {
 	var0 := C.CString(vertexShader)
 	var1 := C.CString(geometryShader)
 	var2 := C.CString(fragmentShader)
-	cval := unsafe.Pointer(C.sfShader_createFromMemory(var0, var1, var2))
-	return &Shader{ptr: cval}
+	funcRes0 := C.sfShader_createFromMemory(var0, var1, var2)
+	return NewShaderFromC(funcRes0)
 }
 
 func NewShaderFromStream(vertexShaderStream *InputStream, geometryShaderStream *InputStream, fragmentShaderStream *InputStream) *Shader {
-	var0 := vertexShaderStream
-	var1 := geometryShaderStream
-	var2 := fragmentShaderStream
-	cval := unsafe.Pointer(C.sfShader_createFromStream(var0, var1, var2))
-	return &Shader{ptr: cval}
+	var0 := vertexShaderStream.ToC()
+	var1 := geometryShaderStream.ToC()
+	var2 := fragmentShaderStream.ToC()
+	funcRes0 := C.sfShader_createFromStream(var0, var1, var2)
+	return NewShaderFromC(funcRes0)
 }
 
 func (s *Shader) Free() {
-	C.sfShader_destroy(s.CPtr())
-	return
+	var0 := s.ToC()
+	C.sfShader_destroy(var0)
 }
 
 func (s *Shader) NativeHandle() int32 {
-	return C.sfShader_getNativeHandle(s.CPtr())
+	var0 := s.ToC()
+	funcRes0 := C.sfShader_getNativeHandle(var0)
+	res := int32(funcRes0)
+	return res
 }
 
 func ShaderIsAvailable() bool {
-	return C.sfShader_isAvailable()
+	return sfBoolToBool(C.sfShader_isAvailable())
 }
 
 func ShaderIsGeometryAvailable() bool {
-	return C.sfShader_isGeometryAvailable()
+	return sfBoolToBool(C.sfShader_isGeometryAvailable())
 }
 
 func (s *Shader) SetBoolUniform(name string, x bool) {
-	var0 := C.CString(name)
-	var1 := x
-	C.sfShader_setBoolUniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := boolToSfBool(x)
+	C.sfShader_setBoolUniform(var0, var1, var2)
 }
 
 func (s *Shader) SetBvec2uniform(name string, vector Vector2b) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslBvec2{x: C.bool(vector), y: C.bool(vector)}
-	C.sfShader_setBvec2Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setBvec2Uniform(var0, var1, var2)
 }
 
 func (s *Shader) SetBvec3uniform(name string, vector Vector3b) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslBvec3{x: C.bool(vector), y: C.bool(vector), z: C.bool(vector)}
-	C.sfShader_setBvec3Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setBvec3Uniform(var0, var1, var2)
 }
 
 func (s *Shader) SetBvec4uniform(name string, vector Vector4b) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslBvec4{x: C.bool(vector), y: C.bool(vector), z: C.bool(vector), w: C.bool(vector)}
-	C.sfShader_setBvec4Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setBvec4Uniform(var0, var1, var2)
 }
 
 func (s *Shader) SetColorParameter(name string, color Color) {
-	var0 := C.CString(name)
-	var1 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfShader_setColorParameter(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := color.ToC()
+	C.sfShader_setColorParameter(var0, var1, var2)
 }
 
 func (s *Shader) SetColorUniform(name string, color Color) {
-	var0 := C.CString(name)
-	var1 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfShader_setColorUniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := color.ToC()
+	C.sfShader_setColorUniform(var0, var1, var2)
 }
 
 func (s *Shader) SetCurrentTextureParameter(name string) {
-	var0 := C.CString(name)
-	C.sfShader_setCurrentTextureParameter(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	C.sfShader_setCurrentTextureParameter(var0, var1)
 }
 
 func (s *Shader) SetCurrentTextureUniform(name string) {
-	var0 := C.CString(name)
-	C.sfShader_setCurrentTextureUniform(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	C.sfShader_setCurrentTextureUniform(var0, var1)
 }
 
 func (s *Shader) SetFloat2parameter(name string, x float32, y float32) {
-	var0 := C.CString(name)
-	var1 := x
-	var2 := y
-	C.sfShader_setFloat2Parameter(s.CPtr(), var0, var1, var2)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := C.float(x)
+	var3 := C.float(y)
+	C.sfShader_setFloat2Parameter(var0, var1, var2, var3)
 }
 
 func (s *Shader) SetFloat3parameter(name string, x float32, y float32, z float32) {
-	var0 := C.CString(name)
-	var1 := x
-	var2 := y
-	var3 := z
-	C.sfShader_setFloat3Parameter(s.CPtr(), var0, var1, var2, var3)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := C.float(x)
+	var3 := C.float(y)
+	var4 := C.float(z)
+	C.sfShader_setFloat3Parameter(var0, var1, var2, var3, var4)
 }
 
 func (s *Shader) SetFloat4parameter(name string, x float32, y float32, z float32, w float32) {
-	var0 := C.CString(name)
-	var1 := x
-	var2 := y
-	var3 := z
-	var4 := w
-	C.sfShader_setFloat4Parameter(s.CPtr(), var0, var1, var2, var3, var4)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := C.float(x)
+	var3 := C.float(y)
+	var4 := C.float(z)
+	var5 := C.float(w)
+	C.sfShader_setFloat4Parameter(var0, var1, var2, var3, var4, var5)
 }
 
 func (s *Shader) SetFloatParameter(name string, x float32) {
-	var0 := C.CString(name)
-	var1 := x
-	C.sfShader_setFloatParameter(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := C.float(x)
+	C.sfShader_setFloatParameter(var0, var1, var2)
 }
 
 func (s *Shader) SetFloatUniform(name string, x float32) {
-	var0 := C.CString(name)
-	var1 := x
-	C.sfShader_setFloatUniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := C.float(x)
+	C.sfShader_setFloatUniform(var0, var1, var2)
 }
 
-func (s *Shader) SetFloatUniformArray(name string, scalarArray float32, length int32) {
-	var0 := C.CString(name)
-	var1 := scalarArray
-	var2 := length
-	C.sfShader_setFloatUniformArray(s.CPtr(), var0, var1, var2)
-	return
+func (s *Shader) SetFloatUniformArray(name string, scalarArray *float32, length uint64) {
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := (*C.float)(scalarArray)
+	var3 := C.size_t(length)
+	C.sfShader_setFloatUniformArray(var0, var1, var2, var3)
 }
 
 func (s *Shader) SetIntColorUniform(name string, color Color) {
-	var0 := C.CString(name)
-	var1 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfShader_setIntColorUniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := color.ToC()
+	C.sfShader_setIntColorUniform(var0, var1, var2)
 }
 
 func (s *Shader) SetIntUniform(name string, x int32) {
-	var0 := C.CString(name)
-	var1 := x
-	C.sfShader_setIntUniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := C.int(x)
+	C.sfShader_setIntUniform(var0, var1, var2)
 }
 
 func (s *Shader) SetIvec2uniform(name string, vector Vector2i) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslIvec2{x: C.int(vector), y: C.int(vector)}
-	C.sfShader_setIvec2Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setIvec2Uniform(var0, var1, var2)
 }
 
 func (s *Shader) SetIvec3uniform(name string, vector Vector3i) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslIvec3{x: C.int(vector), y: C.int(vector), z: C.int(vector)}
-	C.sfShader_setIvec3Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setIvec3Uniform(var0, var1, var2)
 }
 
 func (s *Shader) SetIvec4uniform(name string, vector Vector4i) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslIvec4{x: C.int(vector), y: C.int(vector), z: C.int(vector), w: C.int(vector)}
-	C.sfShader_setIvec4Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setIvec4Uniform(var0, var1, var2)
 }
 
 func (s *Shader) SetMat3uniform(name string, matrix *GlslMat3) {
-	var0 := C.CString(name)
-	var1 := matrix
-	C.sfShader_setMat3Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := matrix.ToC()
+	C.sfShader_setMat3Uniform(var0, var1, var2)
 }
 
-func (s *Shader) SetMat3uniformArray(name string, matrixArray *GlslMat3, length int32) {
-	var0 := C.CString(name)
-	var1 := matrixArray
-	var2 := length
-	C.sfShader_setMat3UniformArray(s.CPtr(), var0, var1, var2)
-	return
+func (s *Shader) SetMat3uniformArray(name string, matrixArray *GlslMat3, length uint64) {
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := matrixArray.ToC()
+	var3 := C.size_t(length)
+	C.sfShader_setMat3UniformArray(var0, var1, var2, var3)
 }
 
 func (s *Shader) SetMat4uniform(name string, matrix *GlslMat4) {
-	var0 := C.CString(name)
-	var1 := matrix
-	C.sfShader_setMat4Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := matrix.ToC()
+	C.sfShader_setMat4Uniform(var0, var1, var2)
 }
 
-func (s *Shader) SetMat4uniformArray(name string, matrixArray *GlslMat4, length int32) {
-	var0 := C.CString(name)
-	var1 := matrixArray
-	var2 := length
-	C.sfShader_setMat4UniformArray(s.CPtr(), var0, var1, var2)
-	return
+func (s *Shader) SetMat4uniformArray(name string, matrixArray *GlslMat4, length uint64) {
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := matrixArray.ToC()
+	var3 := C.size_t(length)
+	C.sfShader_setMat4UniformArray(var0, var1, var2, var3)
 }
 
 func (s *Shader) SetTextureParameter(name string, texture *Texture) {
-	var0 := C.CString(name)
-	var1 := texture
-	C.sfShader_setTextureParameter(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := texture.ToC()
+	C.sfShader_setTextureParameter(var0, var1, var2)
 }
 
 func (s *Shader) SetTextureUniform(name string, texture *Texture) {
-	var0 := C.CString(name)
-	var1 := texture
-	C.sfShader_setTextureUniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := texture.ToC()
+	C.sfShader_setTextureUniform(var0, var1, var2)
 }
 
 func (s *Shader) SetTransformParameter(name string, transform Transform) {
-	var0 := C.CString(name)
-	var1 := transform.CPtr()
-	C.sfShader_setTransformParameter(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := transform.ToC()
+	C.sfShader_setTransformParameter(var0, var1, var2)
 }
 
 func (s *Shader) SetVec2uniform(name string, vector Vector2f) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslVec2{x: C.float(vector), y: C.float(vector)}
-	C.sfShader_setVec2Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setVec2Uniform(var0, var1, var2)
 }
 
-func (s *Shader) SetVec2uniformArray(name string, vectorArray *Vector2f, length int32) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslVec2{x: C.float(vectorArray), y: C.float(vectorArray)}
-	var2 := length
-	C.sfShader_setVec2UniformArray(s.CPtr(), var0, &var1, var2)
-	return
+func (s *Shader) SetVec2uniformArray(name string, vectorArray *Vector2f, length uint64) {
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vectorArray.ToC()
+	var3 := C.size_t(length)
+	C.sfShader_setVec2UniformArray(var0, var1, &var2, var3)
 }
 
 func (s *Shader) SetVec3uniform(name string, vector Vector3f) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslVec3{x: C.float(vector), y: C.float(vector), z: C.float(vector)}
-	C.sfShader_setVec3Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setVec3Uniform(var0, var1, var2)
 }
 
-func (s *Shader) SetVec3uniformArray(name string, vectorArray *Vector3f, length int32) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslVec3{x: C.float(vectorArray), y: C.float(vectorArray), z: C.float(vectorArray)}
-	var2 := length
-	C.sfShader_setVec3UniformArray(s.CPtr(), var0, &var1, var2)
-	return
+func (s *Shader) SetVec3uniformArray(name string, vectorArray *Vector3f, length uint64) {
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vectorArray.ToC()
+	var3 := C.size_t(length)
+	C.sfShader_setVec3UniformArray(var0, var1, &var2, var3)
 }
 
 func (s *Shader) SetVec4uniform(name string, vector Vector4f) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslVec4{x: C.float(vector), y: C.float(vector), z: C.float(vector), w: C.float(vector)}
-	C.sfShader_setVec4Uniform(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setVec4Uniform(var0, var1, var2)
 }
 
-func (s *Shader) SetVec4uniformArray(name string, vectorArray *Vector4f, length int32) {
-	var0 := C.CString(name)
-	var1 := C.sfGlslVec4{x: C.float(vectorArray), y: C.float(vectorArray), z: C.float(vectorArray), w: C.float(vectorArray)}
-	var2 := length
-	C.sfShader_setVec4UniformArray(s.CPtr(), var0, &var1, var2)
-	return
+func (s *Shader) SetVec4uniformArray(name string, vectorArray *Vector4f, length uint64) {
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vectorArray.ToC()
+	var3 := C.size_t(length)
+	C.sfShader_setVec4UniformArray(var0, var1, &var2, var3)
 }
 
 func (s *Shader) SetVector2parameter(name string, vector Vector2f) {
-	var0 := C.CString(name)
-	var1 := C.sfVector2f{x: C.float(vector), y: C.float(vector)}
-	C.sfShader_setVector2Parameter(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setVector2Parameter(var0, var1, var2)
 }
 
 func (s *Shader) SetVector3parameter(name string, vector Vector3f) {
-	var0 := C.CString(name)
-	var1 := C.sfVector3f{x: C.float(vector), y: C.float(vector), z: C.float(vector)}
-	C.sfShader_setVector3Parameter(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := C.CString(name)
+	var2 := vector.ToC()
+	C.sfShader_setVector3Parameter(var0, var1, var2)
 }
 
 func (s *Shape) Free() {
-	C.sfShape_destroy(s.CPtr())
-	return
+	var0 := s.ToC()
+	C.sfShape_destroy(var0)
 }
 
-func (s *Shape) FillColor() Color {
-	funcRes0 := C.sfShape_getFillColor(s.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (s *Shape) FillColor() *Color {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getFillColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (s *Shape) GlobalBounds() FloatRect {
-	funcRes0 := C.sfShape_getGlobalBounds(s.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (s *Shape) GlobalBounds() *FloatRect {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getGlobalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (s *Shape) InverseTransform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfShape_getInverseTransform(s.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getInverseTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (s *Shape) LocalBounds() FloatRect {
-	funcRes0 := C.sfShape_getLocalBounds(s.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (s *Shape) LocalBounds() *FloatRect {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getLocalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
-func (s *Shape) Origin() Vector2f {
-	funcRes0 := C.sfShape_getOrigin(s.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (s *Shape) Origin() *Vector2f {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getOrigin(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (s *Shape) OutlineColor() Color {
-	funcRes0 := C.sfShape_getOutlineColor(s.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (s *Shape) OutlineColor() *Color {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getOutlineColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
 func (s *Shape) OutlineThickness() float32 {
-	return C.sfShape_getOutlineThickness(s.CPtr())
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getOutlineThickness(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (s *Shape) Point(index int32) Vector2f {
-	var0 := index
-	funcRes0 := C.sfShape_getPoint(s.CPtr(), var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (s *Shape) Point(index uint64) *Vector2f {
+	var0 := s.ToC()
+	var1 := C.size_t(index)
+	funcRes0 := C.sfShape_getPoint(var0, var1)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (s *Shape) PointCount() int32 {
-	return C.sfShape_getPointCount(s.CPtr())
+func (s *Shape) PointCount() uint64 {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getPointCount(var0)
+	res := uint64(funcRes0)
+	return res
 }
 
-func (s *Shape) Position() Vector2f {
-	funcRes0 := C.sfShape_getPosition(s.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (s *Shape) Position() *Vector2f {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getPosition(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (s *Shape) Rotation() float32 {
-	return C.sfShape_getRotation(s.CPtr())
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (s *Shape) GetScale() Vector2f {
-	funcRes0 := C.sfShape_getScale(s.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (s *Shape) GetScale() *Vector2f {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getScale(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (s *Shape) Texture() *Texture {
-	funcRes0 := unsafe.Pointer(C.sfShape_getTexture(s.CPtr()))
-	return &Texture{ptr: funcRes0}
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getTexture(var0)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
-func (s *Shape) TextureRect() IntRect {
-	funcRes0 := C.sfShape_getTextureRect(s.CPtr())
-	return IntRect{Left: int32(funcRes0.left), Top: int32(funcRes0.top), Width: int32(funcRes0.width), Height: int32(funcRes0.height)}
+func (s *Shape) TextureRect() *IntRect {
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getTextureRect(var0)
+	res := NewIntRectFromC(funcRes0)
+	return res
 }
 
 func (s *Shape) Transform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfShape_getTransform(s.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := s.ToC()
+	funcRes0 := C.sfShape_getTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
 func (s *Shape) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfShape_move(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := offset.ToC()
+	C.sfShape_move(var0, var1)
 }
 
 func (s *Shape) Rotate(angle float32) {
-	var0 := angle
-	C.sfShape_rotate(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := C.float(angle)
+	C.sfShape_rotate(var0, var1)
 }
 
 func (s *Shape) Scale(factors Vector2f) {
-	var0 := C.sfVector2f{x: C.float(factors), y: C.float(factors)}
-	C.sfShape_scale(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := factors.ToC()
+	C.sfShape_scale(var0, var1)
 }
 
 func (s *Shape) SetFillColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfShape_setFillColor(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := color.ToC()
+	C.sfShape_setFillColor(var0, var1)
 }
 
 func (s *Shape) SetOrigin(origin Vector2f) {
-	var0 := C.sfVector2f{x: C.float(origin), y: C.float(origin)}
-	C.sfShape_setOrigin(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := origin.ToC()
+	C.sfShape_setOrigin(var0, var1)
 }
 
 func (s *Shape) SetOutlineColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfShape_setOutlineColor(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := color.ToC()
+	C.sfShape_setOutlineColor(var0, var1)
 }
 
 func (s *Shape) SetOutlineThickness(thickness float32) {
-	var0 := thickness
-	C.sfShape_setOutlineThickness(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := C.float(thickness)
+	C.sfShape_setOutlineThickness(var0, var1)
 }
 
 func (s *Shape) SetPosition(position Vector2f) {
-	var0 := C.sfVector2f{x: C.float(position), y: C.float(position)}
-	C.sfShape_setPosition(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := position.ToC()
+	C.sfShape_setPosition(var0, var1)
 }
 
 func (s *Shape) SetRotation(angle float32) {
-	var0 := angle
-	C.sfShape_setRotation(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := C.float(angle)
+	C.sfShape_setRotation(var0, var1)
 }
 
 func (s *Shape) SetScale(scale Vector2f) {
-	var0 := C.sfVector2f{x: C.float(scale), y: C.float(scale)}
-	C.sfShape_setScale(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := scale.ToC()
+	C.sfShape_setScale(var0, var1)
 }
 
 func (s *Shape) SetTexture(texture *Texture, resetRect bool) {
-	var0 := texture
-	var1 := resetRect
-	C.sfShape_setTexture(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := texture.ToC()
+	var2 := boolToSfBool(resetRect)
+	C.sfShape_setTexture(var0, var1, var2)
 }
 
 func (s *Shape) SetTextureRect(rect IntRect) {
-	var0 := C.sfIntRect{left: C.sfInt32(rect), top: C.sfInt32(rect), width: C.sfInt32(rect), height: C.sfInt32(rect)}
-	C.sfShape_setTextureRect(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := rect.ToC()
+	C.sfShape_setTextureRect(var0, var1)
 }
 
 func (s *Shape) Update() {
-	C.sfShape_update(s.CPtr())
-	return
+	var0 := s.ToC()
+	C.sfShape_update(var0)
 }
 
 func (s *Sprite) Copy() *Sprite {
-	funcRes0 := unsafe.Pointer(C.sfSprite_copy(s.CPtr()))
-	return &Sprite{ptr: funcRes0}
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_copy(var0)
+	res := NewSpriteFromC(funcRes0)
+	return res
 }
 
 func NewSprite() *Sprite {
-	cval := unsafe.Pointer(C.sfSprite_create())
-	return &Sprite{ptr: cval}
+	funcRes0 := C.sfSprite_create()
+	return NewSpriteFromC(funcRes0)
 }
 
 func (s *Sprite) Free() {
-	C.sfSprite_destroy(s.CPtr())
-	return
+	var0 := s.ToC()
+	C.sfSprite_destroy(var0)
 }
 
-func (s *Sprite) Color() Color {
-	funcRes0 := C.sfSprite_getColor(s.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (s *Sprite) Color() *Color {
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (s *Sprite) GlobalBounds() FloatRect {
-	funcRes0 := C.sfSprite_getGlobalBounds(s.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (s *Sprite) GlobalBounds() *FloatRect {
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getGlobalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (s *Sprite) InverseTransform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfSprite_getInverseTransform(s.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getInverseTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (s *Sprite) LocalBounds() FloatRect {
-	funcRes0 := C.sfSprite_getLocalBounds(s.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (s *Sprite) LocalBounds() *FloatRect {
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getLocalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
-func (s *Sprite) Origin() Vector2f {
-	funcRes0 := C.sfSprite_getOrigin(s.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (s *Sprite) Origin() *Vector2f {
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getOrigin(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (s *Sprite) Position() Vector2f {
-	funcRes0 := C.sfSprite_getPosition(s.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (s *Sprite) Position() *Vector2f {
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getPosition(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (s *Sprite) Rotation() float32 {
-	return C.sfSprite_getRotation(s.CPtr())
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (s *Sprite) GetScale() Vector2f {
-	funcRes0 := C.sfSprite_getScale(s.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (s *Sprite) GetScale() *Vector2f {
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getScale(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (s *Sprite) Texture() *Texture {
-	funcRes0 := unsafe.Pointer(C.sfSprite_getTexture(s.CPtr()))
-	return &Texture{ptr: funcRes0}
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getTexture(var0)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
-func (s *Sprite) TextureRect() IntRect {
-	funcRes0 := C.sfSprite_getTextureRect(s.CPtr())
-	return IntRect{Left: int32(funcRes0.left), Top: int32(funcRes0.top), Width: int32(funcRes0.width), Height: int32(funcRes0.height)}
+func (s *Sprite) TextureRect() *IntRect {
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getTextureRect(var0)
+	res := NewIntRectFromC(funcRes0)
+	return res
 }
 
 func (s *Sprite) Transform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfSprite_getTransform(s.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := s.ToC()
+	funcRes0 := C.sfSprite_getTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
 func (s *Sprite) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfSprite_move(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := offset.ToC()
+	C.sfSprite_move(var0, var1)
 }
 
 func (s *Sprite) Rotate(angle float32) {
-	var0 := angle
-	C.sfSprite_rotate(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := C.float(angle)
+	C.sfSprite_rotate(var0, var1)
 }
 
 func (s *Sprite) Scale(factors Vector2f) {
-	var0 := C.sfVector2f{x: C.float(factors), y: C.float(factors)}
-	C.sfSprite_scale(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := factors.ToC()
+	C.sfSprite_scale(var0, var1)
 }
 
 func (s *Sprite) SetColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfSprite_setColor(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := color.ToC()
+	C.sfSprite_setColor(var0, var1)
 }
 
 func (s *Sprite) SetOrigin(origin Vector2f) {
-	var0 := C.sfVector2f{x: C.float(origin), y: C.float(origin)}
-	C.sfSprite_setOrigin(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := origin.ToC()
+	C.sfSprite_setOrigin(var0, var1)
 }
 
 func (s *Sprite) SetPosition(position Vector2f) {
-	var0 := C.sfVector2f{x: C.float(position), y: C.float(position)}
-	C.sfSprite_setPosition(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := position.ToC()
+	C.sfSprite_setPosition(var0, var1)
 }
 
 func (s *Sprite) SetRotation(angle float32) {
-	var0 := angle
-	C.sfSprite_setRotation(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := C.float(angle)
+	C.sfSprite_setRotation(var0, var1)
 }
 
 func (s *Sprite) SetScale(scale Vector2f) {
-	var0 := C.sfVector2f{x: C.float(scale), y: C.float(scale)}
-	C.sfSprite_setScale(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := scale.ToC()
+	C.sfSprite_setScale(var0, var1)
 }
 
 func (s *Sprite) SetTexture(texture *Texture, resetRect bool) {
-	var0 := texture
-	var1 := resetRect
-	C.sfSprite_setTexture(s.CPtr(), var0, var1)
-	return
+	var0 := s.ToC()
+	var1 := texture.ToC()
+	var2 := boolToSfBool(resetRect)
+	C.sfSprite_setTexture(var0, var1, var2)
 }
 
 func (s *Sprite) SetTextureRect(rectangle IntRect) {
-	var0 := C.sfIntRect{left: C.sfInt32(rectangle), top: C.sfInt32(rectangle), width: C.sfInt32(rectangle), height: C.sfInt32(rectangle)}
-	C.sfSprite_setTextureRect(s.CPtr(), var0)
-	return
+	var0 := s.ToC()
+	var1 := rectangle.ToC()
+	C.sfSprite_setTextureRect(var0, var1)
 }
 
 func (t *Text) Copy() *Text {
-	funcRes0 := unsafe.Pointer(C.sfText_copy(t.CPtr()))
-	return &Text{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfText_copy(var0)
+	res := NewTextFromC(funcRes0)
+	return res
 }
 
 func NewText() *Text {
-	cval := unsafe.Pointer(C.sfText_create())
-	return &Text{ptr: cval}
+	funcRes0 := C.sfText_create()
+	return NewTextFromC(funcRes0)
 }
 
 func (t *Text) Free() {
-	C.sfText_destroy(t.CPtr())
-	return
+	var0 := t.ToC()
+	C.sfText_destroy(var0)
 }
 
-func (t *Text) FindCharacterPos(index int32) Vector2f {
-	var0 := index
-	funcRes0 := C.sfText_findCharacterPos(t.CPtr(), var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Text) FindCharacterPos(index uint64) *Vector2f {
+	var0 := t.ToC()
+	var1 := C.size_t(index)
+	funcRes0 := C.sfText_findCharacterPos(var0, var1)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (t *Text) CharacterSize() int32 {
-	return C.sfText_getCharacterSize(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getCharacterSize(var0)
+	res := int32(funcRes0)
+	return res
 }
 
-func (t *Text) Color() Color {
-	funcRes0 := C.sfText_getColor(t.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (t *Text) Color() *Color {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
-func (t *Text) FillColor() Color {
-	funcRes0 := C.sfText_getFillColor(t.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (t *Text) FillColor() *Color {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getFillColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
 func (t *Text) Font() *Font {
-	funcRes0 := unsafe.Pointer(C.sfText_getFont(t.CPtr()))
-	return &Font{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getFont(var0)
+	res := NewFontFromC(funcRes0)
+	return res
 }
 
-func (t *Text) GlobalBounds() FloatRect {
-	funcRes0 := C.sfText_getGlobalBounds(t.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (t *Text) GlobalBounds() *FloatRect {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getGlobalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (t *Text) InverseTransform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfText_getInverseTransform(t.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getInverseTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
 func (t *Text) LetterSpacing() float32 {
-	return C.sfText_getLetterSpacing(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getLetterSpacing(var0)
+	res := float32(funcRes0)
+	return res
 }
 
 func (t *Text) LineSpacing() float32 {
-	return C.sfText_getLineSpacing(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getLineSpacing(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (t *Text) LocalBounds() FloatRect {
-	funcRes0 := C.sfText_getLocalBounds(t.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (t *Text) LocalBounds() *FloatRect {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getLocalBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
-func (t *Text) Origin() Vector2f {
-	funcRes0 := C.sfText_getOrigin(t.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Text) Origin() *Vector2f {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getOrigin(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (t *Text) OutlineColor() Color {
-	funcRes0 := C.sfText_getOutlineColor(t.CPtr())
-	return Color{R: uint8(funcRes0.r), G: uint8(funcRes0.g), B: uint8(funcRes0.b), A: uint8(funcRes0.a)}
+func (t *Text) OutlineColor() *Color {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getOutlineColor(var0)
+	res := NewColorFromC(funcRes0)
+	return res
 }
 
 func (t *Text) OutlineThickness() float32 {
-	return C.sfText_getOutlineThickness(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getOutlineThickness(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (t *Text) Position() Vector2f {
-	funcRes0 := C.sfText_getPosition(t.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Text) Position() *Vector2f {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getPosition(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (t *Text) Rotation() float32 {
-	return C.sfText_getRotation(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (t *Text) GetScale() Vector2f {
-	funcRes0 := C.sfText_getScale(t.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Text) GetScale() *Vector2f {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getScale(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (t *Text) String() int32 {
-	return C.sfText_getString(t.CPtr())
+func (t *Text) String() string {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getString(var0)
+	res := C.GoString(funcRes0)
+	return res
 }
 
-func (t *Text) Style() int32 {
-	return C.sfText_getStyle(t.CPtr())
+func (t *Text) Style() uint32 {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getStyle(var0)
+	res := uint32(funcRes0)
+	return res
 }
 
 func (t *Text) Transform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfText_getTransform(t.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (t *Text) UnicodeString() int32 {
-	return C.sfText_getUnicodeString(t.CPtr())
+func (t *Text) UnicodeString() *uint32 {
+	var0 := t.ToC()
+	funcRes0 := C.sfText_getUnicodeString(var0)
+	res := (*uint32)(funcRes0)
+	return res
 }
 
 func (t *Text) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfText_move(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := offset.ToC()
+	C.sfText_move(var0, var1)
 }
 
 func (t *Text) Rotate(angle float32) {
-	var0 := angle
-	C.sfText_rotate(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(angle)
+	C.sfText_rotate(var0, var1)
 }
 
 func (t *Text) Scale(factors Vector2f) {
-	var0 := C.sfVector2f{x: C.float(factors), y: C.float(factors)}
-	C.sfText_scale(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := factors.ToC()
+	C.sfText_scale(var0, var1)
 }
 
 func (t *Text) SetCharacterSize(size int32) {
-	var0 := size
-	C.sfText_setCharacterSize(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.uint(size)
+	C.sfText_setCharacterSize(var0, var1)
 }
 
 func (t *Text) SetColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfText_setColor(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := color.ToC()
+	C.sfText_setColor(var0, var1)
 }
 
 func (t *Text) SetFillColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfText_setFillColor(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := color.ToC()
+	C.sfText_setFillColor(var0, var1)
 }
 
 func (t *Text) SetFont(font *Font) {
-	var0 := font
-	C.sfText_setFont(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := font.ToC()
+	C.sfText_setFont(var0, var1)
 }
 
 func (t *Text) SetLetterSpacing(spacingFactor float32) {
-	var0 := spacingFactor
-	C.sfText_setLetterSpacing(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(spacingFactor)
+	C.sfText_setLetterSpacing(var0, var1)
 }
 
 func (t *Text) SetLineSpacing(spacingFactor float32) {
-	var0 := spacingFactor
-	C.sfText_setLineSpacing(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(spacingFactor)
+	C.sfText_setLineSpacing(var0, var1)
 }
 
 func (t *Text) SetOrigin(origin Vector2f) {
-	var0 := C.sfVector2f{x: C.float(origin), y: C.float(origin)}
-	C.sfText_setOrigin(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := origin.ToC()
+	C.sfText_setOrigin(var0, var1)
 }
 
 func (t *Text) SetOutlineColor(color Color) {
-	var0 := C.sfColor{r: C.sfUint8(color), g: C.sfUint8(color), b: C.sfUint8(color), a: C.sfUint8(color)}
-	C.sfText_setOutlineColor(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := color.ToC()
+	C.sfText_setOutlineColor(var0, var1)
 }
 
 func (t *Text) SetOutlineThickness(thickness float32) {
-	var0 := thickness
-	C.sfText_setOutlineThickness(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(thickness)
+	C.sfText_setOutlineThickness(var0, var1)
 }
 
 func (t *Text) SetPosition(position Vector2f) {
-	var0 := C.sfVector2f{x: C.float(position), y: C.float(position)}
-	C.sfText_setPosition(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := position.ToC()
+	C.sfText_setPosition(var0, var1)
 }
 
 func (t *Text) SetRotation(angle float32) {
-	var0 := angle
-	C.sfText_setRotation(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(angle)
+	C.sfText_setRotation(var0, var1)
 }
 
 func (t *Text) SetScale(scale Vector2f) {
-	var0 := C.sfVector2f{x: C.float(scale), y: C.float(scale)}
-	C.sfText_setScale(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := scale.ToC()
+	C.sfText_setScale(var0, var1)
 }
 
 func (t *Text) SetString(string string) {
-	var0 := C.CString(string)
-	C.sfText_setString(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.CString(string)
+	C.sfText_setString(var0, var1)
 }
 
 func (t *Text) SetStyle(style uint32) {
-	var0 := style
-	C.sfText_setStyle(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.sfUint32(style)
+	C.sfText_setStyle(var0, var1)
 }
 
-func (t *Text) SetUnicodeString(string uint32) {
-	var0 := string
-	C.sfText_setUnicodeString(t.CPtr(), var0)
-	return
+func (t *Text) SetUnicodeString(string *uint32) {
+	var0 := t.ToC()
+	var1 := (*C.sfUint32)(string)
+	C.sfText_setUnicodeString(var0, var1)
 }
 
 func (t *Texture) Bind(textureCoordinateType TextureCoordinateType) {
-	var0 := textureCoordinateType
-	C.sfTexture_bind(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.sfTextureCoordinateType(textureCoordinateType)
+	C.sfTexture_bind(var0, var1)
 }
 
 func (t *Texture) Copy() *Texture {
-	funcRes0 := unsafe.Pointer(C.sfTexture_copy(t.CPtr()))
-	return &Texture{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_copy(var0)
+	res := NewTextureFromC(funcRes0)
+	return res
 }
 
 func (t *Texture) CopyToImage() *Image {
-	funcRes0 := unsafe.Pointer(C.sfTexture_copyToImage(t.CPtr()))
-	return &Image{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_copyToImage(var0)
+	res := NewImageFromC(funcRes0)
+	return res
 }
 
 func NewTexture(width int32, height int32) *Texture {
-	var0 := width
-	var1 := height
-	cval := unsafe.Pointer(C.sfTexture_create(var0, var1))
-	return &Texture{ptr: cval}
+	var0 := C.uint(width)
+	var1 := C.uint(height)
+	funcRes0 := C.sfTexture_create(var0, var1)
+	return NewTextureFromC(funcRes0)
 }
 
 func NewTextureFromFile(filename string, area *IntRect) *Texture {
 	var0 := C.CString(filename)
-	var1 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createFromFile(var0, &var1))
-	return &Texture{ptr: cval}
+	var1 := area.ToC()
+	funcRes0 := C.sfTexture_createFromFile(var0, &var1)
+	return NewTextureFromC(funcRes0)
 }
 
 func NewTextureFromImage(image *Image, area *IntRect) *Texture {
-	var0 := image
-	var1 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createFromImage(var0, &var1))
-	return &Texture{ptr: cval}
+	var0 := image.ToC()
+	var1 := area.ToC()
+	funcRes0 := C.sfTexture_createFromImage(var0, &var1)
+	return NewTextureFromC(funcRes0)
 }
 
-func NewTextureFromMemory(data int32, sizeInBytes int32, area *IntRect) *Texture {
-	var0 := data
-	var1 := sizeInBytes
-	var2 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createFromMemory(var0, var1, &var2))
-	return &Texture{ptr: cval}
+func NewTextureFromMemory(data uintptr, sizeInBytes uint64, area *IntRect) *Texture {
+	var0 := unsafe.Pointer(data)
+	var1 := C.size_t(sizeInBytes)
+	var2 := area.ToC()
+	funcRes0 := C.sfTexture_createFromMemory(var0, var1, &var2)
+	return NewTextureFromC(funcRes0)
 }
 
 func NewTextureFromStream(stream *InputStream, area *IntRect) *Texture {
-	var0 := stream
-	var1 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createFromStream(var0, &var1))
-	return &Texture{ptr: cval}
+	var0 := stream.ToC()
+	var1 := area.ToC()
+	funcRes0 := C.sfTexture_createFromStream(var0, &var1)
+	return NewTextureFromC(funcRes0)
 }
 
 func NewTextureSrgbFromFile(filename string, area *IntRect) *Texture {
 	var0 := C.CString(filename)
-	var1 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createSrgbFromFile(var0, &var1))
-	return &Texture{ptr: cval}
+	var1 := area.ToC()
+	funcRes0 := C.sfTexture_createSrgbFromFile(var0, &var1)
+	return NewTextureFromC(funcRes0)
 }
 
 func NewTextureSrgbFromImage(image *Image, area *IntRect) *Texture {
-	var0 := image
-	var1 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createSrgbFromImage(var0, &var1))
-	return &Texture{ptr: cval}
+	var0 := image.ToC()
+	var1 := area.ToC()
+	funcRes0 := C.sfTexture_createSrgbFromImage(var0, &var1)
+	return NewTextureFromC(funcRes0)
 }
 
-func NewTextureSrgbFromMemory(data int32, sizeInBytes int32, area *IntRect) *Texture {
-	var0 := data
-	var1 := sizeInBytes
-	var2 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createSrgbFromMemory(var0, var1, &var2))
-	return &Texture{ptr: cval}
+func NewTextureSrgbFromMemory(data uintptr, sizeInBytes uint64, area *IntRect) *Texture {
+	var0 := unsafe.Pointer(data)
+	var1 := C.size_t(sizeInBytes)
+	var2 := area.ToC()
+	funcRes0 := C.sfTexture_createSrgbFromMemory(var0, var1, &var2)
+	return NewTextureFromC(funcRes0)
 }
 
 func NewTextureSrgbFromStream(stream *InputStream, area *IntRect) *Texture {
-	var0 := stream
-	var1 := C.sfIntRect{left: C.sfInt32(area), top: C.sfInt32(area), width: C.sfInt32(area), height: C.sfInt32(area)}
-	cval := unsafe.Pointer(C.sfTexture_createSrgbFromStream(var0, &var1))
-	return &Texture{ptr: cval}
+	var0 := stream.ToC()
+	var1 := area.ToC()
+	funcRes0 := C.sfTexture_createSrgbFromStream(var0, &var1)
+	return NewTextureFromC(funcRes0)
 }
 
 func (t *Texture) Free() {
-	C.sfTexture_destroy(t.CPtr())
-	return
+	var0 := t.ToC()
+	C.sfTexture_destroy(var0)
 }
 
 func (t *Texture) GenerateMipmap() bool {
-	return C.sfTexture_generateMipmap(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_generateMipmap(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func TextureGetMaximumSize() int32 {
-	return C.sfTexture_getMaximumSize()
+	return int32(C.sfTexture_getMaximumSize())
 }
 
 func (t *Texture) NativeHandle() int32 {
-	return C.sfTexture_getNativeHandle(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_getNativeHandle(var0)
+	res := int32(funcRes0)
+	return res
 }
 
-func (t *Texture) Size() Vector2u {
-	funcRes0 := C.sfTexture_getSize(t.CPtr())
-	return Vector2u{X: uint32(funcRes0.x), Y: uint32(funcRes0.y)}
+func (t *Texture) Size() *Vector2u {
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_getSize(var0)
+	res := NewVector2uFromC(funcRes0)
+	return res
 }
 
 func (t *Texture) IsRepeated() bool {
-	return C.sfTexture_isRepeated(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_isRepeated(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (t *Texture) IsSmooth() bool {
-	return C.sfTexture_isSmooth(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_isSmooth(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (t *Texture) IsSrgb() bool {
-	return C.sfTexture_isSrgb(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfTexture_isSrgb(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (t *Texture) SetRepeated(repeated bool) {
-	var0 := repeated
-	C.sfTexture_setRepeated(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := boolToSfBool(repeated)
+	C.sfTexture_setRepeated(var0, var1)
 }
 
 func (t *Texture) SetSmooth(smooth bool) {
-	var0 := smooth
-	C.sfTexture_setSmooth(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := boolToSfBool(smooth)
+	C.sfTexture_setSmooth(var0, var1)
 }
 
 func (t *Texture) Swap(right *Texture) {
-	var0 := right
-	C.sfTexture_swap(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := right.ToC()
+	C.sfTexture_swap(var0, var1)
 }
 
 func (t *Texture) UpdateFromImage(image *Image, x int32, y int32) {
-	var0 := image
-	var1 := x
-	var2 := y
-	C.sfTexture_updateFromImage(t.CPtr(), var0, var1, var2)
-	return
+	var0 := t.ToC()
+	var1 := image.ToC()
+	var2 := C.uint(x)
+	var3 := C.uint(y)
+	C.sfTexture_updateFromImage(var0, var1, var2, var3)
 }
 
-func (t *Texture) UpdateFromPixels(pixels uint8, width int32, height int32, x int32, y int32) {
-	var0 := pixels
-	var1 := width
-	var2 := height
-	var3 := x
-	var4 := y
-	C.sfTexture_updateFromPixels(t.CPtr(), var0, var1, var2, var3, var4)
-	return
+func (t *Texture) UpdateFromPixels(pixels *uint8, width int32, height int32, x int32, y int32) {
+	var0 := t.ToC()
+	var1 := (*C.sfUint8)(pixels)
+	var2 := C.uint(width)
+	var3 := C.uint(height)
+	var4 := C.uint(x)
+	var5 := C.uint(y)
+	C.sfTexture_updateFromPixels(var0, var1, var2, var3, var4, var5)
 }
 
 func (t *Texture) UpdateFromRenderWindow(renderWindow *RenderWindow, x int32, y int32) {
-	var0 := renderWindow
-	var1 := x
-	var2 := y
-	C.sfTexture_updateFromRenderWindow(t.CPtr(), var0, var1, var2)
-	return
+	var0 := t.ToC()
+	var1 := renderWindow.ToC()
+	var2 := C.uint(x)
+	var3 := C.uint(y)
+	C.sfTexture_updateFromRenderWindow(var0, var1, var2, var3)
 }
 
 func (t *Texture) UpdateFromTexture(source *Texture, x int32, y int32) {
-	var0 := source
-	var1 := x
-	var2 := y
-	C.sfTexture_updateFromTexture(t.CPtr(), var0, var1, var2)
-	return
+	var0 := t.ToC()
+	var1 := source.ToC()
+	var2 := C.uint(x)
+	var3 := C.uint(y)
+	C.sfTexture_updateFromTexture(var0, var1, var2, var3)
 }
 
 func (t *Texture) UpdateFromWindow(window *Window, x int32, y int32) {
-	var0 := window
-	var1 := x
-	var2 := y
-	C.sfTexture_updateFromWindow(t.CPtr(), var0, var1, var2)
-	return
+	var0 := t.ToC()
+	var1 := window.ToC()
+	var2 := C.uint(x)
+	var3 := C.uint(y)
+	C.sfTexture_updateFromWindow(var0, var1, var2, var3)
 }
 
-func NewThread(function int32, userData int32) *Thread {
-	var0 := function
-	var1 := userData
-	cval := unsafe.Pointer(C.sfThread_create(var0, var1))
-	return &Thread{ptr: cval}
+func (t *Time) AsMicroseconds() int64 {
+	var0 := t.ToC()
+	funcRes0 := C.sfTime_asMicroseconds(var0)
+	res := int64(funcRes0)
+	return res
 }
 
-func (t *Thread) Free() {
-	C.sfThread_destroy(t.CPtr())
-	return
+func (t *Time) AsMilliseconds() int32 {
+	var0 := t.ToC()
+	funcRes0 := C.sfTime_asMilliseconds(var0)
+	res := int32(funcRes0)
+	return res
 }
 
-func (t *Thread) Launch() {
-	C.sfThread_launch(t.CPtr())
-	return
+func (t *Time) AsSeconds() float32 {
+	var0 := t.ToC()
+	funcRes0 := C.sfTime_asSeconds(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (t *Thread) Terminate() {
-	C.sfThread_terminate(t.CPtr())
-	return
+func TouchGetPosition(finger int32, relativeTo *Window) *Vector2i {
+	var0 := C.uint(finger)
+	var1 := relativeTo.ToC()
+	funcRes0 := C.sfTouch_getPosition(var0, var1)
+	return NewVector2iFromC(funcRes0)
 }
 
-func (t *Thread) Wait() {
-	C.sfThread_wait(t.CPtr())
-	return
+func TouchGetPositionRenderWindow(finger int32, relativeTo *RenderWindow) *Vector2i {
+	var0 := C.uint(finger)
+	var1 := relativeTo.ToC()
+	funcRes0 := C.sfTouch_getPositionRenderWindow(var0, var1)
+	return NewVector2iFromC(funcRes0)
 }
 
-func (t Time) AsMicroseconds() int32 {
-	return C.sfTime_asMicroseconds(t)
-}
-
-func (t Time) AsMilliseconds() int32 {
-	return C.sfTime_asMilliseconds(t)
-}
-
-func (t Time) AsSeconds() float32 {
-	return C.sfTime_asSeconds(t)
-}
-
-func TouchGetPosition(finger int32, relativeTo *Window) Vector2i {
-	var0 := finger
-	var1 := relativeTo
-	cval := C.sfTouch_getPosition(var0, var1)
-	return Vector2i{X: int32(cval.x), Y: int32(cval.y)}
-}
-
-func TouchGetPositionRenderWindow(finger int32, relativeTo *RenderWindow) Vector2i {
-	var0 := finger
-	var1 := relativeTo
-	cval := C.sfTouch_getPositionRenderWindow(var0, var1)
-	return Vector2i{X: int32(cval.x), Y: int32(cval.y)}
-}
-
-func TouchGetPositionWindowBase(finger int32, relativeTo *WindowBase) Vector2i {
-	var0 := finger
-	var1 := relativeTo
-	cval := C.sfTouch_getPositionWindowBase(var0, var1)
-	return Vector2i{X: int32(cval.x), Y: int32(cval.y)}
+func TouchGetPositionWindowBase(finger int32, relativeTo *WindowBase) *Vector2i {
+	var0 := C.uint(finger)
+	var1 := relativeTo.ToC()
+	funcRes0 := C.sfTouch_getPositionWindowBase(var0, var1)
+	return NewVector2iFromC(funcRes0)
 }
 
 func TouchIsDown(finger int32) bool {
-	var0 := finger
-	return C.sfTouch_isDown(var0)
+	var0 := C.uint(finger)
+	return sfBoolToBool(C.sfTouch_isDown(var0))
 }
 
 func (t *Transform) Combine(other *Transform) {
-	var0 := other
-	C.sfTransform_combine(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := other.ToC()
+	C.sfTransform_combine(&var0, &var1)
 }
 
 func (t *Transform) Equal(right *Transform) bool {
-	var0 := right
-	return C.sfTransform_equal(t.CPtr(), var0)
+	var0 := t.ToC()
+	var1 := right.ToC()
+	funcRes0 := C.sfTransform_equal(&var0, &var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func TransformFromMatrix(a00 float32, a01 float32, a02 float32, a10 float32, a11 float32, a12 float32, a20 float32, a21 float32, a22 float32) *Transform {
-	var0 := a00
-	var1 := a01
-	var2 := a02
-	var3 := a10
-	var4 := a11
-	var5 := a12
-	var6 := a20
-	var7 := a21
-	var8 := a22
-	cval := unsafe.Pointer(C.sfTransform_fromMatrix(var0, var1, var2, var3, var4, var5, var6, var7, var8))
-	return &Transform{ptr: cval}
+	var0 := C.float(a00)
+	var1 := C.float(a01)
+	var2 := C.float(a02)
+	var3 := C.float(a10)
+	var4 := C.float(a11)
+	var5 := C.float(a12)
+	var6 := C.float(a20)
+	var7 := C.float(a21)
+	var8 := C.float(a22)
+	funcRes0 := C.sfTransform_fromMatrix(var0, var1, var2, var3, var4, var5, var6, var7, var8)
+	return NewTransformFromC(funcRes0)
 }
 
 func (t *Transform) Inverse() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfTransform_getInverse(t.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfTransform_getInverse(&var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (t *Transform) Matrix(matrix float32) {
-	var0 := matrix
-	C.sfTransform_getMatrix(t.CPtr(), var0)
-	return
+func (t *Transform) Matrix(matrix *float32) {
+	var0 := t.ToC()
+	var1 := (*C.float)(matrix)
+	C.sfTransform_getMatrix(&var0, var1)
 }
 
 func (t *Transform) Rotate(angle float32) {
-	var0 := angle
-	C.sfTransform_rotate(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(angle)
+	C.sfTransform_rotate(&var0, var1)
 }
 
 func (t *Transform) RotateWithCenter(angle float32, centerX float32, centerY float32) {
-	var0 := angle
-	var1 := centerX
-	var2 := centerY
-	C.sfTransform_rotateWithCenter(t.CPtr(), var0, var1, var2)
-	return
+	var0 := t.ToC()
+	var1 := C.float(angle)
+	var2 := C.float(centerX)
+	var3 := C.float(centerY)
+	C.sfTransform_rotateWithCenter(&var0, var1, var2, var3)
 }
 
 func (t *Transform) Scale(scaleX float32, scaleY float32) {
-	var0 := scaleX
-	var1 := scaleY
-	C.sfTransform_scale(t.CPtr(), var0, var1)
-	return
+	var0 := t.ToC()
+	var1 := C.float(scaleX)
+	var2 := C.float(scaleY)
+	C.sfTransform_scale(&var0, var1, var2)
 }
 
 func (t *Transform) ScaleWithCenter(scaleX float32, scaleY float32, centerX float32, centerY float32) {
-	var0 := scaleX
-	var1 := scaleY
-	var2 := centerX
-	var3 := centerY
-	C.sfTransform_scaleWithCenter(t.CPtr(), var0, var1, var2, var3)
-	return
+	var0 := t.ToC()
+	var1 := C.float(scaleX)
+	var2 := C.float(scaleY)
+	var3 := C.float(centerX)
+	var4 := C.float(centerY)
+	C.sfTransform_scaleWithCenter(&var0, var1, var2, var3, var4)
 }
 
-func (t *Transform) TransformPoint(point Vector2f) Vector2f {
-	var0 := C.sfVector2f{x: C.float(point), y: C.float(point)}
-	funcRes0 := C.sfTransform_transformPoint(t.CPtr(), var0)
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Transform) TransformPoint(point Vector2f) *Vector2f {
+	var0 := t.ToC()
+	var1 := point.ToC()
+	funcRes0 := C.sfTransform_transformPoint(&var0, var1)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (t *Transform) TransformRect(rectangle FloatRect) FloatRect {
-	var0 := C.sfFloatRect{left: C.float(rectangle), top: C.float(rectangle), width: C.float(rectangle), height: C.float(rectangle)}
-	funcRes0 := C.sfTransform_transformRect(t.CPtr(), var0)
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (t *Transform) TransformRect(rectangle FloatRect) *FloatRect {
+	var0 := t.ToC()
+	var1 := rectangle.ToC()
+	funcRes0 := C.sfTransform_transformRect(&var0, var1)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (t *Transform) Translate(x float32, y float32) {
-	var0 := x
-	var1 := y
-	C.sfTransform_translate(t.CPtr(), var0, var1)
-	return
+	var0 := t.ToC()
+	var1 := C.float(x)
+	var2 := C.float(y)
+	C.sfTransform_translate(&var0, var1, var2)
 }
 
 func (t *Transformable) Copy() *Transformable {
-	funcRes0 := unsafe.Pointer(C.sfTransformable_copy(t.CPtr()))
-	return &Transformable{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfTransformable_copy(var0)
+	res := NewTransformableFromC(funcRes0)
+	return res
 }
 
 func NewTransformable() *Transformable {
-	cval := unsafe.Pointer(C.sfTransformable_create())
-	return &Transformable{ptr: cval}
+	funcRes0 := C.sfTransformable_create()
+	return NewTransformableFromC(funcRes0)
 }
 
 func (t *Transformable) Free() {
-	C.sfTransformable_destroy(t.CPtr())
-	return
+	var0 := t.ToC()
+	C.sfTransformable_destroy(var0)
 }
 
 func (t *Transformable) InverseTransform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfTransformable_getInverseTransform(t.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfTransformable_getInverseTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
-func (t *Transformable) Origin() Vector2f {
-	funcRes0 := C.sfTransformable_getOrigin(t.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Transformable) Origin() *Vector2f {
+	var0 := t.ToC()
+	funcRes0 := C.sfTransformable_getOrigin(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (t *Transformable) Position() Vector2f {
-	funcRes0 := C.sfTransformable_getPosition(t.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Transformable) Position() *Vector2f {
+	var0 := t.ToC()
+	funcRes0 := C.sfTransformable_getPosition(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (t *Transformable) Rotation() float32 {
-	return C.sfTransformable_getRotation(t.CPtr())
+	var0 := t.ToC()
+	funcRes0 := C.sfTransformable_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (t *Transformable) GetScale() Vector2f {
-	funcRes0 := C.sfTransformable_getScale(t.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (t *Transformable) GetScale() *Vector2f {
+	var0 := t.ToC()
+	funcRes0 := C.sfTransformable_getScale(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (t *Transformable) Transform() *Transform {
-	funcRes0 := unsafe.Pointer(C.sfTransformable_getTransform(t.CPtr()))
-	return &Transform{ptr: funcRes0}
+	var0 := t.ToC()
+	funcRes0 := C.sfTransformable_getTransform(var0)
+	res := NewTransformFromC(funcRes0)
+	return res
 }
 
 func (t *Transformable) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfTransformable_move(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := offset.ToC()
+	C.sfTransformable_move(var0, var1)
 }
 
 func (t *Transformable) Rotate(angle float32) {
-	var0 := angle
-	C.sfTransformable_rotate(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(angle)
+	C.sfTransformable_rotate(var0, var1)
 }
 
 func (t *Transformable) Scale(factors Vector2f) {
-	var0 := C.sfVector2f{x: C.float(factors), y: C.float(factors)}
-	C.sfTransformable_scale(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := factors.ToC()
+	C.sfTransformable_scale(var0, var1)
 }
 
 func (t *Transformable) SetOrigin(origin Vector2f) {
-	var0 := C.sfVector2f{x: C.float(origin), y: C.float(origin)}
-	C.sfTransformable_setOrigin(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := origin.ToC()
+	C.sfTransformable_setOrigin(var0, var1)
 }
 
 func (t *Transformable) SetPosition(position Vector2f) {
-	var0 := C.sfVector2f{x: C.float(position), y: C.float(position)}
-	C.sfTransformable_setPosition(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := position.ToC()
+	C.sfTransformable_setPosition(var0, var1)
 }
 
 func (t *Transformable) SetRotation(angle float32) {
-	var0 := angle
-	C.sfTransformable_setRotation(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := C.float(angle)
+	C.sfTransformable_setRotation(var0, var1)
 }
 
 func (t *Transformable) SetScale(scale Vector2f) {
-	var0 := C.sfVector2f{x: C.float(scale), y: C.float(scale)}
-	C.sfTransformable_setScale(t.CPtr(), var0)
-	return
+	var0 := t.ToC()
+	var1 := scale.ToC()
+	C.sfTransformable_setScale(var0, var1)
 }
 
 func (v *VertexArray) Append(vertex Vertex) {
-	var0 := vertex.CPtr()
-	C.sfVertexArray_append(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := vertex.ToC()
+	C.sfVertexArray_append(var0, var1)
 }
 
 func (v *VertexArray) Clear() {
-	C.sfVertexArray_clear(v.CPtr())
-	return
+	var0 := v.ToC()
+	C.sfVertexArray_clear(var0)
 }
 
 func (v *VertexArray) Copy() *VertexArray {
-	funcRes0 := unsafe.Pointer(C.sfVertexArray_copy(v.CPtr()))
-	return &VertexArray{ptr: funcRes0}
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexArray_copy(var0)
+	res := NewVertexArrayFromC(funcRes0)
+	return res
 }
 
 func NewVertexArray() *VertexArray {
-	cval := unsafe.Pointer(C.sfVertexArray_create())
-	return &VertexArray{ptr: cval}
+	funcRes0 := C.sfVertexArray_create()
+	return NewVertexArrayFromC(funcRes0)
 }
 
 func (v *VertexArray) Free() {
-	C.sfVertexArray_destroy(v.CPtr())
-	return
+	var0 := v.ToC()
+	C.sfVertexArray_destroy(var0)
 }
 
-func (v *VertexArray) Bounds() FloatRect {
-	funcRes0 := C.sfVertexArray_getBounds(v.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (v *VertexArray) Bounds() *FloatRect {
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexArray_getBounds(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (v *VertexArray) PrimitiveType() PrimitiveType {
-	return PrimitiveType(C.sfVertexArray_getPrimitiveType(v.CPtr()))
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexArray_getPrimitiveType(var0)
+	res := PrimitiveType(funcRes0)
+	return res
 }
 
-func (v *VertexArray) Vertex(index int32) *Vertex {
-	var0 := index
-	funcRes0 := unsafe.Pointer(C.sfVertexArray_getVertex(v.CPtr(), var0))
-	return &Vertex{ptr: funcRes0}
+func (v *VertexArray) VertexCount() uint64 {
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexArray_getVertexCount(var0)
+	res := uint64(funcRes0)
+	return res
 }
 
-func (v *VertexArray) VertexCount() int32 {
-	return C.sfVertexArray_getVertexCount(v.CPtr())
-}
-
-func (v *VertexArray) Resize(vertexCount int32) {
-	var0 := vertexCount
-	C.sfVertexArray_resize(v.CPtr(), var0)
-	return
+func (v *VertexArray) Resize(vertexCount uint64) {
+	var0 := v.ToC()
+	var1 := C.size_t(vertexCount)
+	C.sfVertexArray_resize(var0, var1)
 }
 
 func (v *VertexArray) SetPrimitiveType(primitiveType PrimitiveType) {
-	var0 := primitiveType
-	C.sfVertexArray_setPrimitiveType(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := C.sfPrimitiveType(primitiveType)
+	C.sfVertexArray_setPrimitiveType(var0, var1)
 }
 
 func (v *VertexBuffer) Bind() {
-	C.sfVertexBuffer_bind(v.CPtr())
-	return
+	var0 := v.ToC()
+	C.sfVertexBuffer_bind(var0)
 }
 
 func (v *VertexBuffer) Copy() *VertexBuffer {
-	funcRes0 := unsafe.Pointer(C.sfVertexBuffer_copy(v.CPtr()))
-	return &VertexBuffer{ptr: funcRes0}
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexBuffer_copy(var0)
+	res := NewVertexBufferFromC(funcRes0)
+	return res
 }
 
 func NewVertexBuffer(vertexCount int32, primitiveType PrimitiveType, usage VertexBufferUsage) *VertexBuffer {
-	var0 := vertexCount
-	var1 := primitiveType
-	var2 := usage
-	cval := unsafe.Pointer(C.sfVertexBuffer_create(var0, var1, var2))
-	return &VertexBuffer{ptr: cval}
+	var0 := C.uint(vertexCount)
+	var1 := C.sfPrimitiveType(primitiveType)
+	var2 := C.sfVertexBufferUsage(usage)
+	funcRes0 := C.sfVertexBuffer_create(var0, var1, var2)
+	return NewVertexBufferFromC(funcRes0)
 }
 
 func (v *VertexBuffer) Free() {
-	C.sfVertexBuffer_destroy(v.CPtr())
-	return
+	var0 := v.ToC()
+	C.sfVertexBuffer_destroy(var0)
 }
 
 func (v *VertexBuffer) NativeHandle() int32 {
-	return C.sfVertexBuffer_getNativeHandle(v.CPtr())
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexBuffer_getNativeHandle(var0)
+	res := int32(funcRes0)
+	return res
 }
 
 func (v *VertexBuffer) PrimitiveType() PrimitiveType {
-	return PrimitiveType(C.sfVertexBuffer_getPrimitiveType(v.CPtr()))
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexBuffer_getPrimitiveType(var0)
+	res := PrimitiveType(funcRes0)
+	return res
 }
 
 func (v *VertexBuffer) Usage() VertexBufferUsage {
-	return VertexBufferUsage(C.sfVertexBuffer_getUsage(v.CPtr()))
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexBuffer_getUsage(var0)
+	res := VertexBufferUsage(funcRes0)
+	return res
 }
 
 func (v *VertexBuffer) VertexCount() int32 {
-	return C.sfVertexBuffer_getVertexCount(v.CPtr())
+	var0 := v.ToC()
+	funcRes0 := C.sfVertexBuffer_getVertexCount(var0)
+	res := int32(funcRes0)
+	return res
 }
 
 func VertexBufferIsAvailable() bool {
-	return C.sfVertexBuffer_isAvailable()
+	return sfBoolToBool(C.sfVertexBuffer_isAvailable())
 }
 
 func (v *VertexBuffer) SetPrimitiveType(primitiveType PrimitiveType) {
-	var0 := primitiveType
-	C.sfVertexBuffer_setPrimitiveType(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := C.sfPrimitiveType(primitiveType)
+	C.sfVertexBuffer_setPrimitiveType(var0, var1)
 }
 
 func (v *VertexBuffer) SetUsage(usage VertexBufferUsage) {
-	var0 := usage
-	C.sfVertexBuffer_setUsage(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := C.sfVertexBufferUsage(usage)
+	C.sfVertexBuffer_setUsage(var0, var1)
 }
 
 func (v *VertexBuffer) Swap(right *VertexBuffer) {
-	var0 := right
-	C.sfVertexBuffer_swap(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := right.ToC()
+	C.sfVertexBuffer_swap(var0, var1)
 }
 
-func (v *VertexBuffer) Update(vertices *Vertex, vertexCount int32, offset int32) bool {
-	var0 := vertices
-	var1 := vertexCount
-	var2 := offset
-	return C.sfVertexBuffer_update(v.CPtr(), var0, var1, var2)
+func (v *VertexBuffer) Update(vertices []Vertex, offset int32) bool {
+	var0 := v.ToC()
+	var1Count := C.uint(len(vertices))
+	var1Array := NewVertexCArrayFromGoSlice(vertices)
+	var3 := C.uint(offset)
+	funcRes0 := C.sfVertexBuffer_update(var0, var1Array, var1Count, var3)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (v *VertexBuffer) UpdateFromVertexBuffer(other *VertexBuffer) bool {
-	var0 := other
-	return C.sfVertexBuffer_updateFromVertexBuffer(v.CPtr(), var0)
+	var0 := v.ToC()
+	var1 := other.ToC()
+	funcRes0 := C.sfVertexBuffer_updateFromVertexBuffer(var0, var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
-func VideoModeGetDesktopMode() VideoMode {
-	cval := C.sfVideoMode_getDesktopMode()
-	return VideoMode{Width: uint32(cval.width), Height: uint32(cval.height), BitsPerPixel: uint32(cval.bitsPerPixel)}
+func VideoModeGetDesktopMode() *VideoMode {
+	funcRes0 := C.sfVideoMode_getDesktopMode()
+	return NewVideoModeFromC(funcRes0)
 }
 
-func VideoModeGetFullscreenModes(count int32) VideoMode {
-	var0 := count
-	cval := C.sfVideoMode_getFullscreenModes(var0)
-	return VideoMode{Width: uint32(cval.width), Height: uint32(cval.height), BitsPerPixel: uint32(cval.bitsPerPixel)}
-}
-
-func (v VideoMode) IsValid() bool {
-	return C.sfVideoMode_isValid(v)
+func (v *VideoMode) IsValid() bool {
+	var0 := v.ToC()
+	funcRes0 := C.sfVideoMode_isValid(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (v *View) Copy() *View {
-	funcRes0 := unsafe.Pointer(C.sfView_copy(v.CPtr()))
-	return &View{ptr: funcRes0}
+	var0 := v.ToC()
+	funcRes0 := C.sfView_copy(var0)
+	res := NewViewFromC(funcRes0)
+	return res
 }
 
 func NewView() *View {
-	cval := unsafe.Pointer(C.sfView_create())
-	return &View{ptr: cval}
+	funcRes0 := C.sfView_create()
+	return NewViewFromC(funcRes0)
 }
 
 func NewViewFromRect(rectangle FloatRect) *View {
-	var0 := C.sfFloatRect{left: C.float(rectangle), top: C.float(rectangle), width: C.float(rectangle), height: C.float(rectangle)}
-	cval := unsafe.Pointer(C.sfView_createFromRect(var0))
-	return &View{ptr: cval}
+	var0 := rectangle.ToC()
+	funcRes0 := C.sfView_createFromRect(var0)
+	return NewViewFromC(funcRes0)
 }
 
 func (v *View) Free() {
-	C.sfView_destroy(v.CPtr())
-	return
+	var0 := v.ToC()
+	C.sfView_destroy(var0)
 }
 
-func (v *View) Center() Vector2f {
-	funcRes0 := C.sfView_getCenter(v.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (v *View) Center() *Vector2f {
+	var0 := v.ToC()
+	funcRes0 := C.sfView_getCenter(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
 func (v *View) Rotation() float32 {
-	return C.sfView_getRotation(v.CPtr())
+	var0 := v.ToC()
+	funcRes0 := C.sfView_getRotation(var0)
+	res := float32(funcRes0)
+	return res
 }
 
-func (v *View) Size() Vector2f {
-	funcRes0 := C.sfView_getSize(v.CPtr())
-	return Vector2f{X: float32(funcRes0.x), Y: float32(funcRes0.y)}
+func (v *View) Size() *Vector2f {
+	var0 := v.ToC()
+	funcRes0 := C.sfView_getSize(var0)
+	res := NewVector2fFromC(funcRes0)
+	return res
 }
 
-func (v *View) Viewport() FloatRect {
-	funcRes0 := C.sfView_getViewport(v.CPtr())
-	return FloatRect{Left: float32(funcRes0.left), Top: float32(funcRes0.top), Width: float32(funcRes0.width), Height: float32(funcRes0.height)}
+func (v *View) Viewport() *FloatRect {
+	var0 := v.ToC()
+	funcRes0 := C.sfView_getViewport(var0)
+	res := NewFloatRectFromC(funcRes0)
+	return res
 }
 
 func (v *View) Move(offset Vector2f) {
-	var0 := C.sfVector2f{x: C.float(offset), y: C.float(offset)}
-	C.sfView_move(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := offset.ToC()
+	C.sfView_move(var0, var1)
 }
 
 func (v *View) Reset(rectangle FloatRect) {
-	var0 := C.sfFloatRect{left: C.float(rectangle), top: C.float(rectangle), width: C.float(rectangle), height: C.float(rectangle)}
-	C.sfView_reset(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := rectangle.ToC()
+	C.sfView_reset(var0, var1)
 }
 
 func (v *View) Rotate(angle float32) {
-	var0 := angle
-	C.sfView_rotate(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := C.float(angle)
+	C.sfView_rotate(var0, var1)
 }
 
 func (v *View) SetCenter(center Vector2f) {
-	var0 := C.sfVector2f{x: C.float(center), y: C.float(center)}
-	C.sfView_setCenter(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := center.ToC()
+	C.sfView_setCenter(var0, var1)
 }
 
 func (v *View) SetRotation(angle float32) {
-	var0 := angle
-	C.sfView_setRotation(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := C.float(angle)
+	C.sfView_setRotation(var0, var1)
 }
 
 func (v *View) SetSize(size Vector2f) {
-	var0 := C.sfVector2f{x: C.float(size), y: C.float(size)}
-	C.sfView_setSize(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := size.ToC()
+	C.sfView_setSize(var0, var1)
 }
 
 func (v *View) SetViewport(viewport FloatRect) {
-	var0 := C.sfFloatRect{left: C.float(viewport), top: C.float(viewport), width: C.float(viewport), height: C.float(viewport)}
-	C.sfView_setViewport(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := viewport.ToC()
+	C.sfView_setViewport(var0, var1)
 }
 
 func (v *View) Zoom(factor float32) {
-	var0 := factor
-	C.sfView_zoom(v.CPtr(), var0)
-	return
+	var0 := v.ToC()
+	var1 := C.float(factor)
+	C.sfView_zoom(var0, var1)
 }
 
 func (w *WindowBase) Close() {
-	C.sfWindowBase_close(w.CPtr())
-	return
+	var0 := w.ToC()
+	C.sfWindowBase_close(var0)
 }
 
 func NewWindowBase(mode VideoMode, title string, style uint32) *WindowBase {
-	var0 := C.sfVideoMode{width: C.sfUint(mode), height: C.sfUint(mode), bitsPerPixel: C.sfUint(mode)}
+	var0 := mode.ToC()
 	var1 := C.CString(title)
-	var2 := style
-	cval := unsafe.Pointer(C.sfWindowBase_create(var0, var1, var2))
-	return &WindowBase{ptr: cval}
+	var2 := C.sfUint32(style)
+	funcRes0 := C.sfWindowBase_create(var0, var1, var2)
+	return NewWindowBaseFromC(funcRes0)
 }
 
 func NewWindowBaseFromHandle(handle uintptr) *WindowBase {
-	var0 := handle
-	cval := unsafe.Pointer(C.sfWindowBase_createFromHandle(var0))
-	return &WindowBase{ptr: cval}
+	var0 := C.sfWindowHandle(handle)
+	funcRes0 := C.sfWindowBase_createFromHandle(var0)
+	return NewWindowBaseFromC(funcRes0)
 }
 
-func NewWindowBaseUnicode(mode VideoMode, title uint32, style uint32) *WindowBase {
-	var0 := C.sfVideoMode{width: C.sfUint(mode), height: C.sfUint(mode), bitsPerPixel: C.sfUint(mode)}
-	var1 := title
-	var2 := style
-	cval := unsafe.Pointer(C.sfWindowBase_createUnicode(var0, var1, var2))
-	return &WindowBase{ptr: cval}
-}
-
-func (w *WindowBase) NewVulkanSurface(instance int32, surface int32, allocator int32) bool {
-	var0 := instance
-	var1 := surface
-	var2 := allocator
-	return C.sfWindowBase_createVulkanSurface(w.CPtr(), var0, var1, var2)
+func NewWindowBaseUnicode(mode VideoMode, title *uint32, style uint32) *WindowBase {
+	var0 := mode.ToC()
+	var1 := (*C.sfUint32)(title)
+	var2 := C.sfUint32(style)
+	funcRes0 := C.sfWindowBase_createUnicode(var0, var1, var2)
+	return NewWindowBaseFromC(funcRes0)
 }
 
 func (w *WindowBase) Free() {
-	C.sfWindowBase_destroy(w.CPtr())
-	return
+	var0 := w.ToC()
+	C.sfWindowBase_destroy(var0)
 }
 
-func (w *WindowBase) Position() Vector2i {
-	funcRes0 := C.sfWindowBase_getPosition(w.CPtr())
-	return Vector2i{X: int32(funcRes0.x), Y: int32(funcRes0.y)}
+func (w *WindowBase) Position() *Vector2i {
+	var0 := w.ToC()
+	funcRes0 := C.sfWindowBase_getPosition(var0)
+	res := NewVector2iFromC(funcRes0)
+	return res
 }
 
-func (w *WindowBase) Size() Vector2u {
-	funcRes0 := C.sfWindowBase_getSize(w.CPtr())
-	return Vector2u{X: uint32(funcRes0.x), Y: uint32(funcRes0.y)}
+func (w *WindowBase) Size() *Vector2u {
+	var0 := w.ToC()
+	funcRes0 := C.sfWindowBase_getSize(var0)
+	res := NewVector2uFromC(funcRes0)
+	return res
 }
 
-func (w *WindowBase) SystemHandle() int32 {
-	return C.sfWindowBase_getSystemHandle(w.CPtr())
+func (w *WindowBase) SystemHandle() uintptr {
+	var0 := w.ToC()
+	funcRes0 := C.sfWindowBase_getSystemHandle(var0)
+	res := uintptr(funcRes0)
+	return res
 }
 
 func (w *WindowBase) HasFocus() bool {
-	return C.sfWindowBase_hasFocus(w.CPtr())
+	var0 := w.ToC()
+	funcRes0 := C.sfWindowBase_hasFocus(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (w *WindowBase) IsOpen() bool {
-	return C.sfWindowBase_isOpen(w.CPtr())
+	var0 := w.ToC()
+	funcRes0 := C.sfWindowBase_isOpen(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
-func (w *WindowBase) PollEvent(event *Event) bool {
-	var0 := event
-	return C.sfWindowBase_pollEvent(w.CPtr(), var0)
+func (w *WindowBase) PollEvent() (Event, bool) {
+	var0 := w.ToC()
+	returnParam := C.sfEvent{}
+	funcRes0 := C.sfWindowBase_pollEvent(var0, &returnParam)
+	returnParamRes := NewEventFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 
 func (w *WindowBase) RequestFocus() {
-	C.sfWindowBase_requestFocus(w.CPtr())
-	return
+	var0 := w.ToC()
+	C.sfWindowBase_requestFocus(var0)
 }
 
-func (w *WindowBase) SetIcon(width int32, height int32, pixels uint8) {
-	var0 := width
-	var1 := height
-	var2 := pixels
-	C.sfWindowBase_setIcon(w.CPtr(), var0, var1, var2)
-	return
+func (w *WindowBase) SetIcon(width int32, height int32, pixels *uint8) {
+	var0 := w.ToC()
+	var1 := C.uint(width)
+	var2 := C.uint(height)
+	var3 := (*C.sfUint8)(pixels)
+	C.sfWindowBase_setIcon(var0, var1, var2, var3)
 }
 
 func (w *WindowBase) SetJoystickThreshold(threshold float32) {
-	var0 := threshold
-	C.sfWindowBase_setJoystickThreshold(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := C.float(threshold)
+	C.sfWindowBase_setJoystickThreshold(var0, var1)
 }
 
 func (w *WindowBase) SetKeyRepeatEnabled(enabled bool) {
-	var0 := enabled
-	C.sfWindowBase_setKeyRepeatEnabled(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(enabled)
+	C.sfWindowBase_setKeyRepeatEnabled(var0, var1)
 }
 
 func (w *WindowBase) SetMouseCursor(cursor *Cursor) {
-	var0 := cursor
-	C.sfWindowBase_setMouseCursor(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := cursor.ToC()
+	C.sfWindowBase_setMouseCursor(var0, var1)
 }
 
 func (w *WindowBase) SetMouseCursorGrabbed(grabbed bool) {
-	var0 := grabbed
-	C.sfWindowBase_setMouseCursorGrabbed(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(grabbed)
+	C.sfWindowBase_setMouseCursorGrabbed(var0, var1)
 }
 
 func (w *WindowBase) SetMouseCursorVisible(visible bool) {
-	var0 := visible
-	C.sfWindowBase_setMouseCursorVisible(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(visible)
+	C.sfWindowBase_setMouseCursorVisible(var0, var1)
 }
 
 func (w *WindowBase) SetPosition(position Vector2i) {
-	var0 := C.sfVector2i{x: C.int(position), y: C.int(position)}
-	C.sfWindowBase_setPosition(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := position.ToC()
+	C.sfWindowBase_setPosition(var0, var1)
 }
 
 func (w *WindowBase) SetSize(size Vector2u) {
-	var0 := C.sfVector2u{x: C.sfUint32(size), y: C.sfUint32(size)}
-	C.sfWindowBase_setSize(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := size.ToC()
+	C.sfWindowBase_setSize(var0, var1)
 }
 
 func (w *WindowBase) SetTitle(title string) {
-	var0 := C.CString(title)
-	C.sfWindowBase_setTitle(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := C.CString(title)
+	C.sfWindowBase_setTitle(var0, var1)
 }
 
-func (w *WindowBase) SetUnicodeTitle(title uint32) {
-	var0 := title
-	C.sfWindowBase_setUnicodeTitle(w.CPtr(), var0)
-	return
+func (w *WindowBase) SetUnicodeTitle(title *uint32) {
+	var0 := w.ToC()
+	var1 := (*C.sfUint32)(title)
+	C.sfWindowBase_setUnicodeTitle(var0, var1)
 }
 
 func (w *WindowBase) SetVisible(visible bool) {
-	var0 := visible
-	C.sfWindowBase_setVisible(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(visible)
+	C.sfWindowBase_setVisible(var0, var1)
 }
 
-func (w *WindowBase) WaitEvent(event *Event) bool {
-	var0 := event
-	return C.sfWindowBase_waitEvent(w.CPtr(), var0)
+func (w *WindowBase) WaitEvent() (Event, bool) {
+	var0 := w.ToC()
+	returnParam := C.sfEvent{}
+	funcRes0 := C.sfWindowBase_waitEvent(var0, &returnParam)
+	returnParamRes := NewEventFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 
 func (w *Window) Close() {
-	C.sfWindow_close(w.CPtr())
-	return
+	var0 := w.ToC()
+	C.sfWindow_close(var0)
 }
 
 func NewWindow(mode VideoMode, title string, style uint32, settings *ContextSettings) *Window {
-	var0 := C.sfVideoMode{width: C.sfUint(mode), height: C.sfUint(mode), bitsPerPixel: C.sfUint(mode)}
+	var0 := mode.ToC()
 	var1 := C.CString(title)
-	var2 := style
-	var3 := C.sfContextSettings{depthBits: C.sfUint(settings), stencilBits: C.sfUint(settings), antialiasingLevel: C.sfUint(settings), majorVersion: C.sfUint(settings), minorVersion: C.sfUint(settings), attributeFlags: C.sfUint32(settings), sRgbCapable: C.sfBool(settings)}
-	cval := unsafe.Pointer(C.sfWindow_create(var0, var1, var2, &var3))
-	return &Window{ptr: cval}
+	var2 := C.sfUint32(style)
+	var3 := settings.ToC()
+	funcRes0 := C.sfWindow_create(var0, var1, var2, &var3)
+	return NewWindowFromC(funcRes0)
 }
 
 func NewWindowFromHandle(handle uintptr, settings *ContextSettings) *Window {
-	var0 := handle
-	var1 := C.sfContextSettings{depthBits: C.sfUint(settings), stencilBits: C.sfUint(settings), antialiasingLevel: C.sfUint(settings), majorVersion: C.sfUint(settings), minorVersion: C.sfUint(settings), attributeFlags: C.sfUint32(settings), sRgbCapable: C.sfBool(settings)}
-	cval := unsafe.Pointer(C.sfWindow_createFromHandle(var0, &var1))
-	return &Window{ptr: cval}
+	var0 := C.sfWindowHandle(handle)
+	var1 := settings.ToC()
+	funcRes0 := C.sfWindow_createFromHandle(var0, &var1)
+	return NewWindowFromC(funcRes0)
 }
 
-func NewWindowUnicode(mode VideoMode, title uint32, style uint32, settings *ContextSettings) *Window {
-	var0 := C.sfVideoMode{width: C.sfUint(mode), height: C.sfUint(mode), bitsPerPixel: C.sfUint(mode)}
-	var1 := title
-	var2 := style
-	var3 := C.sfContextSettings{depthBits: C.sfUint(settings), stencilBits: C.sfUint(settings), antialiasingLevel: C.sfUint(settings), majorVersion: C.sfUint(settings), minorVersion: C.sfUint(settings), attributeFlags: C.sfUint32(settings), sRgbCapable: C.sfBool(settings)}
-	cval := unsafe.Pointer(C.sfWindow_createUnicode(var0, var1, var2, &var3))
-	return &Window{ptr: cval}
-}
-
-func (w *Window) NewVulkanSurface(instance int32, surface int32, allocator int32) bool {
-	var0 := instance
-	var1 := surface
-	var2 := allocator
-	return C.sfWindow_createVulkanSurface(w.CPtr(), var0, var1, var2)
+func NewWindowUnicode(mode VideoMode, title *uint32, style uint32, settings *ContextSettings) *Window {
+	var0 := mode.ToC()
+	var1 := (*C.sfUint32)(title)
+	var2 := C.sfUint32(style)
+	var3 := settings.ToC()
+	funcRes0 := C.sfWindow_createUnicode(var0, var1, var2, &var3)
+	return NewWindowFromC(funcRes0)
 }
 
 func (w *Window) Free() {
-	C.sfWindow_destroy(w.CPtr())
-	return
+	var0 := w.ToC()
+	C.sfWindow_destroy(var0)
 }
 
 func (w *Window) Display() {
-	C.sfWindow_display(w.CPtr())
-	return
+	var0 := w.ToC()
+	C.sfWindow_display(var0)
 }
 
-func (w *Window) Position() Vector2i {
-	funcRes0 := C.sfWindow_getPosition(w.CPtr())
-	return Vector2i{X: int32(funcRes0.x), Y: int32(funcRes0.y)}
+func (w *Window) Position() *Vector2i {
+	var0 := w.ToC()
+	funcRes0 := C.sfWindow_getPosition(var0)
+	res := NewVector2iFromC(funcRes0)
+	return res
 }
 
-func (w *Window) Settings() ContextSettings {
-	funcRes0 := C.sfWindow_getSettings(w.CPtr())
-	return ContextSettings{DepthBits: uint32(funcRes0.depthBits), StencilBits: uint32(funcRes0.stencilBits), AntialiasingLevel: uint32(funcRes0.antialiasingLevel), MajorVersion: uint32(funcRes0.majorVersion), MinorVersion: uint32(funcRes0.minorVersion), AttributeFlags: uint32(funcRes0.attributeFlags), SRgbCapable: bool(funcRes0.sRgbCapable)}
+func (w *Window) Settings() *ContextSettings {
+	var0 := w.ToC()
+	funcRes0 := C.sfWindow_getSettings(var0)
+	res := NewContextSettingsFromC(funcRes0)
+	return res
 }
 
-func (w *Window) Size() Vector2u {
-	funcRes0 := C.sfWindow_getSize(w.CPtr())
-	return Vector2u{X: uint32(funcRes0.x), Y: uint32(funcRes0.y)}
+func (w *Window) Size() *Vector2u {
+	var0 := w.ToC()
+	funcRes0 := C.sfWindow_getSize(var0)
+	res := NewVector2uFromC(funcRes0)
+	return res
 }
 
-func (w *Window) SystemHandle() int32 {
-	return C.sfWindow_getSystemHandle(w.CPtr())
+func (w *Window) SystemHandle() uintptr {
+	var0 := w.ToC()
+	funcRes0 := C.sfWindow_getSystemHandle(var0)
+	res := uintptr(funcRes0)
+	return res
 }
 
 func (w *Window) HasFocus() bool {
-	return C.sfWindow_hasFocus(w.CPtr())
+	var0 := w.ToC()
+	funcRes0 := C.sfWindow_hasFocus(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (w *Window) IsOpen() bool {
-	return C.sfWindow_isOpen(w.CPtr())
+	var0 := w.ToC()
+	funcRes0 := C.sfWindow_isOpen(var0)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
-func (w *Window) PollEvent(event *Event) bool {
-	var0 := event
-	return C.sfWindow_pollEvent(w.CPtr(), var0)
+func (w *Window) PollEvent() (Event, bool) {
+	var0 := w.ToC()
+	returnParam := C.sfEvent{}
+	funcRes0 := C.sfWindow_pollEvent(var0, &returnParam)
+	returnParamRes := NewEventFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 
 func (w *Window) RequestFocus() {
-	C.sfWindow_requestFocus(w.CPtr())
-	return
+	var0 := w.ToC()
+	C.sfWindow_requestFocus(var0)
 }
 
 func (w *Window) SetActive(active bool) bool {
-	var0 := active
-	return C.sfWindow_setActive(w.CPtr(), var0)
+	var0 := w.ToC()
+	var1 := boolToSfBool(active)
+	funcRes0 := C.sfWindow_setActive(var0, var1)
+	res := sfBoolToBool(funcRes0)
+	return res
 }
 
 func (w *Window) SetFramerateLimit(limit int32) {
-	var0 := limit
-	C.sfWindow_setFramerateLimit(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := C.uint(limit)
+	C.sfWindow_setFramerateLimit(var0, var1)
 }
 
-func (w *Window) SetIcon(width int32, height int32, pixels uint8) {
-	var0 := width
-	var1 := height
-	var2 := pixels
-	C.sfWindow_setIcon(w.CPtr(), var0, var1, var2)
-	return
+func (w *Window) SetIcon(width int32, height int32, pixels *uint8) {
+	var0 := w.ToC()
+	var1 := C.uint(width)
+	var2 := C.uint(height)
+	var3 := (*C.sfUint8)(pixels)
+	C.sfWindow_setIcon(var0, var1, var2, var3)
 }
 
 func (w *Window) SetJoystickThreshold(threshold float32) {
-	var0 := threshold
-	C.sfWindow_setJoystickThreshold(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := C.float(threshold)
+	C.sfWindow_setJoystickThreshold(var0, var1)
 }
 
 func (w *Window) SetKeyRepeatEnabled(enabled bool) {
-	var0 := enabled
-	C.sfWindow_setKeyRepeatEnabled(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(enabled)
+	C.sfWindow_setKeyRepeatEnabled(var0, var1)
 }
 
 func (w *Window) SetMouseCursor(cursor *Cursor) {
-	var0 := cursor
-	C.sfWindow_setMouseCursor(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := cursor.ToC()
+	C.sfWindow_setMouseCursor(var0, var1)
 }
 
 func (w *Window) SetMouseCursorGrabbed(grabbed bool) {
-	var0 := grabbed
-	C.sfWindow_setMouseCursorGrabbed(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(grabbed)
+	C.sfWindow_setMouseCursorGrabbed(var0, var1)
 }
 
 func (w *Window) SetMouseCursorVisible(visible bool) {
-	var0 := visible
-	C.sfWindow_setMouseCursorVisible(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(visible)
+	C.sfWindow_setMouseCursorVisible(var0, var1)
 }
 
 func (w *Window) SetPosition(position Vector2i) {
-	var0 := C.sfVector2i{x: C.int(position), y: C.int(position)}
-	C.sfWindow_setPosition(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := position.ToC()
+	C.sfWindow_setPosition(var0, var1)
 }
 
 func (w *Window) SetSize(size Vector2u) {
-	var0 := C.sfVector2u{x: C.sfUint32(size), y: C.sfUint32(size)}
-	C.sfWindow_setSize(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := size.ToC()
+	C.sfWindow_setSize(var0, var1)
 }
 
 func (w *Window) SetTitle(title string) {
-	var0 := C.CString(title)
-	C.sfWindow_setTitle(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := C.CString(title)
+	C.sfWindow_setTitle(var0, var1)
 }
 
-func (w *Window) SetUnicodeTitle(title uint32) {
-	var0 := title
-	C.sfWindow_setUnicodeTitle(w.CPtr(), var0)
-	return
+func (w *Window) SetUnicodeTitle(title *uint32) {
+	var0 := w.ToC()
+	var1 := (*C.sfUint32)(title)
+	C.sfWindow_setUnicodeTitle(var0, var1)
 }
 
 func (w *Window) SetVerticalSyncEnabled(enabled bool) {
-	var0 := enabled
-	C.sfWindow_setVerticalSyncEnabled(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(enabled)
+	C.sfWindow_setVerticalSyncEnabled(var0, var1)
 }
 
 func (w *Window) SetVisible(visible bool) {
-	var0 := visible
-	C.sfWindow_setVisible(w.CPtr(), var0)
-	return
+	var0 := w.ToC()
+	var1 := boolToSfBool(visible)
+	C.sfWindow_setVisible(var0, var1)
 }
 
-func (w *Window) WaitEvent(event *Event) bool {
-	var0 := event
-	return C.sfWindow_waitEvent(w.CPtr(), var0)
+func (w *Window) WaitEvent() (Event, bool) {
+	var0 := w.ToC()
+	returnParam := C.sfEvent{}
+	funcRes0 := C.sfWindow_waitEvent(var0, &returnParam)
+	returnParamRes := NewEventFromC(returnParam)
+	res := sfBoolToBool(funcRes0)
+	return returnParamRes, res
 }
 

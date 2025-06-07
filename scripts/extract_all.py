@@ -18,6 +18,15 @@ if not JSON_DIR:
 if not os.path.isdir(JSON_DIR):
     raise ValueError(f"JSON_DIR '{JSON_DIR}' is not a valid directory.")
 
+INCLUDE_DIR = os.getenv('INCLUDE_DIR')
+if not INCLUDE_DIR:
+    raise ValueError(
+        "Environment variable INCLUDE_DIR is not set. Please set it to the directory containing header files.")
+if not os.path.isdir(INCLUDE_DIR):
+    raise ValueError(f"INCLUDE_DIR '{INCLUDE_DIR}' is not a valid directory.")
+
+METADATA_OUT = os.path.join(JSON_DIR, 'metadata.json')
+
 # Output files
 TYPES_OUT = os.path.join(JSON_DIR, 'types.json')
 FUNCS_OUT = os.path.join(JSON_DIR, 'functions.json')
@@ -27,7 +36,7 @@ FUNCS_OUT = os.path.join(JSON_DIR, 'functions.json')
 name_reqex = re.compile(r'^sf[A-Z][a-zA-Z0-9_]*')
 
 # Skip Network and Audio files
-skip_files_regex = re.compile(r'^(SFML_Network|SFML_Audio)')
+skip_files_regex = re.compile(r'(SFML_Network|Network|SFML_Audio|Audio)')
 
 
 def should_include(name):
@@ -104,12 +113,19 @@ def extract_functions(ast_node):
             if not should_include(fn['name']):
                 return functions
 
+            param_strs = []
             for child in ast_node.get('inner', []):
                 if child.get('kind') == 'ParmVarDecl':
+                    param_type = child.get('type', {}).get('qualType', 'unknown')
+                    param_name = child.get('name', '')
                     fn['parameters'].append({
-                        'name': child.get('name'),
-                        'type': child.get('type', {}).get('qualType', 'unknown')
+                        'name': param_name,
+                        'type': param_type
                     })
+                    param_strs.append(f"{param_type} {param_name}".strip())
+
+            # Add the signature string
+            fn['signature'] = f"{fn['return_type']}{fn['name']}({', '.join(param_strs)});"
 
             functions.append(fn)
 
@@ -119,6 +135,7 @@ def extract_functions(ast_node):
     elif isinstance(ast_node, list):
         for item in ast_node:
             functions.extend(extract_functions(item))
+
 
     return functions
 
@@ -215,3 +232,26 @@ print(f"✅ Wrote {len(unique_types)} unique types to {TYPES_OUT}")
 with open(FUNCS_OUT, 'w') as f:
     json.dump(sorted(unique_functions.values(), key=lambda x: x['name']), f, indent=2)
 print(f"✅ Wrote {len(all_functions)} functions to {FUNCS_OUT}")
+
+# --- Metadata output ---
+header_files = []
+for root, _, files in os.walk(INCLUDE_DIR):
+    for file in files:
+        if file.endswith(('.h', '.hpp')):
+            full_path = os.path.join(root, file)
+            rel_path = os.path.relpath(full_path, INCLUDE_DIR).replace("\\", "/")  # Normalize
+
+            # Apply regex to the full relative path
+            if skip_files_regex.search(rel_path):
+                print(f"Skipping header file {rel_path} as it matches the skip pattern.")
+                continue
+
+            header_files.append(rel_path)
+
+# Write metadata
+metadata = {
+    "header_files": sorted(header_files)
+}
+with open(METADATA_OUT, 'w') as f:
+    json.dump(metadata, f, indent=2)
+print(f"✅ Wrote metadata with {len(header_files)} header files to {METADATA_OUT}")

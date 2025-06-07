@@ -34,3 +34,4 @@ go.work.sum
 # My own
 CSFML/
 generated/
+lib/

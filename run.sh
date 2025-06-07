@@ -14,6 +14,7 @@ export CSFML_DIR="./CSFML"
 export GEN_DIR="./generated"
 export JSON_DIR="$GEN_DIR/json"
 export AST_DIR="$JSON_DIR/ast_json"
+export INCLUDE_DIR="$CSFML_DIR/include"
 export SCRIPT_DIR="./scripts"
 export PUBLIC_DIR="./public"
 

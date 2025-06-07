@@ -2,34 +2,256 @@
 
 package sfml
 
-import (
-	"C"
-	"unsafe"
-)
+// #include <stdlib.h>
+// #include <string.h>
+// typedef unsigned int uint;
+//
+// #include <SFML/Config.h>
+// #include <SFML/GPUPreference.h>
+// #include <SFML/Graphics.h>
+// #include <SFML/Graphics/BlendMode.h>
+// #include <SFML/Graphics/CircleShape.h>
+// #include <SFML/Graphics/Color.h>
+// #include <SFML/Graphics/ConvexShape.h>
+// #include <SFML/Graphics/Export.h>
+// #include <SFML/Graphics/Font.h>
+// #include <SFML/Graphics/FontInfo.h>
+// #include <SFML/Graphics/Glsl.h>
+// #include <SFML/Graphics/Glyph.h>
+// #include <SFML/Graphics/Image.h>
+// #include <SFML/Graphics/PrimitiveType.h>
+// #include <SFML/Graphics/Rect.h>
+// #include <SFML/Graphics/RectangleShape.h>
+// #include <SFML/Graphics/RenderStates.h>
+// #include <SFML/Graphics/RenderTexture.h>
+// #include <SFML/Graphics/RenderWindow.h>
+// #include <SFML/Graphics/Shader.h>
+// #include <SFML/Graphics/Shape.h>
+// #include <SFML/Graphics/Sprite.h>
+// #include <SFML/Graphics/Text.h>
+// #include <SFML/Graphics/Texture.h>
+// #include <SFML/Graphics/Transform.h>
+// #include <SFML/Graphics/Transformable.h>
+// #include <SFML/Graphics/Types.h>
+// #include <SFML/Graphics/Vertex.h>
+// #include <SFML/Graphics/VertexArray.h>
+// #include <SFML/Graphics/VertexBuffer.h>
+// #include <SFML/Graphics/View.h>
+// #include <SFML/OpenGL.h>
+// #include <SFML/System.h>
+// #include <SFML/System/Alloc.h>
+// #include <SFML/System/Buffer.h>
+// #include <SFML/System/Clock.h>
+// #include <SFML/System/Export.h>
+// #include <SFML/System/InputStream.h>
+// #include <SFML/System/Mutex.h>
+// #include <SFML/System/Sleep.h>
+// #include <SFML/System/Thread.h>
+// #include <SFML/System/Time.h>
+// #include <SFML/System/Types.h>
+// #include <SFML/System/Vector2.h>
+// #include <SFML/System/Vector3.h>
+// #include <SFML/Window.h>
+// #include <SFML/Window/Clipboard.h>
+// #include <SFML/Window/Context.h>
+// #include <SFML/Window/Cursor.h>
+// #include <SFML/Window/Event.h>
+// #include <SFML/Window/Export.h>
+// #include <SFML/Window/Joystick.h>
+// #include <SFML/Window/JoystickIdentification.h>
+// #include <SFML/Window/Keyboard.h>
+// #include <SFML/Window/Mouse.h>
+// #include <SFML/Window/Sensor.h>
+// #include <SFML/Window/Touch.h>
+// #include <SFML/Window/Types.h>
+// #include <SFML/Window/VideoMode.h>
+// #include <SFML/Window/Vulkan.h>
+// #include <SFML/Window/Window.h>
+// #include <SFML/Window/WindowBase.h>
+// #include <SFML/Window/WindowHandle.h>
+// #cgo LDFLAGS: -lcsfml-graphics -lcsfml-window -lcsfml-system -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lstdc++ -lm -lGL -ludev -lXrandr -lfreetype -lXcursor
+//
+// static inline sfEventType get_sfMouseMoveEvent_type(const sfMouseMoveEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseMoveEvent_type(sfMouseMoveEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseWheelScrollEvent_type(const sfMouseWheelScrollEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelScrollEvent_type(sfMouseWheelScrollEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfEvent_type(const sfEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfEvent_type(sfEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+// 
+// static inline sfSizeEvent get_sfSizeEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->size;
+// }
+//
+// 
+// static inline sfKeyEvent get_sfKeyEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->key;
+// }
+//
+// 
+// static inline sfTextEvent get_sfTextEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->text;
+// }
+//
+// 
+// static inline sfMouseMoveEvent get_sfMouseMoveEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->mouseMove;
+// }
+//
+// 
+// static inline sfMouseButtonEvent get_sfMouseButtonEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->mouseButton;
+// }
+//
+// 
+// static inline sfMouseWheelScrollEvent get_sfMouseWheelScrollEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->mouseWheelScroll;
+// }
+//
+// 
+// static inline sfTouchEvent get_sfTouchEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->touch;
+// }
+//
+// 
+// static inline sfSensorEvent get_sfSensorEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->sensor;
+// }
+//
+//
+import "C"
+import "unsafe"
+
+
+func boolToSfBool(b bool) C.sfBool {
+	if b {
+		return C.sfBool(1)
+	}
+	return C.sfBool(0)
+}
+
+func sfBoolToBool(b C.sfBool) bool {
+	if b == C.sfBool(1) {
+		return true
+	}
+	return false
+}
 
 type BlendEquation int32
 
 const (
-	BlendEquationAdd BlendEquation = C.BlendEquationAdd
-	BlendEquationSubtract BlendEquation = C.BlendEquationSubtract
-	BlendEquationReverseSubtract BlendEquation = C.BlendEquationReverseSubtract
-	BlendEquationMin BlendEquation = C.BlendEquationMin
-	BlendEquationMax BlendEquation = C.BlendEquationMax
+	BlendEquationAdd BlendEquation = C.sfBlendEquationAdd
+	BlendEquationSubtract BlendEquation = C.sfBlendEquationSubtract
+	BlendEquationReverseSubtract BlendEquation = C.sfBlendEquationReverseSubtract
+	BlendEquationMin BlendEquation = C.sfBlendEquationMin
+	BlendEquationMax BlendEquation = C.sfBlendEquationMax
 )
 
 type BlendFactor int32
 
 const (
-	BlendFactorZero BlendFactor = C.BlendFactorZero
-	BlendFactorOne BlendFactor = C.BlendFactorOne
-	BlendFactorSrcColor BlendFactor = C.BlendFactorSrcColor
-	BlendFactorOneMinusSrcColor BlendFactor = C.BlendFactorOneMinusSrcColor
-	BlendFactorDstColor BlendFactor = C.BlendFactorDstColor
-	BlendFactorOneMinusDstColor BlendFactor = C.BlendFactorOneMinusDstColor
-	BlendFactorSrcAlpha BlendFactor = C.BlendFactorSrcAlpha
-	BlendFactorOneMinusSrcAlpha BlendFactor = C.BlendFactorOneMinusSrcAlpha
-	BlendFactorDstAlpha BlendFactor = C.BlendFactorDstAlpha
-	BlendFactorOneMinusDstAlpha BlendFactor = C.BlendFactorOneMinusDstAlpha
+	BlendFactorZero BlendFactor = C.sfBlendFactorZero
+	BlendFactorOne BlendFactor = C.sfBlendFactorOne
+	BlendFactorSrcColor BlendFactor = C.sfBlendFactorSrcColor
+	BlendFactorOneMinusSrcColor BlendFactor = C.sfBlendFactorOneMinusSrcColor
+	BlendFactorDstColor BlendFactor = C.sfBlendFactorDstColor
+	BlendFactorOneMinusDstColor BlendFactor = C.sfBlendFactorOneMinusDstColor
+	BlendFactorSrcAlpha BlendFactor = C.sfBlendFactorSrcAlpha
+	BlendFactorOneMinusSrcAlpha BlendFactor = C.sfBlendFactorOneMinusSrcAlpha
+	BlendFactorDstAlpha BlendFactor = C.sfBlendFactorDstAlpha
+	BlendFactorOneMinusDstAlpha BlendFactor = C.sfBlendFactorOneMinusDstAlpha
 )
 
 type BlendMode struct {
@@ -42,31 +264,79 @@ type BlendMode struct {
 }
 
 func (b BlendMode) ToC() C.sfBlendMode {
-	return C.sfBlendMode{ colorSrcFactor: b.ColorSrcFactor, colorDstFactor: b.ColorDstFactor, colorEquation: b.ColorEquation, alphaSrcFactor: b.AlphaSrcFactor, alphaDstFactor: b.AlphaDstFactor, alphaEquation: b.AlphaEquation }
+	funcRes := C.sfBlendMode{ colorSrcFactor: C.sfBlendFactor(b.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(b.ColorDstFactor), colorEquation: C.sfBlendEquation(b.ColorEquation), alphaSrcFactor: C.sfBlendFactor(b.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(b.AlphaDstFactor), alphaEquation: C.sfBlendEquation(b.AlphaEquation) }
+	return funcRes
+}
+
+func NewBlendModeFromC(cObj C.sfBlendMode) *BlendMode {
+	return &BlendMode{ ColorSrcFactor: BlendFactor(cObj.colorSrcFactor), ColorDstFactor: BlendFactor(cObj.colorDstFactor), ColorEquation: BlendEquation(cObj.colorEquation), AlphaSrcFactor: BlendFactor(cObj.alphaSrcFactor), AlphaDstFactor: BlendFactor(cObj.alphaDstFactor), AlphaEquation: BlendEquation(cObj.alphaEquation) }
+}
+
+func NewBlendModeSliceFromCArray(ptr *C.sfBlendMode, count C.size_t) []BlendMode {
+	if unsafe.Sizeof(BlendMode{}) != unsafe.Sizeof(C.sfBlendMode{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]BlendMode, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(BlendMode{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewBlendModeCArrayFromGoSlice(slice []BlendMode) *C.sfBlendMode {
+	if unsafe.Sizeof(BlendMode{}) != unsafe.Sizeof(C.sfBlendMode{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(BlendMode{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfBlendMode)(ptr)
 }
 
 type Buffer struct {
-	ptr unsafe.Pointer
+	ptr *C.sfBuffer
 }
 
-func (b *Buffer) CPtr() unsafe.Pointer {
-	return (*C.sfBuffer)(b.ptr)
+func (b *Buffer) ToC() *C.sfBuffer {
+	return b.ptr
+}
+
+func NewBufferFromC(cPtr *C.sfBuffer) *Buffer {
+	return &Buffer{ptr: cPtr}
 }
 
 type CircleShape struct {
-	ptr unsafe.Pointer
+	ptr *C.sfCircleShape
 }
 
-func (c *CircleShape) CPtr() unsafe.Pointer {
-	return (*C.sfCircleShape)(c.ptr)
+func (c *CircleShape) ToC() *C.sfCircleShape {
+	return c.ptr
+}
+
+func NewCircleShapeFromC(cPtr *C.sfCircleShape) *CircleShape {
+	return &CircleShape{ptr: cPtr}
 }
 
 type Clock struct {
-	ptr unsafe.Pointer
+	ptr *C.sfClock
 }
 
-func (c *Clock) CPtr() unsafe.Pointer {
-	return (*C.sfClock)(c.ptr)
+func (c *Clock) ToC() *C.sfClock {
+	return c.ptr
+}
+
+func NewClockFromC(cPtr *C.sfClock) *Clock {
+	return &Clock{ptr: cPtr}
 }
 
 type Color struct {
@@ -77,23 +347,63 @@ type Color struct {
 }
 
 func (c Color) ToC() C.sfColor {
-	return C.sfColor{ r: c.R, g: c.G, b: c.B, a: c.A }
+	funcRes := C.sfColor{ r: C.sfUint8(c.R), g: C.sfUint8(c.G), b: C.sfUint8(c.B), a: C.sfUint8(c.A) }
+	return funcRes
+}
+
+func NewColorFromC(cObj C.sfColor) *Color {
+	return &Color{ R: uint8(cObj.r), G: uint8(cObj.g), B: uint8(cObj.b), A: uint8(cObj.a) }
+}
+
+func NewColorSliceFromCArray(ptr *C.sfColor, count C.size_t) []Color {
+	if unsafe.Sizeof(Color{}) != unsafe.Sizeof(C.sfColor{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Color, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Color{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewColorCArrayFromGoSlice(slice []Color) *C.sfColor {
+	if unsafe.Sizeof(Color{}) != unsafe.Sizeof(C.sfColor{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Color{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfColor)(ptr)
 }
 
 type Context struct {
-	ptr unsafe.Pointer
+	ptr *C.sfContext
 }
 
-func (c *Context) CPtr() unsafe.Pointer {
-	return (*C.sfContext)(c.ptr)
+func (c *Context) ToC() *C.sfContext {
+	return c.ptr
+}
+
+func NewContextFromC(cPtr *C.sfContext) *Context {
+	return &Context{ptr: cPtr}
 }
 
 type ContextAttribute int32
 
 const (
-	ContextDefault ContextAttribute = C.ContextDefault
-	ContextCore ContextAttribute = C.ContextCore
-	ContextDebug ContextAttribute = C.ContextDebug
+	ContextDefault ContextAttribute = C.sfContextDefault
+	ContextCore ContextAttribute = C.sfContextCore
+	ContextDebug ContextAttribute = C.sfContextDebug
 )
 
 type ContextSettings struct {
@@ -107,86 +417,149 @@ type ContextSettings struct {
 }
 
 func (c ContextSettings) ToC() C.sfContextSettings {
-	return C.sfContextSettings{ depthBits: c.DepthBits, stencilBits: c.StencilBits, antialiasingLevel: c.AntialiasingLevel, majorVersion: c.MajorVersion, minorVersion: c.MinorVersion, attributeFlags: c.AttributeFlags, sRgbCapable: c.SRgbCapable }
+	funcRes := C.sfContextSettings{ depthBits: C.sfUint32(c.DepthBits), stencilBits: C.sfUint32(c.StencilBits), antialiasingLevel: C.sfUint32(c.AntialiasingLevel), majorVersion: C.sfUint32(c.MajorVersion), minorVersion: C.sfUint32(c.MinorVersion), attributeFlags: C.sfUint32(c.AttributeFlags), sRgbCapable: boolToSfBool(c.SRgbCapable) }
+	return funcRes
+}
+
+func NewContextSettingsFromC(cObj C.sfContextSettings) *ContextSettings {
+	return &ContextSettings{ DepthBits: uint32(cObj.depthBits), StencilBits: uint32(cObj.stencilBits), AntialiasingLevel: uint32(cObj.antialiasingLevel), MajorVersion: uint32(cObj.majorVersion), MinorVersion: uint32(cObj.minorVersion), AttributeFlags: uint32(cObj.attributeFlags), SRgbCapable: sfBoolToBool(cObj.sRgbCapable) }
+}
+
+func NewContextSettingsSliceFromCArray(ptr *C.sfContextSettings, count C.size_t) []ContextSettings {
+	if unsafe.Sizeof(ContextSettings{}) != unsafe.Sizeof(C.sfContextSettings{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]ContextSettings, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(ContextSettings{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewContextSettingsCArrayFromGoSlice(slice []ContextSettings) *C.sfContextSettings {
+	if unsafe.Sizeof(ContextSettings{}) != unsafe.Sizeof(C.sfContextSettings{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(ContextSettings{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfContextSettings)(ptr)
 }
 
 type ConvexShape struct {
-	ptr unsafe.Pointer
+	ptr *C.sfConvexShape
 }
 
-func (c *ConvexShape) CPtr() unsafe.Pointer {
-	return (*C.sfConvexShape)(c.ptr)
+func (c *ConvexShape) ToC() *C.sfConvexShape {
+	return c.ptr
+}
+
+func NewConvexShapeFromC(cPtr *C.sfConvexShape) *ConvexShape {
+	return &ConvexShape{ptr: cPtr}
 }
 
 type Cursor struct {
-	ptr unsafe.Pointer
+	ptr *C.sfCursor
 }
 
-func (c *Cursor) CPtr() unsafe.Pointer {
-	return (*C.sfCursor)(c.ptr)
+func (c *Cursor) ToC() *C.sfCursor {
+	return c.ptr
+}
+
+func NewCursorFromC(cPtr *C.sfCursor) *Cursor {
+	return &Cursor{ptr: cPtr}
 }
 
 type CursorType int32
 
 const (
-	CursorArrow CursorType = C.CursorArrow
-	CursorArrowWait CursorType = C.CursorArrowWait
-	CursorWait CursorType = C.CursorWait
-	CursorText CursorType = C.CursorText
-	CursorHand CursorType = C.CursorHand
-	CursorSizeHorizontal CursorType = C.CursorSizeHorizontal
-	CursorSizeVertical CursorType = C.CursorSizeVertical
-	CursorSizeTopLeftBottomRight CursorType = C.CursorSizeTopLeftBottomRight
-	CursorSizeBottomLeftTopRight CursorType = C.CursorSizeBottomLeftTopRight
-	CursorSizeLeft CursorType = C.CursorSizeLeft
-	CursorSizeRight CursorType = C.CursorSizeRight
-	CursorSizeTop CursorType = C.CursorSizeTop
-	CursorSizeBottom CursorType = C.CursorSizeBottom
-	CursorSizeTopLeft CursorType = C.CursorSizeTopLeft
-	CursorSizeBottomRight CursorType = C.CursorSizeBottomRight
-	CursorSizeBottomLeft CursorType = C.CursorSizeBottomLeft
-	CursorSizeTopRight CursorType = C.CursorSizeTopRight
-	CursorSizeAll CursorType = C.CursorSizeAll
-	CursorCross CursorType = C.CursorCross
-	CursorHelp CursorType = C.CursorHelp
-	CursorNotAllowed CursorType = C.CursorNotAllowed
+	CursorArrow CursorType = C.sfCursorArrow
+	CursorArrowWait CursorType = C.sfCursorArrowWait
+	CursorWait CursorType = C.sfCursorWait
+	CursorText CursorType = C.sfCursorText
+	CursorHand CursorType = C.sfCursorHand
+	CursorSizeHorizontal CursorType = C.sfCursorSizeHorizontal
+	CursorSizeVertical CursorType = C.sfCursorSizeVertical
+	CursorSizeTopLeftBottomRight CursorType = C.sfCursorSizeTopLeftBottomRight
+	CursorSizeBottomLeftTopRight CursorType = C.sfCursorSizeBottomLeftTopRight
+	CursorSizeLeft CursorType = C.sfCursorSizeLeft
+	CursorSizeRight CursorType = C.sfCursorSizeRight
+	CursorSizeTop CursorType = C.sfCursorSizeTop
+	CursorSizeBottom CursorType = C.sfCursorSizeBottom
+	CursorSizeTopLeft CursorType = C.sfCursorSizeTopLeft
+	CursorSizeBottomRight CursorType = C.sfCursorSizeBottomRight
+	CursorSizeBottomLeft CursorType = C.sfCursorSizeBottomLeft
+	CursorSizeTopRight CursorType = C.sfCursorSizeTopRight
+	CursorSizeAll CursorType = C.sfCursorSizeAll
+	CursorCross CursorType = C.sfCursorCross
+	CursorHelp CursorType = C.sfCursorHelp
+	CursorNotAllowed CursorType = C.sfCursorNotAllowed
 )
 
-type Event struct {
-	ptr unsafe.Pointer
+type Event interface {
 }
 
-func (e *Event) CPtr() unsafe.Pointer {
-	return (*C.sfEvent)(e.ptr)
+func NewEventFromC(cObj C.sfEvent) Event {
+	eventType := C.get_sfEvent_type(&cObj)
+	switch eventType {
+	case C.sfEvtResized:
+		return NewSizeEventFromC(C.get_sfSizeEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtKeyPressed, C.sfEvtKeyReleased:
+		return NewKeyEventFromC(C.get_sfKeyEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtTextEntered:
+		return NewTextEventFromC(C.get_sfTextEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtMouseMoved:
+		return NewMouseMoveEventFromC(C.get_sfMouseMoveEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtMouseButtonPressed, C.sfEvtMouseButtonReleased:
+		return NewMouseButtonEventFromC(C.get_sfMouseButtonEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtMouseWheelScrolled:
+		return NewMouseWheelScrollEventFromC(C.get_sfMouseWheelScrollEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtTouchBegan, C.sfEvtTouchMoved, C.sfEvtTouchEnded:
+		return NewTouchEventFromC(C.get_sfTouchEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtSensorChanged:
+		return NewSensorEventFromC(C.get_sfSensorEvent_from_sfEvent_union(&cObj))
+	default:
+		return nil // or a fallback type like EventUnknown{}
+	}
 }
 
 type EventType int32
 
 const (
-	EvtClosed EventType = C.EvtClosed
-	EvtResized EventType = C.EvtResized
-	EvtLostFocus EventType = C.EvtLostFocus
-	EvtGainedFocus EventType = C.EvtGainedFocus
-	EvtTextEntered EventType = C.EvtTextEntered
-	EvtKeyPressed EventType = C.EvtKeyPressed
-	EvtKeyReleased EventType = C.EvtKeyReleased
-	EvtMouseWheelMoved EventType = C.EvtMouseWheelMoved
-	EvtMouseWheelScrolled EventType = C.EvtMouseWheelScrolled
-	EvtMouseButtonPressed EventType = C.EvtMouseButtonPressed
-	EvtMouseButtonReleased EventType = C.EvtMouseButtonReleased
-	EvtMouseMoved EventType = C.EvtMouseMoved
-	EvtMouseEntered EventType = C.EvtMouseEntered
-	EvtMouseLeft EventType = C.EvtMouseLeft
-	EvtJoystickButtonPressed EventType = C.EvtJoystickButtonPressed
-	EvtJoystickButtonReleased EventType = C.EvtJoystickButtonReleased
-	EvtJoystickMoved EventType = C.EvtJoystickMoved
-	EvtJoystickConnected EventType = C.EvtJoystickConnected
-	EvtJoystickDisconnected EventType = C.EvtJoystickDisconnected
-	EvtTouchBegan EventType = C.EvtTouchBegan
-	EvtTouchMoved EventType = C.EvtTouchMoved
-	EvtTouchEnded EventType = C.EvtTouchEnded
-	EvtSensorChanged EventType = C.EvtSensorChanged
-	EvtCount EventType = C.EvtCount
+	EvtClosed EventType = C.sfEvtClosed
+	EvtResized EventType = C.sfEvtResized
+	EvtLostFocus EventType = C.sfEvtLostFocus
+	EvtGainedFocus EventType = C.sfEvtGainedFocus
+	EvtTextEntered EventType = C.sfEvtTextEntered
+	EvtKeyPressed EventType = C.sfEvtKeyPressed
+	EvtKeyReleased EventType = C.sfEvtKeyReleased
+	EvtMouseWheelMoved EventType = C.sfEvtMouseWheelMoved
+	EvtMouseWheelScrolled EventType = C.sfEvtMouseWheelScrolled
+	EvtMouseButtonPressed EventType = C.sfEvtMouseButtonPressed
+	EvtMouseButtonReleased EventType = C.sfEvtMouseButtonReleased
+	EvtMouseMoved EventType = C.sfEvtMouseMoved
+	EvtMouseEntered EventType = C.sfEvtMouseEntered
+	EvtMouseLeft EventType = C.sfEvtMouseLeft
+	EvtJoystickButtonPressed EventType = C.sfEvtJoystickButtonPressed
+	EvtJoystickButtonReleased EventType = C.sfEvtJoystickButtonReleased
+	EvtJoystickMoved EventType = C.sfEvtJoystickMoved
+	EvtJoystickConnected EventType = C.sfEvtJoystickConnected
+	EvtJoystickDisconnected EventType = C.sfEvtJoystickDisconnected
+	EvtTouchBegan EventType = C.sfEvtTouchBegan
+	EvtTouchMoved EventType = C.sfEvtTouchMoved
+	EvtTouchEnded EventType = C.sfEvtTouchEnded
+	EvtSensorChanged EventType = C.sfEvtSensorChanged
+	EvtCount EventType = C.sfEvtCount
 )
 
 type FloatRect struct {
@@ -197,15 +570,55 @@ type FloatRect struct {
 }
 
 func (f FloatRect) ToC() C.sfFloatRect {
-	return C.sfFloatRect{ left: f.Left, top: f.Top, width: f.Width, height: f.Height }
+	funcRes := C.sfFloatRect{ left: C.float(f.Left), top: C.float(f.Top), width: C.float(f.Width), height: C.float(f.Height) }
+	return funcRes
+}
+
+func NewFloatRectFromC(cObj C.sfFloatRect) *FloatRect {
+	return &FloatRect{ Left: float32(cObj.left), Top: float32(cObj.top), Width: float32(cObj.width), Height: float32(cObj.height) }
+}
+
+func NewFloatRectSliceFromCArray(ptr *C.sfFloatRect, count C.size_t) []FloatRect {
+	if unsafe.Sizeof(FloatRect{}) != unsafe.Sizeof(C.sfFloatRect{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]FloatRect, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(FloatRect{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewFloatRectCArrayFromGoSlice(slice []FloatRect) *C.sfFloatRect {
+	if unsafe.Sizeof(FloatRect{}) != unsafe.Sizeof(C.sfFloatRect{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(FloatRect{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfFloatRect)(ptr)
 }
 
 type Font struct {
-	ptr unsafe.Pointer
+	ptr *C.sfFont
 }
 
-func (f *Font) CPtr() unsafe.Pointer {
-	return (*C.sfFont)(f.ptr)
+func (f *Font) ToC() *C.sfFont {
+	return f.ptr
+}
+
+func NewFontFromC(cPtr *C.sfFont) *Font {
+	return &Font{ptr: cPtr}
 }
 
 type FontInfo struct {
@@ -213,7 +626,43 @@ type FontInfo struct {
 }
 
 func (f FontInfo) ToC() C.sfFontInfo {
-	return C.sfFontInfo{ family: f.Family }
+	funcRes := C.sfFontInfo{ family: C.CString(f.Family) }
+	return funcRes
+}
+
+func NewFontInfoFromC(cObj C.sfFontInfo) *FontInfo {
+	return &FontInfo{ Family: C.GoString(cObj.family) }
+}
+
+func NewFontInfoSliceFromCArray(ptr *C.sfFontInfo, count C.size_t) []FontInfo {
+	if unsafe.Sizeof(FontInfo{}) != unsafe.Sizeof(C.sfFontInfo{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]FontInfo, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(FontInfo{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewFontInfoCArrayFromGoSlice(slice []FontInfo) *C.sfFontInfo {
+	if unsafe.Sizeof(FontInfo{}) != unsafe.Sizeof(C.sfFontInfo{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(FontInfo{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfFontInfo)(ptr)
 }
 
 type Vector2b struct {
@@ -222,7 +671,43 @@ type Vector2b struct {
 }
 
 func (v Vector2b) ToC() C.sfGlslBvec2 {
-	return C.sfGlslBvec2{ x: v.X, y: v.Y }
+	funcRes := C.sfGlslBvec2{ x: boolToSfBool(v.X), y: boolToSfBool(v.Y) }
+	return funcRes
+}
+
+func NewVector2bFromC(cObj C.sfGlslBvec2) *Vector2b {
+	return &Vector2b{ X: sfBoolToBool(cObj.x), Y: sfBoolToBool(cObj.y) }
+}
+
+func NewVector2bSliceFromCArray(ptr *C.sfGlslBvec2, count C.size_t) []Vector2b {
+	if unsafe.Sizeof(Vector2b{}) != unsafe.Sizeof(C.sfGlslBvec2{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector2b, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector2b{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector2bCArrayFromGoSlice(slice []Vector2b) *C.sfGlslBvec2 {
+	if unsafe.Sizeof(Vector2b{}) != unsafe.Sizeof(C.sfGlslBvec2{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector2b{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfGlslBvec2)(ptr)
 }
 
 type Vector3b struct {
@@ -232,7 +717,43 @@ type Vector3b struct {
 }
 
 func (v Vector3b) ToC() C.sfGlslBvec3 {
-	return C.sfGlslBvec3{ x: v.X, y: v.Y, z: v.Z }
+	funcRes := C.sfGlslBvec3{ x: boolToSfBool(v.X), y: boolToSfBool(v.Y), z: boolToSfBool(v.Z) }
+	return funcRes
+}
+
+func NewVector3bFromC(cObj C.sfGlslBvec3) *Vector3b {
+	return &Vector3b{ X: sfBoolToBool(cObj.x), Y: sfBoolToBool(cObj.y), Z: sfBoolToBool(cObj.z) }
+}
+
+func NewVector3bSliceFromCArray(ptr *C.sfGlslBvec3, count C.size_t) []Vector3b {
+	if unsafe.Sizeof(Vector3b{}) != unsafe.Sizeof(C.sfGlslBvec3{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector3b, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector3b{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector3bCArrayFromGoSlice(slice []Vector3b) *C.sfGlslBvec3 {
+	if unsafe.Sizeof(Vector3b{}) != unsafe.Sizeof(C.sfGlslBvec3{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector3b{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfGlslBvec3)(ptr)
 }
 
 type Vector4b struct {
@@ -243,7 +764,43 @@ type Vector4b struct {
 }
 
 func (v Vector4b) ToC() C.sfGlslBvec4 {
-	return C.sfGlslBvec4{ x: v.X, y: v.Y, z: v.Z, w: v.W }
+	funcRes := C.sfGlslBvec4{ x: boolToSfBool(v.X), y: boolToSfBool(v.Y), z: boolToSfBool(v.Z), w: boolToSfBool(v.W) }
+	return funcRes
+}
+
+func NewVector4bFromC(cObj C.sfGlslBvec4) *Vector4b {
+	return &Vector4b{ X: sfBoolToBool(cObj.x), Y: sfBoolToBool(cObj.y), Z: sfBoolToBool(cObj.z), W: sfBoolToBool(cObj.w) }
+}
+
+func NewVector4bSliceFromCArray(ptr *C.sfGlslBvec4, count C.size_t) []Vector4b {
+	if unsafe.Sizeof(Vector4b{}) != unsafe.Sizeof(C.sfGlslBvec4{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector4b, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector4b{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector4bCArrayFromGoSlice(slice []Vector4b) *C.sfGlslBvec4 {
+	if unsafe.Sizeof(Vector4b{}) != unsafe.Sizeof(C.sfGlslBvec4{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector4b{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfGlslBvec4)(ptr)
 }
 
 type Vector3i struct {
@@ -253,7 +810,43 @@ type Vector3i struct {
 }
 
 func (v Vector3i) ToC() C.sfGlslIvec3 {
-	return C.sfGlslIvec3{ x: v.X, y: v.Y, z: v.Z }
+	funcRes := C.sfGlslIvec3{ x: C.int(v.X), y: C.int(v.Y), z: C.int(v.Z) }
+	return funcRes
+}
+
+func NewVector3iFromC(cObj C.sfGlslIvec3) *Vector3i {
+	return &Vector3i{ X: int32(cObj.x), Y: int32(cObj.y), Z: int32(cObj.z) }
+}
+
+func NewVector3iSliceFromCArray(ptr *C.sfGlslIvec3, count C.size_t) []Vector3i {
+	if unsafe.Sizeof(Vector3i{}) != unsafe.Sizeof(C.sfGlslIvec3{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector3i, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector3i{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector3iCArrayFromGoSlice(slice []Vector3i) *C.sfGlslIvec3 {
+	if unsafe.Sizeof(Vector3i{}) != unsafe.Sizeof(C.sfGlslIvec3{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector3i{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfGlslIvec3)(ptr)
 }
 
 type Vector4i struct {
@@ -264,23 +857,67 @@ type Vector4i struct {
 }
 
 func (v Vector4i) ToC() C.sfGlslIvec4 {
-	return C.sfGlslIvec4{ x: v.X, y: v.Y, z: v.Z, w: v.W }
+	funcRes := C.sfGlslIvec4{ x: C.int(v.X), y: C.int(v.Y), z: C.int(v.Z), w: C.int(v.W) }
+	return funcRes
+}
+
+func NewVector4iFromC(cObj C.sfGlslIvec4) *Vector4i {
+	return &Vector4i{ X: int32(cObj.x), Y: int32(cObj.y), Z: int32(cObj.z), W: int32(cObj.w) }
+}
+
+func NewVector4iSliceFromCArray(ptr *C.sfGlslIvec4, count C.size_t) []Vector4i {
+	if unsafe.Sizeof(Vector4i{}) != unsafe.Sizeof(C.sfGlslIvec4{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector4i, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector4i{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector4iCArrayFromGoSlice(slice []Vector4i) *C.sfGlslIvec4 {
+	if unsafe.Sizeof(Vector4i{}) != unsafe.Sizeof(C.sfGlslIvec4{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector4i{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfGlslIvec4)(ptr)
 }
 
 type GlslMat3 struct {
-	ptr unsafe.Pointer
+	ptr *C.sfGlslMat3
 }
 
-func (g *GlslMat3) CPtr() unsafe.Pointer {
-	return (*C.sfGlslMat3)(g.ptr)
+func (g *GlslMat3) ToC() *C.sfGlslMat3 {
+	return g.ptr
+}
+
+func NewGlslMat3FromC(cPtr *C.sfGlslMat3) *GlslMat3 {
+	return &GlslMat3{ptr: cPtr}
 }
 
 type GlslMat4 struct {
-	ptr unsafe.Pointer
+	ptr *C.sfGlslMat4
 }
 
-func (g *GlslMat4) CPtr() unsafe.Pointer {
-	return (*C.sfGlslMat4)(g.ptr)
+func (g *GlslMat4) ToC() *C.sfGlslMat4 {
+	return g.ptr
+}
+
+func NewGlslMat4FromC(cPtr *C.sfGlslMat4) *GlslMat4 {
+	return &GlslMat4{ptr: cPtr}
 }
 
 type Vector4f struct {
@@ -291,7 +928,43 @@ type Vector4f struct {
 }
 
 func (v Vector4f) ToC() C.sfGlslVec4 {
-	return C.sfGlslVec4{ x: v.X, y: v.Y, z: v.Z, w: v.W }
+	funcRes := C.sfGlslVec4{ x: C.float(v.X), y: C.float(v.Y), z: C.float(v.Z), w: C.float(v.W) }
+	return funcRes
+}
+
+func NewVector4fFromC(cObj C.sfGlslVec4) *Vector4f {
+	return &Vector4f{ X: float32(cObj.x), Y: float32(cObj.y), Z: float32(cObj.z), W: float32(cObj.w) }
+}
+
+func NewVector4fSliceFromCArray(ptr *C.sfGlslVec4, count C.size_t) []Vector4f {
+	if unsafe.Sizeof(Vector4f{}) != unsafe.Sizeof(C.sfGlslVec4{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector4f, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector4f{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector4fCArrayFromGoSlice(slice []Vector4f) *C.sfGlslVec4 {
+	if unsafe.Sizeof(Vector4f{}) != unsafe.Sizeof(C.sfGlslVec4{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector4f{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfGlslVec4)(ptr)
 }
 
 type Glyph struct {
@@ -301,23 +974,67 @@ type Glyph struct {
 }
 
 func (g Glyph) ToC() C.sfGlyph {
-	return C.sfGlyph{ advance: g.Advance, bounds: g.Bounds, textureRect: g.TextureRect }
+	funcRes := C.sfGlyph{ advance: C.float(g.Advance), bounds: g.Bounds.ToC(), textureRect: g.TextureRect.ToC() }
+	return funcRes
+}
+
+func NewGlyphFromC(cObj C.sfGlyph) *Glyph {
+	return &Glyph{ Advance: float32(cObj.advance), Bounds: *NewFloatRectFromC(cObj.bounds), TextureRect: *NewIntRectFromC(cObj.textureRect) }
+}
+
+func NewGlyphSliceFromCArray(ptr *C.sfGlyph, count C.size_t) []Glyph {
+	if unsafe.Sizeof(Glyph{}) != unsafe.Sizeof(C.sfGlyph{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Glyph, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Glyph{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewGlyphCArrayFromGoSlice(slice []Glyph) *C.sfGlyph {
+	if unsafe.Sizeof(Glyph{}) != unsafe.Sizeof(C.sfGlyph{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Glyph{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfGlyph)(ptr)
 }
 
 type Image struct {
-	ptr unsafe.Pointer
+	ptr *C.sfImage
 }
 
-func (i *Image) CPtr() unsafe.Pointer {
-	return (*C.sfImage)(i.ptr)
+func (i *Image) ToC() *C.sfImage {
+	return i.ptr
+}
+
+func NewImageFromC(cPtr *C.sfImage) *Image {
+	return &Image{ptr: cPtr}
 }
 
 type InputStream struct {
-	ptr unsafe.Pointer
+	ptr *C.sfInputStream
 }
 
-func (i *InputStream) CPtr() unsafe.Pointer {
-	return (*C.sfInputStream)(i.ptr)
+func (i *InputStream) ToC() *C.sfInputStream {
+	return i.ptr
+}
+
+func NewInputStreamFromC(cPtr *C.sfInputStream) *InputStream {
+	return &InputStream{ptr: cPtr}
 }
 
 type IntRect struct {
@@ -328,211 +1045,458 @@ type IntRect struct {
 }
 
 func (i IntRect) ToC() C.sfIntRect {
-	return C.sfIntRect{ left: i.Left, top: i.Top, width: i.Width, height: i.Height }
+	funcRes := C.sfIntRect{ left: C.sfInt32(i.Left), top: C.sfInt32(i.Top), width: C.sfInt32(i.Width), height: C.sfInt32(i.Height) }
+	return funcRes
+}
+
+func NewIntRectFromC(cObj C.sfIntRect) *IntRect {
+	return &IntRect{ Left: int32(cObj.left), Top: int32(cObj.top), Width: int32(cObj.width), Height: int32(cObj.height) }
+}
+
+func NewIntRectSliceFromCArray(ptr *C.sfIntRect, count C.size_t) []IntRect {
+	if unsafe.Sizeof(IntRect{}) != unsafe.Sizeof(C.sfIntRect{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]IntRect, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(IntRect{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewIntRectCArrayFromGoSlice(slice []IntRect) *C.sfIntRect {
+	if unsafe.Sizeof(IntRect{}) != unsafe.Sizeof(C.sfIntRect{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(IntRect{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfIntRect)(ptr)
 }
 
 type KeyCode int32
 
 const (
-	KeyUnknown KeyCode = C.KeyUnknown
-	KeyA KeyCode = C.KeyA
-	KeyB KeyCode = C.KeyB
-	KeyC KeyCode = C.KeyC
-	KeyD KeyCode = C.KeyD
-	KeyE KeyCode = C.KeyE
-	KeyF KeyCode = C.KeyF
-	KeyG KeyCode = C.KeyG
-	KeyH KeyCode = C.KeyH
-	KeyI KeyCode = C.KeyI
-	KeyJ KeyCode = C.KeyJ
-	KeyK KeyCode = C.KeyK
-	KeyL KeyCode = C.KeyL
-	KeyM KeyCode = C.KeyM
-	KeyN KeyCode = C.KeyN
-	KeyO KeyCode = C.KeyO
-	KeyP KeyCode = C.KeyP
-	KeyQ KeyCode = C.KeyQ
-	KeyR KeyCode = C.KeyR
-	KeyS KeyCode = C.KeyS
-	KeyT KeyCode = C.KeyT
-	KeyU KeyCode = C.KeyU
-	KeyV KeyCode = C.KeyV
-	KeyW KeyCode = C.KeyW
-	KeyX KeyCode = C.KeyX
-	KeyY KeyCode = C.KeyY
-	KeyZ KeyCode = C.KeyZ
-	KeyNum0 KeyCode = C.KeyNum0
-	KeyNum1 KeyCode = C.KeyNum1
-	KeyNum2 KeyCode = C.KeyNum2
-	KeyNum3 KeyCode = C.KeyNum3
-	KeyNum4 KeyCode = C.KeyNum4
-	KeyNum5 KeyCode = C.KeyNum5
-	KeyNum6 KeyCode = C.KeyNum6
-	KeyNum7 KeyCode = C.KeyNum7
-	KeyNum8 KeyCode = C.KeyNum8
-	KeyNum9 KeyCode = C.KeyNum9
-	KeyEscape KeyCode = C.KeyEscape
-	KeyLcOntrol KeyCode = C.KeyLcOntrol
-	KeyLsHift KeyCode = C.KeyLsHift
-	KeyLaLt KeyCode = C.KeyLaLt
-	KeyLsYstem KeyCode = C.KeyLsYstem
-	KeyRcOntrol KeyCode = C.KeyRcOntrol
-	KeyRsHift KeyCode = C.KeyRsHift
-	KeyRaLt KeyCode = C.KeyRaLt
-	KeyRsYstem KeyCode = C.KeyRsYstem
-	KeyMenu KeyCode = C.KeyMenu
-	KeyLbRacket KeyCode = C.KeyLbRacket
-	KeyRbRacket KeyCode = C.KeyRbRacket
-	KeySemicolon KeyCode = C.KeySemicolon
-	KeyComma KeyCode = C.KeyComma
-	KeyPeriod KeyCode = C.KeyPeriod
-	KeyApostrophe KeyCode = C.KeyApostrophe
-	KeySlash KeyCode = C.KeySlash
-	KeyBackslash KeyCode = C.KeyBackslash
-	KeyGrave KeyCode = C.KeyGrave
-	KeyEqual KeyCode = C.KeyEqual
-	KeyHyphen KeyCode = C.KeyHyphen
-	KeySpace KeyCode = C.KeySpace
-	KeyEnter KeyCode = C.KeyEnter
-	KeyBackspace KeyCode = C.KeyBackspace
-	KeyTab KeyCode = C.KeyTab
-	KeyPageUp KeyCode = C.KeyPageUp
-	KeyPageDown KeyCode = C.KeyPageDown
-	KeyEnd KeyCode = C.KeyEnd
-	KeyHome KeyCode = C.KeyHome
-	KeyInsert KeyCode = C.KeyInsert
-	KeyDelete KeyCode = C.KeyDelete
-	KeyAdd KeyCode = C.KeyAdd
-	KeySubtract KeyCode = C.KeySubtract
-	KeyMultiply KeyCode = C.KeyMultiply
-	KeyDivide KeyCode = C.KeyDivide
-	KeyLeft KeyCode = C.KeyLeft
-	KeyRight KeyCode = C.KeyRight
-	KeyUp KeyCode = C.KeyUp
-	KeyDown KeyCode = C.KeyDown
-	KeyNumpad0 KeyCode = C.KeyNumpad0
-	KeyNumpad1 KeyCode = C.KeyNumpad1
-	KeyNumpad2 KeyCode = C.KeyNumpad2
-	KeyNumpad3 KeyCode = C.KeyNumpad3
-	KeyNumpad4 KeyCode = C.KeyNumpad4
-	KeyNumpad5 KeyCode = C.KeyNumpad5
-	KeyNumpad6 KeyCode = C.KeyNumpad6
-	KeyNumpad7 KeyCode = C.KeyNumpad7
-	KeyNumpad8 KeyCode = C.KeyNumpad8
-	KeyNumpad9 KeyCode = C.KeyNumpad9
-	KeyF1 KeyCode = C.KeyF1
-	KeyF2 KeyCode = C.KeyF2
-	KeyF3 KeyCode = C.KeyF3
-	KeyF4 KeyCode = C.KeyF4
-	KeyF5 KeyCode = C.KeyF5
-	KeyF6 KeyCode = C.KeyF6
-	KeyF7 KeyCode = C.KeyF7
-	KeyF8 KeyCode = C.KeyF8
-	KeyF9 KeyCode = C.KeyF9
-	KeyF10 KeyCode = C.KeyF10
-	KeyF11 KeyCode = C.KeyF11
-	KeyF12 KeyCode = C.KeyF12
-	KeyF13 KeyCode = C.KeyF13
-	KeyF14 KeyCode = C.KeyF14
-	KeyF15 KeyCode = C.KeyF15
-	KeyPause KeyCode = C.KeyPause
-	KeyCount KeyCode = C.KeyCount
-	KeyTilde KeyCode = C.KeyTilde
-	KeyDash KeyCode = C.KeyDash
-	KeyBack KeyCode = C.KeyBack
-	KeyBackSlash KeyCode = C.KeyBackSlash
-	KeySemiColon KeyCode = C.KeySemiColon
-	KeyReturn KeyCode = C.KeyReturn
-	KeyQuote KeyCode = C.KeyQuote
+	KeyUnknown KeyCode = C.sfKeyUnknown
+	KeyA KeyCode = C.sfKeyA
+	KeyB KeyCode = C.sfKeyB
+	KeyC KeyCode = C.sfKeyC
+	KeyD KeyCode = C.sfKeyD
+	KeyE KeyCode = C.sfKeyE
+	KeyF KeyCode = C.sfKeyF
+	KeyG KeyCode = C.sfKeyG
+	KeyH KeyCode = C.sfKeyH
+	KeyI KeyCode = C.sfKeyI
+	KeyJ KeyCode = C.sfKeyJ
+	KeyK KeyCode = C.sfKeyK
+	KeyL KeyCode = C.sfKeyL
+	KeyM KeyCode = C.sfKeyM
+	KeyN KeyCode = C.sfKeyN
+	KeyO KeyCode = C.sfKeyO
+	KeyP KeyCode = C.sfKeyP
+	KeyQ KeyCode = C.sfKeyQ
+	KeyR KeyCode = C.sfKeyR
+	KeyS KeyCode = C.sfKeyS
+	KeyT KeyCode = C.sfKeyT
+	KeyU KeyCode = C.sfKeyU
+	KeyV KeyCode = C.sfKeyV
+	KeyW KeyCode = C.sfKeyW
+	KeyX KeyCode = C.sfKeyX
+	KeyY KeyCode = C.sfKeyY
+	KeyZ KeyCode = C.sfKeyZ
+	KeyNum0 KeyCode = C.sfKeyNum0
+	KeyNum1 KeyCode = C.sfKeyNum1
+	KeyNum2 KeyCode = C.sfKeyNum2
+	KeyNum3 KeyCode = C.sfKeyNum3
+	KeyNum4 KeyCode = C.sfKeyNum4
+	KeyNum5 KeyCode = C.sfKeyNum5
+	KeyNum6 KeyCode = C.sfKeyNum6
+	KeyNum7 KeyCode = C.sfKeyNum7
+	KeyNum8 KeyCode = C.sfKeyNum8
+	KeyNum9 KeyCode = C.sfKeyNum9
+	KeyEscape KeyCode = C.sfKeyEscape
+	KeyLcOntrol KeyCode = C.sfKeyLControl
+	KeyLsHift KeyCode = C.sfKeyLShift
+	KeyLaLt KeyCode = C.sfKeyLAlt
+	KeyLsYstem KeyCode = C.sfKeyLSystem
+	KeyRcOntrol KeyCode = C.sfKeyRControl
+	KeyRsHift KeyCode = C.sfKeyRShift
+	KeyRaLt KeyCode = C.sfKeyRAlt
+	KeyRsYstem KeyCode = C.sfKeyRSystem
+	KeyMenu KeyCode = C.sfKeyMenu
+	KeyLbRacket KeyCode = C.sfKeyLBracket
+	KeyRbRacket KeyCode = C.sfKeyRBracket
+	KeySemicolon KeyCode = C.sfKeySemicolon
+	KeyComma KeyCode = C.sfKeyComma
+	KeyPeriod KeyCode = C.sfKeyPeriod
+	KeyApostrophe KeyCode = C.sfKeyApostrophe
+	KeySlash KeyCode = C.sfKeySlash
+	KeyBackslash KeyCode = C.sfKeyBackslash
+	KeyGrave KeyCode = C.sfKeyGrave
+	KeyEqual KeyCode = C.sfKeyEqual
+	KeyHyphen KeyCode = C.sfKeyHyphen
+	KeySpace KeyCode = C.sfKeySpace
+	KeyEnter KeyCode = C.sfKeyEnter
+	KeyBackspace KeyCode = C.sfKeyBackspace
+	KeyTab KeyCode = C.sfKeyTab
+	KeyPageUp KeyCode = C.sfKeyPageUp
+	KeyPageDown KeyCode = C.sfKeyPageDown
+	KeyEnd KeyCode = C.sfKeyEnd
+	KeyHome KeyCode = C.sfKeyHome
+	KeyInsert KeyCode = C.sfKeyInsert
+	KeyDelete KeyCode = C.sfKeyDelete
+	KeyAdd KeyCode = C.sfKeyAdd
+	KeySubtract KeyCode = C.sfKeySubtract
+	KeyMultiply KeyCode = C.sfKeyMultiply
+	KeyDivide KeyCode = C.sfKeyDivide
+	KeyLeft KeyCode = C.sfKeyLeft
+	KeyRight KeyCode = C.sfKeyRight
+	KeyUp KeyCode = C.sfKeyUp
+	KeyDown KeyCode = C.sfKeyDown
+	KeyNumpad0 KeyCode = C.sfKeyNumpad0
+	KeyNumpad1 KeyCode = C.sfKeyNumpad1
+	KeyNumpad2 KeyCode = C.sfKeyNumpad2
+	KeyNumpad3 KeyCode = C.sfKeyNumpad3
+	KeyNumpad4 KeyCode = C.sfKeyNumpad4
+	KeyNumpad5 KeyCode = C.sfKeyNumpad5
+	KeyNumpad6 KeyCode = C.sfKeyNumpad6
+	KeyNumpad7 KeyCode = C.sfKeyNumpad7
+	KeyNumpad8 KeyCode = C.sfKeyNumpad8
+	KeyNumpad9 KeyCode = C.sfKeyNumpad9
+	KeyF1 KeyCode = C.sfKeyF1
+	KeyF2 KeyCode = C.sfKeyF2
+	KeyF3 KeyCode = C.sfKeyF3
+	KeyF4 KeyCode = C.sfKeyF4
+	KeyF5 KeyCode = C.sfKeyF5
+	KeyF6 KeyCode = C.sfKeyF6
+	KeyF7 KeyCode = C.sfKeyF7
+	KeyF8 KeyCode = C.sfKeyF8
+	KeyF9 KeyCode = C.sfKeyF9
+	KeyF10 KeyCode = C.sfKeyF10
+	KeyF11 KeyCode = C.sfKeyF11
+	KeyF12 KeyCode = C.sfKeyF12
+	KeyF13 KeyCode = C.sfKeyF13
+	KeyF14 KeyCode = C.sfKeyF14
+	KeyF15 KeyCode = C.sfKeyF15
+	KeyPause KeyCode = C.sfKeyPause
+	KeyCount KeyCode = C.sfKeyCount
+	KeyTilde KeyCode = C.sfKeyTilde
+	KeyDash KeyCode = C.sfKeyDash
+	KeyBack KeyCode = C.sfKeyBack
+	KeyBackSlash KeyCode = C.sfKeyBackSlash
+	KeySemiColon KeyCode = C.sfKeySemiColon
+	KeyReturn KeyCode = C.sfKeyReturn
+	KeyQuote KeyCode = C.sfKeyQuote
 )
 
 type KeyEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	Code KeyCode
+	Scancode Scancode
+	Alt bool
+	Control bool
+	Shift bool
+	System bool
 }
 
-func (k *KeyEvent) CPtr() unsafe.Pointer {
-	return (*C.sfKeyEvent)(k.ptr)
+func (k KeyEvent) ToC() C.sfKeyEvent {
+	funcRes := C.sfKeyEvent{ code: C.sfKeyCode(k.Code), scancode: C.sfScancode(k.Scancode), alt: boolToSfBool(k.Alt), control: boolToSfBool(k.Control), shift: boolToSfBool(k.Shift), system: boolToSfBool(k.System) }
+	C.set_sfKeyEvent_type(&funcRes, C.sfEventType(k.Type))
+	return funcRes
+}
+
+func NewKeyEventFromC(cObj C.sfKeyEvent) *KeyEvent {
+	return &KeyEvent{ Type: EventType(C.get_sfKeyEvent_type(&cObj)), Code: KeyCode(cObj.code), Scancode: Scancode(cObj.scancode), Alt: sfBoolToBool(cObj.alt), Control: sfBoolToBool(cObj.control), Shift: sfBoolToBool(cObj.shift), System: sfBoolToBool(cObj.system) }
+}
+
+func NewKeyEventSliceFromCArray(ptr *C.sfKeyEvent, count C.size_t) []KeyEvent {
+	if unsafe.Sizeof(KeyEvent{}) != unsafe.Sizeof(C.sfKeyEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]KeyEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(KeyEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewKeyEventCArrayFromGoSlice(slice []KeyEvent) *C.sfKeyEvent {
+	if unsafe.Sizeof(KeyEvent{}) != unsafe.Sizeof(C.sfKeyEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(KeyEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfKeyEvent)(ptr)
 }
 
 type MouseButton int32
 
 const (
-	MouseLeft MouseButton = C.MouseLeft
-	MouseRight MouseButton = C.MouseRight
-	MouseMiddle MouseButton = C.MouseMiddle
-	MouseXbUtton1 MouseButton = C.MouseXbUtton1
-	MouseXbUtton2 MouseButton = C.MouseXbUtton2
-	MouseButtonCount MouseButton = C.MouseButtonCount
+	MouseLeft MouseButton = C.sfMouseLeft
+	MouseRight MouseButton = C.sfMouseRight
+	MouseMiddle MouseButton = C.sfMouseMiddle
+	MouseXbUtton1 MouseButton = C.sfMouseXButton1
+	MouseXbUtton2 MouseButton = C.sfMouseXButton2
+	MouseButtonCount MouseButton = C.sfMouseButtonCount
 )
 
 type MouseButtonEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	Button MouseButton
+	X int32
+	Y int32
 }
 
-func (m *MouseButtonEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseButtonEvent)(m.ptr)
+func (m MouseButtonEvent) ToC() C.sfMouseButtonEvent {
+	funcRes := C.sfMouseButtonEvent{ button: C.sfMouseButton(m.Button), x: C.int(m.X), y: C.int(m.Y) }
+	C.set_sfMouseButtonEvent_type(&funcRes, C.sfEventType(m.Type))
+	return funcRes
+}
+
+func NewMouseButtonEventFromC(cObj C.sfMouseButtonEvent) *MouseButtonEvent {
+	return &MouseButtonEvent{ Type: EventType(C.get_sfMouseButtonEvent_type(&cObj)), Button: MouseButton(cObj.button), X: int32(cObj.x), Y: int32(cObj.y) }
+}
+
+func NewMouseButtonEventSliceFromCArray(ptr *C.sfMouseButtonEvent, count C.size_t) []MouseButtonEvent {
+	if unsafe.Sizeof(MouseButtonEvent{}) != unsafe.Sizeof(C.sfMouseButtonEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]MouseButtonEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(MouseButtonEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewMouseButtonEventCArrayFromGoSlice(slice []MouseButtonEvent) *C.sfMouseButtonEvent {
+	if unsafe.Sizeof(MouseButtonEvent{}) != unsafe.Sizeof(C.sfMouseButtonEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(MouseButtonEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfMouseButtonEvent)(ptr)
 }
 
 type MouseMoveEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	X int32
+	Y int32
 }
 
-func (m *MouseMoveEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseMoveEvent)(m.ptr)
+func (m MouseMoveEvent) ToC() C.sfMouseMoveEvent {
+	funcRes := C.sfMouseMoveEvent{ x: C.int(m.X), y: C.int(m.Y) }
+	C.set_sfMouseMoveEvent_type(&funcRes, C.sfEventType(m.Type))
+	return funcRes
+}
+
+func NewMouseMoveEventFromC(cObj C.sfMouseMoveEvent) *MouseMoveEvent {
+	return &MouseMoveEvent{ Type: EventType(C.get_sfMouseMoveEvent_type(&cObj)), X: int32(cObj.x), Y: int32(cObj.y) }
+}
+
+func NewMouseMoveEventSliceFromCArray(ptr *C.sfMouseMoveEvent, count C.size_t) []MouseMoveEvent {
+	if unsafe.Sizeof(MouseMoveEvent{}) != unsafe.Sizeof(C.sfMouseMoveEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]MouseMoveEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(MouseMoveEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewMouseMoveEventCArrayFromGoSlice(slice []MouseMoveEvent) *C.sfMouseMoveEvent {
+	if unsafe.Sizeof(MouseMoveEvent{}) != unsafe.Sizeof(C.sfMouseMoveEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(MouseMoveEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfMouseMoveEvent)(ptr)
 }
 
 type MouseWheel int32
 
 const (
-	MouseVerticalWheel MouseWheel = C.MouseVerticalWheel
-	MouseHorizontalWheel MouseWheel = C.MouseHorizontalWheel
+	MouseVerticalWheel MouseWheel = C.sfMouseVerticalWheel
+	MouseHorizontalWheel MouseWheel = C.sfMouseHorizontalWheel
 )
 
 type MouseWheelEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	Delta int32
+	X int32
+	Y int32
 }
 
-func (m *MouseWheelEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseWheelEvent)(m.ptr)
+func (m MouseWheelEvent) ToC() C.sfMouseWheelEvent {
+	funcRes := C.sfMouseWheelEvent{ delta: C.int(m.Delta), x: C.int(m.X), y: C.int(m.Y) }
+	C.set_sfMouseWheelEvent_type(&funcRes, C.sfEventType(m.Type))
+	return funcRes
+}
+
+func NewMouseWheelEventFromC(cObj C.sfMouseWheelEvent) *MouseWheelEvent {
+	return &MouseWheelEvent{ Type: EventType(C.get_sfMouseWheelEvent_type(&cObj)), Delta: int32(cObj.delta), X: int32(cObj.x), Y: int32(cObj.y) }
+}
+
+func NewMouseWheelEventSliceFromCArray(ptr *C.sfMouseWheelEvent, count C.size_t) []MouseWheelEvent {
+	if unsafe.Sizeof(MouseWheelEvent{}) != unsafe.Sizeof(C.sfMouseWheelEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]MouseWheelEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(MouseWheelEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewMouseWheelEventCArrayFromGoSlice(slice []MouseWheelEvent) *C.sfMouseWheelEvent {
+	if unsafe.Sizeof(MouseWheelEvent{}) != unsafe.Sizeof(C.sfMouseWheelEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(MouseWheelEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfMouseWheelEvent)(ptr)
 }
 
 type MouseWheelScrollEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	Wheel MouseWheel
+	Delta float32
+	X int32
+	Y int32
 }
 
-func (m *MouseWheelScrollEvent) CPtr() unsafe.Pointer {
-	return (*C.sfMouseWheelScrollEvent)(m.ptr)
+func (m MouseWheelScrollEvent) ToC() C.sfMouseWheelScrollEvent {
+	funcRes := C.sfMouseWheelScrollEvent{ wheel: C.sfMouseWheel(m.Wheel), delta: C.float(m.Delta), x: C.int(m.X), y: C.int(m.Y) }
+	C.set_sfMouseWheelScrollEvent_type(&funcRes, C.sfEventType(m.Type))
+	return funcRes
+}
+
+func NewMouseWheelScrollEventFromC(cObj C.sfMouseWheelScrollEvent) *MouseWheelScrollEvent {
+	return &MouseWheelScrollEvent{ Type: EventType(C.get_sfMouseWheelScrollEvent_type(&cObj)), Wheel: MouseWheel(cObj.wheel), Delta: float32(cObj.delta), X: int32(cObj.x), Y: int32(cObj.y) }
+}
+
+func NewMouseWheelScrollEventSliceFromCArray(ptr *C.sfMouseWheelScrollEvent, count C.size_t) []MouseWheelScrollEvent {
+	if unsafe.Sizeof(MouseWheelScrollEvent{}) != unsafe.Sizeof(C.sfMouseWheelScrollEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]MouseWheelScrollEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(MouseWheelScrollEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewMouseWheelScrollEventCArrayFromGoSlice(slice []MouseWheelScrollEvent) *C.sfMouseWheelScrollEvent {
+	if unsafe.Sizeof(MouseWheelScrollEvent{}) != unsafe.Sizeof(C.sfMouseWheelScrollEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(MouseWheelScrollEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfMouseWheelScrollEvent)(ptr)
 }
 
 type Mutex struct {
-	ptr unsafe.Pointer
+	ptr *C.sfMutex
 }
 
-func (m *Mutex) CPtr() unsafe.Pointer {
-	return (*C.sfMutex)(m.ptr)
+func (m *Mutex) ToC() *C.sfMutex {
+	return m.ptr
+}
+
+func NewMutexFromC(cPtr *C.sfMutex) *Mutex {
+	return &Mutex{ptr: cPtr}
 }
 
 type PrimitiveType int32
 
 const (
-	Points PrimitiveType = C.Points
-	Lines PrimitiveType = C.Lines
-	LineStrip PrimitiveType = C.LineStrip
-	Triangles PrimitiveType = C.Triangles
-	TriangleStrip PrimitiveType = C.TriangleStrip
-	TriangleFan PrimitiveType = C.TriangleFan
-	Quads PrimitiveType = C.Quads
-	LinesStrip PrimitiveType = C.LinesStrip
-	TrianglesStrip PrimitiveType = C.TrianglesStrip
-	TrianglesFan PrimitiveType = C.TrianglesFan
+	Points PrimitiveType = C.sfPoints
+	Lines PrimitiveType = C.sfLines
+	LineStrip PrimitiveType = C.sfLineStrip
+	Triangles PrimitiveType = C.sfTriangles
+	TriangleStrip PrimitiveType = C.sfTriangleStrip
+	TriangleFan PrimitiveType = C.sfTriangleFan
+	Quads PrimitiveType = C.sfQuads
+	LinesStrip PrimitiveType = C.sfLinesStrip
+	TrianglesStrip PrimitiveType = C.sfTrianglesStrip
+	TrianglesFan PrimitiveType = C.sfTrianglesFan
 )
 
 type RectangleShape struct {
-	ptr unsafe.Pointer
+	ptr *C.sfRectangleShape
 }
 
-func (r *RectangleShape) CPtr() unsafe.Pointer {
-	return (*C.sfRectangleShape)(r.ptr)
+func (r *RectangleShape) ToC() *C.sfRectangleShape {
+	return r.ptr
+}
+
+func NewRectangleShapeFromC(cPtr *C.sfRectangleShape) *RectangleShape {
+	return &RectangleShape{ptr: cPtr}
 }
 
 type RenderStates struct {
@@ -543,309 +1507,567 @@ type RenderStates struct {
 }
 
 func (r RenderStates) ToC() C.sfRenderStates {
-	return C.sfRenderStates{ blendMode: r.BlendMode, transform: r.Transform, texture: r.Texture, shader: r.Shader }
+	funcRes := C.sfRenderStates{ blendMode: r.BlendMode.ToC(), transform: r.Transform.ToC(), texture: r.Texture.ToC(), shader: r.Shader.ToC() }
+	return funcRes
+}
+
+func NewRenderStatesFromC(cObj C.sfRenderStates) *RenderStates {
+	return &RenderStates{ BlendMode: *NewBlendModeFromC(cObj.blendMode), Transform: *NewTransformFromC(cObj.transform), Texture: *NewTextureFromC(cObj.texture), Shader: *NewShaderFromC(cObj.shader) }
+}
+
+func NewRenderStatesSliceFromCArray(ptr *C.sfRenderStates, count C.size_t) []RenderStates {
+	if unsafe.Sizeof(RenderStates{}) != unsafe.Sizeof(C.sfRenderStates{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]RenderStates, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(RenderStates{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewRenderStatesCArrayFromGoSlice(slice []RenderStates) *C.sfRenderStates {
+	if unsafe.Sizeof(RenderStates{}) != unsafe.Sizeof(C.sfRenderStates{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(RenderStates{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfRenderStates)(ptr)
 }
 
 type RenderTexture struct {
-	ptr unsafe.Pointer
+	ptr *C.sfRenderTexture
 }
 
-func (r *RenderTexture) CPtr() unsafe.Pointer {
-	return (*C.sfRenderTexture)(r.ptr)
+func (r *RenderTexture) ToC() *C.sfRenderTexture {
+	return r.ptr
+}
+
+func NewRenderTextureFromC(cPtr *C.sfRenderTexture) *RenderTexture {
+	return &RenderTexture{ptr: cPtr}
 }
 
 type RenderWindow struct {
-	ptr unsafe.Pointer
+	ptr *C.sfRenderWindow
 }
 
-func (r *RenderWindow) CPtr() unsafe.Pointer {
-	return (*C.sfRenderWindow)(r.ptr)
+func (r *RenderWindow) ToC() *C.sfRenderWindow {
+	return r.ptr
+}
+
+func NewRenderWindowFromC(cPtr *C.sfRenderWindow) *RenderWindow {
+	return &RenderWindow{ptr: cPtr}
 }
 
 type Scancode int32
 
 const (
-	ScanUnknown Scancode = C.ScanUnknown
-	ScanA Scancode = C.ScanA
-	ScanB Scancode = C.ScanB
-	ScanC Scancode = C.ScanC
-	ScanD Scancode = C.ScanD
-	ScanE Scancode = C.ScanE
-	ScanF Scancode = C.ScanF
-	ScanG Scancode = C.ScanG
-	ScanH Scancode = C.ScanH
-	ScanI Scancode = C.ScanI
-	ScanJ Scancode = C.ScanJ
-	ScanK Scancode = C.ScanK
-	ScanL Scancode = C.ScanL
-	ScanM Scancode = C.ScanM
-	ScanN Scancode = C.ScanN
-	ScanO Scancode = C.ScanO
-	ScanP Scancode = C.ScanP
-	ScanQ Scancode = C.ScanQ
-	ScanR Scancode = C.ScanR
-	ScanS Scancode = C.ScanS
-	ScanT Scancode = C.ScanT
-	ScanU Scancode = C.ScanU
-	ScanV Scancode = C.ScanV
-	ScanW Scancode = C.ScanW
-	ScanX Scancode = C.ScanX
-	ScanY Scancode = C.ScanY
-	ScanZ Scancode = C.ScanZ
-	ScanNum1 Scancode = C.ScanNum1
-	ScanNum2 Scancode = C.ScanNum2
-	ScanNum3 Scancode = C.ScanNum3
-	ScanNum4 Scancode = C.ScanNum4
-	ScanNum5 Scancode = C.ScanNum5
-	ScanNum6 Scancode = C.ScanNum6
-	ScanNum7 Scancode = C.ScanNum7
-	ScanNum8 Scancode = C.ScanNum8
-	ScanNum9 Scancode = C.ScanNum9
-	ScanNum0 Scancode = C.ScanNum0
-	ScanEnter Scancode = C.ScanEnter
-	ScanEscape Scancode = C.ScanEscape
-	ScanBackspace Scancode = C.ScanBackspace
-	ScanTab Scancode = C.ScanTab
-	ScanSpace Scancode = C.ScanSpace
-	ScanHyphen Scancode = C.ScanHyphen
-	ScanEqual Scancode = C.ScanEqual
-	ScanLbRacket Scancode = C.ScanLbRacket
-	ScanRbRacket Scancode = C.ScanRbRacket
-	ScanBackslash Scancode = C.ScanBackslash
-	ScanSemicolon Scancode = C.ScanSemicolon
-	ScanApostrophe Scancode = C.ScanApostrophe
-	ScanGrave Scancode = C.ScanGrave
-	ScanComma Scancode = C.ScanComma
-	ScanPeriod Scancode = C.ScanPeriod
-	ScanSlash Scancode = C.ScanSlash
-	ScanF1 Scancode = C.ScanF1
-	ScanF2 Scancode = C.ScanF2
-	ScanF3 Scancode = C.ScanF3
-	ScanF4 Scancode = C.ScanF4
-	ScanF5 Scancode = C.ScanF5
-	ScanF6 Scancode = C.ScanF6
-	ScanF7 Scancode = C.ScanF7
-	ScanF8 Scancode = C.ScanF8
-	ScanF9 Scancode = C.ScanF9
-	ScanF10 Scancode = C.ScanF10
-	ScanF11 Scancode = C.ScanF11
-	ScanF12 Scancode = C.ScanF12
-	ScanF13 Scancode = C.ScanF13
-	ScanF14 Scancode = C.ScanF14
-	ScanF15 Scancode = C.ScanF15
-	ScanF16 Scancode = C.ScanF16
-	ScanF17 Scancode = C.ScanF17
-	ScanF18 Scancode = C.ScanF18
-	ScanF19 Scancode = C.ScanF19
-	ScanF20 Scancode = C.ScanF20
-	ScanF21 Scancode = C.ScanF21
-	ScanF22 Scancode = C.ScanF22
-	ScanF23 Scancode = C.ScanF23
-	ScanF24 Scancode = C.ScanF24
-	ScanCapsLock Scancode = C.ScanCapsLock
-	ScanPrintScreen Scancode = C.ScanPrintScreen
-	ScanScrollLock Scancode = C.ScanScrollLock
-	ScanPause Scancode = C.ScanPause
-	ScanInsert Scancode = C.ScanInsert
-	ScanHome Scancode = C.ScanHome
-	ScanPageUp Scancode = C.ScanPageUp
-	ScanDelete Scancode = C.ScanDelete
-	ScanEnd Scancode = C.ScanEnd
-	ScanPageDown Scancode = C.ScanPageDown
-	ScanRight Scancode = C.ScanRight
-	ScanLeft Scancode = C.ScanLeft
-	ScanDown Scancode = C.ScanDown
-	ScanUp Scancode = C.ScanUp
-	ScanNumLock Scancode = C.ScanNumLock
-	ScanNumpadDivide Scancode = C.ScanNumpadDivide
-	ScanNumpadMultiply Scancode = C.ScanNumpadMultiply
-	ScanNumpadMinus Scancode = C.ScanNumpadMinus
-	ScanNumpadPlus Scancode = C.ScanNumpadPlus
-	ScanNumpadEqual Scancode = C.ScanNumpadEqual
-	ScanNumpadEnter Scancode = C.ScanNumpadEnter
-	ScanNumpadDecimal Scancode = C.ScanNumpadDecimal
-	ScanNumpad1 Scancode = C.ScanNumpad1
-	ScanNumpad2 Scancode = C.ScanNumpad2
-	ScanNumpad3 Scancode = C.ScanNumpad3
-	ScanNumpad4 Scancode = C.ScanNumpad4
-	ScanNumpad5 Scancode = C.ScanNumpad5
-	ScanNumpad6 Scancode = C.ScanNumpad6
-	ScanNumpad7 Scancode = C.ScanNumpad7
-	ScanNumpad8 Scancode = C.ScanNumpad8
-	ScanNumpad9 Scancode = C.ScanNumpad9
-	ScanNumpad0 Scancode = C.ScanNumpad0
-	ScanNonUsBackslash Scancode = C.ScanNonUsBackslash
-	ScanApplication Scancode = C.ScanApplication
-	ScanExecute Scancode = C.ScanExecute
-	ScanModeChange Scancode = C.ScanModeChange
-	ScanHelp Scancode = C.ScanHelp
-	ScanMenu Scancode = C.ScanMenu
-	ScanSelect Scancode = C.ScanSelect
-	ScanRedo Scancode = C.ScanRedo
-	ScanUndo Scancode = C.ScanUndo
-	ScanCut Scancode = C.ScanCut
-	ScanCopy Scancode = C.ScanCopy
-	ScanPaste Scancode = C.ScanPaste
-	ScanVolumeMute Scancode = C.ScanVolumeMute
-	ScanVolumeUp Scancode = C.ScanVolumeUp
-	ScanVolumeDown Scancode = C.ScanVolumeDown
-	ScanMediaPlayPause Scancode = C.ScanMediaPlayPause
-	ScanMediaStop Scancode = C.ScanMediaStop
-	ScanMediaNextTrack Scancode = C.ScanMediaNextTrack
-	ScanMediaPreviousTrack Scancode = C.ScanMediaPreviousTrack
-	ScanLcOntrol Scancode = C.ScanLcOntrol
-	ScanLsHift Scancode = C.ScanLsHift
-	ScanLaLt Scancode = C.ScanLaLt
-	ScanLsYstem Scancode = C.ScanLsYstem
-	ScanRcOntrol Scancode = C.ScanRcOntrol
-	ScanRsHift Scancode = C.ScanRsHift
-	ScanRaLt Scancode = C.ScanRaLt
-	ScanRsYstem Scancode = C.ScanRsYstem
-	ScanBack Scancode = C.ScanBack
-	ScanForward Scancode = C.ScanForward
-	ScanRefresh Scancode = C.ScanRefresh
-	ScanStop Scancode = C.ScanStop
-	ScanSearch Scancode = C.ScanSearch
-	ScanFavorites Scancode = C.ScanFavorites
-	ScanHomePage Scancode = C.ScanHomePage
-	ScanLaunchApplication1 Scancode = C.ScanLaunchApplication1
-	ScanLaunchApplication2 Scancode = C.ScanLaunchApplication2
-	ScanLaunchMail Scancode = C.ScanLaunchMail
-	ScanLaunchMediaSelect Scancode = C.ScanLaunchMediaSelect
-	ScancodeCount Scancode = C.ScancodeCount
+	ScanUnknown Scancode = C.sfScanUnknown
+	ScanA Scancode = C.sfScanA
+	ScanB Scancode = C.sfScanB
+	ScanC Scancode = C.sfScanC
+	ScanD Scancode = C.sfScanD
+	ScanE Scancode = C.sfScanE
+	ScanF Scancode = C.sfScanF
+	ScanG Scancode = C.sfScanG
+	ScanH Scancode = C.sfScanH
+	ScanI Scancode = C.sfScanI
+	ScanJ Scancode = C.sfScanJ
+	ScanK Scancode = C.sfScanK
+	ScanL Scancode = C.sfScanL
+	ScanM Scancode = C.sfScanM
+	ScanN Scancode = C.sfScanN
+	ScanO Scancode = C.sfScanO
+	ScanP Scancode = C.sfScanP
+	ScanQ Scancode = C.sfScanQ
+	ScanR Scancode = C.sfScanR
+	ScanS Scancode = C.sfScanS
+	ScanT Scancode = C.sfScanT
+	ScanU Scancode = C.sfScanU
+	ScanV Scancode = C.sfScanV
+	ScanW Scancode = C.sfScanW
+	ScanX Scancode = C.sfScanX
+	ScanY Scancode = C.sfScanY
+	ScanZ Scancode = C.sfScanZ
+	ScanNum1 Scancode = C.sfScanNum1
+	ScanNum2 Scancode = C.sfScanNum2
+	ScanNum3 Scancode = C.sfScanNum3
+	ScanNum4 Scancode = C.sfScanNum4
+	ScanNum5 Scancode = C.sfScanNum5
+	ScanNum6 Scancode = C.sfScanNum6
+	ScanNum7 Scancode = C.sfScanNum7
+	ScanNum8 Scancode = C.sfScanNum8
+	ScanNum9 Scancode = C.sfScanNum9
+	ScanNum0 Scancode = C.sfScanNum0
+	ScanEnter Scancode = C.sfScanEnter
+	ScanEscape Scancode = C.sfScanEscape
+	ScanBackspace Scancode = C.sfScanBackspace
+	ScanTab Scancode = C.sfScanTab
+	ScanSpace Scancode = C.sfScanSpace
+	ScanHyphen Scancode = C.sfScanHyphen
+	ScanEqual Scancode = C.sfScanEqual
+	ScanLbRacket Scancode = C.sfScanLBracket
+	ScanRbRacket Scancode = C.sfScanRBracket
+	ScanBackslash Scancode = C.sfScanBackslash
+	ScanSemicolon Scancode = C.sfScanSemicolon
+	ScanApostrophe Scancode = C.sfScanApostrophe
+	ScanGrave Scancode = C.sfScanGrave
+	ScanComma Scancode = C.sfScanComma
+	ScanPeriod Scancode = C.sfScanPeriod
+	ScanSlash Scancode = C.sfScanSlash
+	ScanF1 Scancode = C.sfScanF1
+	ScanF2 Scancode = C.sfScanF2
+	ScanF3 Scancode = C.sfScanF3
+	ScanF4 Scancode = C.sfScanF4
+	ScanF5 Scancode = C.sfScanF5
+	ScanF6 Scancode = C.sfScanF6
+	ScanF7 Scancode = C.sfScanF7
+	ScanF8 Scancode = C.sfScanF8
+	ScanF9 Scancode = C.sfScanF9
+	ScanF10 Scancode = C.sfScanF10
+	ScanF11 Scancode = C.sfScanF11
+	ScanF12 Scancode = C.sfScanF12
+	ScanF13 Scancode = C.sfScanF13
+	ScanF14 Scancode = C.sfScanF14
+	ScanF15 Scancode = C.sfScanF15
+	ScanF16 Scancode = C.sfScanF16
+	ScanF17 Scancode = C.sfScanF17
+	ScanF18 Scancode = C.sfScanF18
+	ScanF19 Scancode = C.sfScanF19
+	ScanF20 Scancode = C.sfScanF20
+	ScanF21 Scancode = C.sfScanF21
+	ScanF22 Scancode = C.sfScanF22
+	ScanF23 Scancode = C.sfScanF23
+	ScanF24 Scancode = C.sfScanF24
+	ScanCapsLock Scancode = C.sfScanCapsLock
+	ScanPrintScreen Scancode = C.sfScanPrintScreen
+	ScanScrollLock Scancode = C.sfScanScrollLock
+	ScanPause Scancode = C.sfScanPause
+	ScanInsert Scancode = C.sfScanInsert
+	ScanHome Scancode = C.sfScanHome
+	ScanPageUp Scancode = C.sfScanPageUp
+	ScanDelete Scancode = C.sfScanDelete
+	ScanEnd Scancode = C.sfScanEnd
+	ScanPageDown Scancode = C.sfScanPageDown
+	ScanRight Scancode = C.sfScanRight
+	ScanLeft Scancode = C.sfScanLeft
+	ScanDown Scancode = C.sfScanDown
+	ScanUp Scancode = C.sfScanUp
+	ScanNumLock Scancode = C.sfScanNumLock
+	ScanNumpadDivide Scancode = C.sfScanNumpadDivide
+	ScanNumpadMultiply Scancode = C.sfScanNumpadMultiply
+	ScanNumpadMinus Scancode = C.sfScanNumpadMinus
+	ScanNumpadPlus Scancode = C.sfScanNumpadPlus
+	ScanNumpadEqual Scancode = C.sfScanNumpadEqual
+	ScanNumpadEnter Scancode = C.sfScanNumpadEnter
+	ScanNumpadDecimal Scancode = C.sfScanNumpadDecimal
+	ScanNumpad1 Scancode = C.sfScanNumpad1
+	ScanNumpad2 Scancode = C.sfScanNumpad2
+	ScanNumpad3 Scancode = C.sfScanNumpad3
+	ScanNumpad4 Scancode = C.sfScanNumpad4
+	ScanNumpad5 Scancode = C.sfScanNumpad5
+	ScanNumpad6 Scancode = C.sfScanNumpad6
+	ScanNumpad7 Scancode = C.sfScanNumpad7
+	ScanNumpad8 Scancode = C.sfScanNumpad8
+	ScanNumpad9 Scancode = C.sfScanNumpad9
+	ScanNumpad0 Scancode = C.sfScanNumpad0
+	ScanNonUsBackslash Scancode = C.sfScanNonUsBackslash
+	ScanApplication Scancode = C.sfScanApplication
+	ScanExecute Scancode = C.sfScanExecute
+	ScanModeChange Scancode = C.sfScanModeChange
+	ScanHelp Scancode = C.sfScanHelp
+	ScanMenu Scancode = C.sfScanMenu
+	ScanSelect Scancode = C.sfScanSelect
+	ScanRedo Scancode = C.sfScanRedo
+	ScanUndo Scancode = C.sfScanUndo
+	ScanCut Scancode = C.sfScanCut
+	ScanCopy Scancode = C.sfScanCopy
+	ScanPaste Scancode = C.sfScanPaste
+	ScanVolumeMute Scancode = C.sfScanVolumeMute
+	ScanVolumeUp Scancode = C.sfScanVolumeUp
+	ScanVolumeDown Scancode = C.sfScanVolumeDown
+	ScanMediaPlayPause Scancode = C.sfScanMediaPlayPause
+	ScanMediaStop Scancode = C.sfScanMediaStop
+	ScanMediaNextTrack Scancode = C.sfScanMediaNextTrack
+	ScanMediaPreviousTrack Scancode = C.sfScanMediaPreviousTrack
+	ScanLcOntrol Scancode = C.sfScanLControl
+	ScanLsHift Scancode = C.sfScanLShift
+	ScanLaLt Scancode = C.sfScanLAlt
+	ScanLsYstem Scancode = C.sfScanLSystem
+	ScanRcOntrol Scancode = C.sfScanRControl
+	ScanRsHift Scancode = C.sfScanRShift
+	ScanRaLt Scancode = C.sfScanRAlt
+	ScanRsYstem Scancode = C.sfScanRSystem
+	ScanBack Scancode = C.sfScanBack
+	ScanForward Scancode = C.sfScanForward
+	ScanRefresh Scancode = C.sfScanRefresh
+	ScanStop Scancode = C.sfScanStop
+	ScanSearch Scancode = C.sfScanSearch
+	ScanFavorites Scancode = C.sfScanFavorites
+	ScanHomePage Scancode = C.sfScanHomePage
+	ScanLaunchApplication1 Scancode = C.sfScanLaunchApplication1
+	ScanLaunchApplication2 Scancode = C.sfScanLaunchApplication2
+	ScanLaunchMail Scancode = C.sfScanLaunchMail
+	ScanLaunchMediaSelect Scancode = C.sfScanLaunchMediaSelect
+	ScancodeCount Scancode = C.sfScancodeCount
 )
 
 type SensorEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	SensorType SensorType
+	X float32
+	Y float32
+	Z float32
 }
 
-func (s *SensorEvent) CPtr() unsafe.Pointer {
-	return (*C.sfSensorEvent)(s.ptr)
+func (s SensorEvent) ToC() C.sfSensorEvent {
+	funcRes := C.sfSensorEvent{ sensorType: C.sfSensorType(s.SensorType), x: C.float(s.X), y: C.float(s.Y), z: C.float(s.Z) }
+	C.set_sfSensorEvent_type(&funcRes, C.sfEventType(s.Type))
+	return funcRes
+}
+
+func NewSensorEventFromC(cObj C.sfSensorEvent) *SensorEvent {
+	return &SensorEvent{ Type: EventType(C.get_sfSensorEvent_type(&cObj)), SensorType: SensorType(cObj.sensorType), X: float32(cObj.x), Y: float32(cObj.y), Z: float32(cObj.z) }
+}
+
+func NewSensorEventSliceFromCArray(ptr *C.sfSensorEvent, count C.size_t) []SensorEvent {
+	if unsafe.Sizeof(SensorEvent{}) != unsafe.Sizeof(C.sfSensorEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]SensorEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(SensorEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewSensorEventCArrayFromGoSlice(slice []SensorEvent) *C.sfSensorEvent {
+	if unsafe.Sizeof(SensorEvent{}) != unsafe.Sizeof(C.sfSensorEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(SensorEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfSensorEvent)(ptr)
 }
 
 type SensorType int32
 
 const (
-	SensorAccelerometer SensorType = C.SensorAccelerometer
-	SensorGyroscope SensorType = C.SensorGyroscope
-	SensorMagnetometer SensorType = C.SensorMagnetometer
-	SensorGravity SensorType = C.SensorGravity
-	SensorUserAcceleration SensorType = C.SensorUserAcceleration
-	SensorOrientation SensorType = C.SensorOrientation
-	SensorCount SensorType = C.SensorCount
+	SensorAccelerometer SensorType = C.sfSensorAccelerometer
+	SensorGyroscope SensorType = C.sfSensorGyroscope
+	SensorMagnetometer SensorType = C.sfSensorMagnetometer
+	SensorGravity SensorType = C.sfSensorGravity
+	SensorUserAcceleration SensorType = C.sfSensorUserAcceleration
+	SensorOrientation SensorType = C.sfSensorOrientation
+	SensorCount SensorType = C.sfSensorCount
 )
 
 type Shader struct {
-	ptr unsafe.Pointer
+	ptr *C.sfShader
 }
 
-func (s *Shader) CPtr() unsafe.Pointer {
-	return (*C.sfShader)(s.ptr)
+func (s *Shader) ToC() *C.sfShader {
+	return s.ptr
+}
+
+func NewShaderFromC(cPtr *C.sfShader) *Shader {
+	return &Shader{ptr: cPtr}
 }
 
 type Shape struct {
-	ptr unsafe.Pointer
+	ptr *C.sfShape
 }
 
-func (s *Shape) CPtr() unsafe.Pointer {
-	return (*C.sfShape)(s.ptr)
+func (s *Shape) ToC() *C.sfShape {
+	return s.ptr
+}
+
+func NewShapeFromC(cPtr *C.sfShape) *Shape {
+	return &Shape{ptr: cPtr}
 }
 
 type SizeEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	Width uint32
+	Height uint32
 }
 
-func (s *SizeEvent) CPtr() unsafe.Pointer {
-	return (*C.sfSizeEvent)(s.ptr)
+func (s SizeEvent) ToC() C.sfSizeEvent {
+	funcRes := C.sfSizeEvent{ width: C.uint(s.Width), height: C.uint(s.Height) }
+	C.set_sfSizeEvent_type(&funcRes, C.sfEventType(s.Type))
+	return funcRes
+}
+
+func NewSizeEventFromC(cObj C.sfSizeEvent) *SizeEvent {
+	return &SizeEvent{ Type: EventType(C.get_sfSizeEvent_type(&cObj)), Width: uint32(cObj.width), Height: uint32(cObj.height) }
+}
+
+func NewSizeEventSliceFromCArray(ptr *C.sfSizeEvent, count C.size_t) []SizeEvent {
+	if unsafe.Sizeof(SizeEvent{}) != unsafe.Sizeof(C.sfSizeEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]SizeEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(SizeEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewSizeEventCArrayFromGoSlice(slice []SizeEvent) *C.sfSizeEvent {
+	if unsafe.Sizeof(SizeEvent{}) != unsafe.Sizeof(C.sfSizeEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(SizeEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfSizeEvent)(ptr)
 }
 
 type Sprite struct {
-	ptr unsafe.Pointer
+	ptr *C.sfSprite
 }
 
-func (s *Sprite) CPtr() unsafe.Pointer {
-	return (*C.sfSprite)(s.ptr)
+func (s *Sprite) ToC() *C.sfSprite {
+	return s.ptr
+}
+
+func NewSpriteFromC(cPtr *C.sfSprite) *Sprite {
+	return &Sprite{ptr: cPtr}
 }
 
 type Text struct {
-	ptr unsafe.Pointer
+	ptr *C.sfText
 }
 
-func (t *Text) CPtr() unsafe.Pointer {
-	return (*C.sfText)(t.ptr)
+func (t *Text) ToC() *C.sfText {
+	return t.ptr
+}
+
+func NewTextFromC(cPtr *C.sfText) *Text {
+	return &Text{ptr: cPtr}
 }
 
 type TextEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	Unicode uint32
 }
 
-func (t *TextEvent) CPtr() unsafe.Pointer {
-	return (*C.sfTextEvent)(t.ptr)
+func (t TextEvent) ToC() C.sfTextEvent {
+	funcRes := C.sfTextEvent{ unicode: C.sfUint32(t.Unicode) }
+	C.set_sfTextEvent_type(&funcRes, C.sfEventType(t.Type))
+	return funcRes
+}
+
+func NewTextEventFromC(cObj C.sfTextEvent) *TextEvent {
+	return &TextEvent{ Type: EventType(C.get_sfTextEvent_type(&cObj)), Unicode: uint32(cObj.unicode) }
+}
+
+func NewTextEventSliceFromCArray(ptr *C.sfTextEvent, count C.size_t) []TextEvent {
+	if unsafe.Sizeof(TextEvent{}) != unsafe.Sizeof(C.sfTextEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]TextEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(TextEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewTextEventCArrayFromGoSlice(slice []TextEvent) *C.sfTextEvent {
+	if unsafe.Sizeof(TextEvent{}) != unsafe.Sizeof(C.sfTextEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(TextEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfTextEvent)(ptr)
 }
 
 type TextStyle int32
 
 const (
-	TextRegular TextStyle = C.TextRegular
-	TextBold TextStyle = C.TextBold
-	TextItalic TextStyle = C.TextItalic
-	TextUnderlined TextStyle = C.TextUnderlined
-	TextStrikeThrough TextStyle = C.TextStrikeThrough
+	TextRegular TextStyle = C.sfTextRegular
+	TextBold TextStyle = C.sfTextBold
+	TextItalic TextStyle = C.sfTextItalic
+	TextUnderlined TextStyle = C.sfTextUnderlined
+	TextStrikeThrough TextStyle = C.sfTextStrikeThrough
 )
 
 type Texture struct {
-	ptr unsafe.Pointer
+	ptr *C.sfTexture
 }
 
-func (t *Texture) CPtr() unsafe.Pointer {
-	return (*C.sfTexture)(t.ptr)
+func (t *Texture) ToC() *C.sfTexture {
+	return t.ptr
+}
+
+func NewTextureFromC(cPtr *C.sfTexture) *Texture {
+	return &Texture{ptr: cPtr}
 }
 
 type TextureCoordinateType int32
 
 const (
-	TextureNormalized TextureCoordinateType = C.TextureNormalized
-	TexturePixels TextureCoordinateType = C.TexturePixels
+	TextureNormalized TextureCoordinateType = C.sfTextureNormalized
+	TexturePixels TextureCoordinateType = C.sfTexturePixels
 )
-
-type Thread struct {
-	ptr unsafe.Pointer
-}
-
-func (t *Thread) CPtr() unsafe.Pointer {
-	return (*C.sfThread)(t.ptr)
-}
 
 type Time struct {
 	Microseconds int64
 }
 
 func (t Time) ToC() C.sfTime {
-	return C.sfTime{ microseconds: t.Microseconds }
+	funcRes := C.sfTime{ microseconds: C.sfInt64(t.Microseconds) }
+	return funcRes
+}
+
+func NewTimeFromC(cObj C.sfTime) *Time {
+	return &Time{ Microseconds: int64(cObj.microseconds) }
+}
+
+func NewTimeSliceFromCArray(ptr *C.sfTime, count C.size_t) []Time {
+	if unsafe.Sizeof(Time{}) != unsafe.Sizeof(C.sfTime{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Time, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Time{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewTimeCArrayFromGoSlice(slice []Time) *C.sfTime {
+	if unsafe.Sizeof(Time{}) != unsafe.Sizeof(C.sfTime{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Time{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfTime)(ptr)
 }
 
 type TouchEvent struct {
-	ptr unsafe.Pointer
+	Type EventType
+	Finger uint32
+	X int32
+	Y int32
 }
 
-func (t *TouchEvent) CPtr() unsafe.Pointer {
-	return (*C.sfTouchEvent)(t.ptr)
+func (t TouchEvent) ToC() C.sfTouchEvent {
+	funcRes := C.sfTouchEvent{ finger: C.uint(t.Finger), x: C.int(t.X), y: C.int(t.Y) }
+	C.set_sfTouchEvent_type(&funcRes, C.sfEventType(t.Type))
+	return funcRes
+}
+
+func NewTouchEventFromC(cObj C.sfTouchEvent) *TouchEvent {
+	return &TouchEvent{ Type: EventType(C.get_sfTouchEvent_type(&cObj)), Finger: uint32(cObj.finger), X: int32(cObj.x), Y: int32(cObj.y) }
+}
+
+func NewTouchEventSliceFromCArray(ptr *C.sfTouchEvent, count C.size_t) []TouchEvent {
+	if unsafe.Sizeof(TouchEvent{}) != unsafe.Sizeof(C.sfTouchEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]TouchEvent, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(TouchEvent{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewTouchEventCArrayFromGoSlice(slice []TouchEvent) *C.sfTouchEvent {
+	if unsafe.Sizeof(TouchEvent{}) != unsafe.Sizeof(C.sfTouchEvent{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(TouchEvent{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfTouchEvent)(ptr)
 }
 
 type Transform struct {
-	ptr unsafe.Pointer
+	obj C.sfTransform
 }
 
-func (t *Transform) CPtr() unsafe.Pointer {
-	return (*C.sfTransform)(t.ptr)
+func (t *Transform) ToC() C.sfTransform {
+	return t.obj
+}
+
+func NewTransformFromC(cObj C.sfTransform) *Transform {
+	return &Transform{obj: cObj}
 }
 
 type Transformable struct {
-	ptr unsafe.Pointer
+	ptr *C.sfTransformable
 }
 
-func (t *Transformable) CPtr() unsafe.Pointer {
-	return (*C.sfTransformable)(t.ptr)
+func (t *Transformable) ToC() *C.sfTransformable {
+	return t.ptr
+}
+
+func NewTransformableFromC(cPtr *C.sfTransformable) *Transformable {
+	return &Transformable{ptr: cPtr}
 }
 
 type Vector2f struct {
@@ -854,7 +2076,43 @@ type Vector2f struct {
 }
 
 func (v Vector2f) ToC() C.sfVector2f {
-	return C.sfVector2f{ x: v.X, y: v.Y }
+	funcRes := C.sfVector2f{ x: C.float(v.X), y: C.float(v.Y) }
+	return funcRes
+}
+
+func NewVector2fFromC(cObj C.sfVector2f) *Vector2f {
+	return &Vector2f{ X: float32(cObj.x), Y: float32(cObj.y) }
+}
+
+func NewVector2fSliceFromCArray(ptr *C.sfVector2f, count C.size_t) []Vector2f {
+	if unsafe.Sizeof(Vector2f{}) != unsafe.Sizeof(C.sfVector2f{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector2f, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector2f{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector2fCArrayFromGoSlice(slice []Vector2f) *C.sfVector2f {
+	if unsafe.Sizeof(Vector2f{}) != unsafe.Sizeof(C.sfVector2f{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector2f{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfVector2f)(ptr)
 }
 
 type Vector2i struct {
@@ -863,7 +2121,43 @@ type Vector2i struct {
 }
 
 func (v Vector2i) ToC() C.sfVector2i {
-	return C.sfVector2i{ x: v.X, y: v.Y }
+	funcRes := C.sfVector2i{ x: C.int(v.X), y: C.int(v.Y) }
+	return funcRes
+}
+
+func NewVector2iFromC(cObj C.sfVector2i) *Vector2i {
+	return &Vector2i{ X: int32(cObj.x), Y: int32(cObj.y) }
+}
+
+func NewVector2iSliceFromCArray(ptr *C.sfVector2i, count C.size_t) []Vector2i {
+	if unsafe.Sizeof(Vector2i{}) != unsafe.Sizeof(C.sfVector2i{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector2i, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector2i{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector2iCArrayFromGoSlice(slice []Vector2i) *C.sfVector2i {
+	if unsafe.Sizeof(Vector2i{}) != unsafe.Sizeof(C.sfVector2i{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector2i{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfVector2i)(ptr)
 }
 
 type Vector2u struct {
@@ -872,7 +2166,43 @@ type Vector2u struct {
 }
 
 func (v Vector2u) ToC() C.sfVector2u {
-	return C.sfVector2u{ x: v.X, y: v.Y }
+	funcRes := C.sfVector2u{ x: C.sfUint32(v.X), y: C.sfUint32(v.Y) }
+	return funcRes
+}
+
+func NewVector2uFromC(cObj C.sfVector2u) *Vector2u {
+	return &Vector2u{ X: uint32(cObj.x), Y: uint32(cObj.y) }
+}
+
+func NewVector2uSliceFromCArray(ptr *C.sfVector2u, count C.size_t) []Vector2u {
+	if unsafe.Sizeof(Vector2u{}) != unsafe.Sizeof(C.sfVector2u{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector2u, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector2u{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector2uCArrayFromGoSlice(slice []Vector2u) *C.sfVector2u {
+	if unsafe.Sizeof(Vector2u{}) != unsafe.Sizeof(C.sfVector2u{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector2u{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfVector2u)(ptr)
 }
 
 type Vector3f struct {
@@ -882,39 +2212,121 @@ type Vector3f struct {
 }
 
 func (v Vector3f) ToC() C.sfVector3f {
-	return C.sfVector3f{ x: v.X, y: v.Y, z: v.Z }
+	funcRes := C.sfVector3f{ x: C.float(v.X), y: C.float(v.Y), z: C.float(v.Z) }
+	return funcRes
+}
+
+func NewVector3fFromC(cObj C.sfVector3f) *Vector3f {
+	return &Vector3f{ X: float32(cObj.x), Y: float32(cObj.y), Z: float32(cObj.z) }
+}
+
+func NewVector3fSliceFromCArray(ptr *C.sfVector3f, count C.size_t) []Vector3f {
+	if unsafe.Sizeof(Vector3f{}) != unsafe.Sizeof(C.sfVector3f{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vector3f, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vector3f{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVector3fCArrayFromGoSlice(slice []Vector3f) *C.sfVector3f {
+	if unsafe.Sizeof(Vector3f{}) != unsafe.Sizeof(C.sfVector3f{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vector3f{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfVector3f)(ptr)
 }
 
 type Vertex struct {
-	ptr unsafe.Pointer
+	Position Vector2f
+	Color Color
+	TexCoords Vector2f
 }
 
-func (v *Vertex) CPtr() unsafe.Pointer {
-	return (*C.sfVertex)(v.ptr)
+func (v Vertex) ToC() C.sfVertex {
+	funcRes := C.sfVertex{ position: v.Position.ToC(), color: v.Color.ToC(), texCoords: v.TexCoords.ToC() }
+	return funcRes
+}
+
+func NewVertexFromC(cObj C.sfVertex) *Vertex {
+	return &Vertex{ Position: *NewVector2fFromC(cObj.position), Color: *NewColorFromC(cObj.color), TexCoords: *NewVector2fFromC(cObj.texCoords) }
+}
+
+func NewVertexSliceFromCArray(ptr *C.sfVertex, count C.size_t) []Vertex {
+	if unsafe.Sizeof(Vertex{}) != unsafe.Sizeof(C.sfVertex{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]Vertex, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(Vertex{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVertexCArrayFromGoSlice(slice []Vertex) *C.sfVertex {
+	if unsafe.Sizeof(Vertex{}) != unsafe.Sizeof(C.sfVertex{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(Vertex{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfVertex)(ptr)
 }
 
 type VertexArray struct {
-	ptr unsafe.Pointer
+	ptr *C.sfVertexArray
 }
 
-func (v *VertexArray) CPtr() unsafe.Pointer {
-	return (*C.sfVertexArray)(v.ptr)
+func (v *VertexArray) ToC() *C.sfVertexArray {
+	return v.ptr
+}
+
+func NewVertexArrayFromC(cPtr *C.sfVertexArray) *VertexArray {
+	return &VertexArray{ptr: cPtr}
 }
 
 type VertexBuffer struct {
-	ptr unsafe.Pointer
+	ptr *C.sfVertexBuffer
 }
 
-func (v *VertexBuffer) CPtr() unsafe.Pointer {
-	return (*C.sfVertexBuffer)(v.ptr)
+func (v *VertexBuffer) ToC() *C.sfVertexBuffer {
+	return v.ptr
+}
+
+func NewVertexBufferFromC(cPtr *C.sfVertexBuffer) *VertexBuffer {
+	return &VertexBuffer{ptr: cPtr}
 }
 
 type VertexBufferUsage int32
 
 const (
-	VertexBufferStream VertexBufferUsage = C.VertexBufferStream
-	VertexBufferDynamic VertexBufferUsage = C.VertexBufferDynamic
-	VertexBufferStatic VertexBufferUsage = C.VertexBufferStatic
+	VertexBufferStream VertexBufferUsage = C.sfVertexBufferStream
+	VertexBufferDynamic VertexBufferUsage = C.sfVertexBufferDynamic
+	VertexBufferStatic VertexBufferUsage = C.sfVertexBufferStatic
 )
 
 type VideoMode struct {
@@ -924,41 +2336,89 @@ type VideoMode struct {
 }
 
 func (v VideoMode) ToC() C.sfVideoMode {
-	return C.sfVideoMode{ width: v.Width, height: v.Height, bitsPerPixel: v.BitsPerPixel }
+	funcRes := C.sfVideoMode{ width: C.sfUint32(v.Width), height: C.sfUint32(v.Height), bitsPerPixel: C.sfUint32(v.BitsPerPixel) }
+	return funcRes
+}
+
+func NewVideoModeFromC(cObj C.sfVideoMode) *VideoMode {
+	return &VideoMode{ Width: uint32(cObj.width), Height: uint32(cObj.height), BitsPerPixel: uint32(cObj.bitsPerPixel) }
+}
+
+func NewVideoModeSliceFromCArray(ptr *C.sfVideoMode, count C.size_t) []VideoMode {
+	if unsafe.Sizeof(VideoMode{}) != unsafe.Sizeof(C.sfVideoMode{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	goSlice := make([]VideoMode, int(count))
+	src := unsafe.Pointer(ptr)
+	dst := unsafe.Pointer(&goSlice[0])
+	size := int(count) * int(unsafe.Sizeof(VideoMode{}))
+	copy((*[1 << 30]byte)(dst)[:size:size], (*[1 << 30]byte)(src)[:size:size])
+	return goSlice
+}
+
+func NewVideoModeCArrayFromGoSlice(slice []VideoMode) *C.sfVideoMode {
+	if unsafe.Sizeof(VideoMode{}) != unsafe.Sizeof(C.sfVideoMode{}) {
+		panic("Size mismatch between Go and C types")
+	}
+	
+	if len(slice) == 0 {
+		return nil
+	}
+	size := uintptr(len(slice)) * unsafe.Sizeof(VideoMode{})
+	ptr := C.malloc(C.size_t(size))
+	if ptr == nil {
+		panic("C.malloc failed")
+	}
+	src := unsafe.Pointer(&slice[0])
+	C.memcpy(ptr, src, C.size_t(size))
+	return (*C.sfVideoMode)(ptr)
 }
 
 type View struct {
-	ptr unsafe.Pointer
+	ptr *C.sfView
 }
 
-func (v *View) CPtr() unsafe.Pointer {
-	return (*C.sfView)(v.ptr)
+func (v *View) ToC() *C.sfView {
+	return v.ptr
+}
+
+func NewViewFromC(cPtr *C.sfView) *View {
+	return &View{ptr: cPtr}
 }
 
 type Window struct {
-	ptr unsafe.Pointer
+	ptr *C.sfWindow
 }
 
-func (w *Window) CPtr() unsafe.Pointer {
-	return (*C.sfWindow)(w.ptr)
+func (w *Window) ToC() *C.sfWindow {
+	return w.ptr
+}
+
+func NewWindowFromC(cPtr *C.sfWindow) *Window {
+	return &Window{ptr: cPtr}
 }
 
 type WindowBase struct {
-	ptr unsafe.Pointer
+	ptr *C.sfWindowBase
 }
 
-func (w *WindowBase) CPtr() unsafe.Pointer {
-	return (*C.sfWindowBase)(w.ptr)
+func (w *WindowBase) ToC() *C.sfWindowBase {
+	return w.ptr
+}
+
+func NewWindowBaseFromC(cPtr *C.sfWindowBase) *WindowBase {
+	return &WindowBase{ptr: cPtr}
 }
 
 type WindowStyle int32
 
 const (
-	None WindowStyle = C.None
-	Titlebar WindowStyle = C.Titlebar
-	Resize WindowStyle = C.Resize
-	Close WindowStyle = C.Close
-	Fullscreen WindowStyle = C.Fullscreen
-	DefaultStyle WindowStyle = C.DefaultStyle
+	None WindowStyle = C.sfNone
+	Titlebar WindowStyle = C.sfTitlebar
+	Resize WindowStyle = C.sfResize
+	Close WindowStyle = C.sfClose
+	Fullscreen WindowStyle = C.sfFullscreen
+	DefaultStyle WindowStyle = C.sfDefaultStyle
 )
 
