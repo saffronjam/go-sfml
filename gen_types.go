@@ -50,8 +50,19 @@ func main() {
 				// Override behavior if union
 				if unionOverride, isUnion := converter.UnionOverrides[rawName]; isUnion {
 					writer.Interface(common.Interface{
-						Name:    unionOverride.GoName,
-						Methods: []common.FunctionHeader{},
+						Name: unionOverride.GoName,
+						Methods: []common.FunctionHeader{
+							{
+								MethodName: "EventType",
+								Parameters: []common.Field{},
+								ReturnType: unionOverride.TypeField.Type, // e.g. "EvtType"
+							},
+							{
+								MethodName: "BaseToC",
+								Parameters: []common.Field{},
+								ReturnType: fmt.Sprintf("C.%s", rawName), // e.g. "C.sfEvent" (not "C.sfKeyEvent")
+							},
+						},
 					})
 
 					// Create NewFromC function for the union
@@ -76,7 +87,19 @@ func main() {
 						}
 
 						rows = append(rows, fmt.Sprintf("case %s:", strings.Join(caseValues, ", ")))
-						rows = append(rows, fmt.Sprintf("\treturn New%sFromC(C.get_%s_from_%s_union(&cObj))", mapper.GoName, mapper.CTypeField.Type, rawName))
+
+						if phantomOverride := converter.IsPhantomStruct(mapper.GoName); phantomOverride != nil {
+							var typeField common.Field
+							for _, field := range phantomOverride.Fields {
+								if field.Name == unionOverride.TypeField.Name {
+									typeField = field
+									break
+								}
+							}
+							rows = append(rows, fmt.Sprintf("\treturn &%s{%s: %s{cObj: cObj}, %s: %s(eventType)}", mapper.GoName, unionOverride.GoBaseName, unionOverride.GoBaseName, unionOverride.TypeField.Name, typeField.Type))
+						} else {
+							rows = append(rows, fmt.Sprintf("\treturn New%sFromC(%s{cObj: cObj}, C.get_%s_from_%s_union(&cObj))", mapper.GoName, unionOverride.GoBaseName, mapper.CTypeField.Type, rawName))
+						}
 					}
 					rows = append(rows, "default:")
 					rows = append(rows, "\treturn nil // or a fallback type like "+unionOverride.GoName+"Unknown{}")
@@ -88,12 +111,44 @@ func main() {
 
 					writer.VoidReturn()
 
+					writer.Struct(common.Struct{
+						Name: unionOverride.GoBaseName,
+						Fields: []common.Field{
+							{
+								Name: "cObj",
+								Type: fmt.Sprintf("C.%s", rawName),
+							},
+						},
+					})
+
+					for _, mapper := range unionOverride.Mappers {
+						receiverName := strings.ToLower(mapper.GoName[:1]) // e.g. "k" for "KeyEvent"
+						writer.ReceiverFunctionHeader(common.ReceiverFunctionHeader{
+							ReceiverName: receiverName,
+							ReceiverType: common.MakePointerType(mapper.GoName),
+							MethodName:   "EventType",
+							Parameters:   []common.Field{},
+							ReturnType:   unionOverride.TypeField.Type,
+						})
+						writer.ReturnValue(fmt.Sprintf("%s.%s", receiverName, unionOverride.TypeField.Name))
+
+						writer.ReceiverFunctionHeader(common.ReceiverFunctionHeader{
+							ReceiverName: receiverName,
+							ReceiverType: common.MakePointerType(mapper.GoName),
+							MethodName:   "BaseToC",
+							Parameters:   []common.Field{},
+							ReturnType:   fmt.Sprintf("C.%s", rawName),
+						})
+						writer.ReturnValue(fmt.Sprintf("%s.%s.cObj", receiverName, unionOverride.GoBaseName))
+					}
+
 					continue
 				}
 
 				writer.Struct(common.Struct{
-					Name:   structOverride.GoName,
-					Fields: structOverride.Fields,
+					Name:     structOverride.GoName,
+					Fields:   structOverride.Fields,
+					BaseType: structOverride.BaseType, // e.g. "EventBase"
 				})
 
 				// ToC
@@ -138,18 +193,27 @@ func main() {
 				writer.ReturnValue("funcRes")
 
 				// NewFromC
+				var params []common.Field
+				if structOverride.BaseType != "" {
+					params = append(params, common.Field{
+						Name: "base",
+						Type: structOverride.BaseType,
+					})
+				}
 				writer.FunctionHeader(common.FunctionHeader{
 					MethodName: "New" + structOverride.GoName + "FromC",
-					Parameters: []common.Field{
-						{
-							Name: "cObj",
-							Type: fmt.Sprintf("C.%s", rawName),
-						},
-					},
+					Parameters: append(params, common.Field{
+						Name: "cObj",
+						Type: fmt.Sprintf("C.%s", rawName),
+					}),
 					ReturnType: fmt.Sprintf("*%s", structOverride.GoName),
 				})
 				funcRes = strings.Builder{}
 				funcRes.WriteString(fmt.Sprintf("&%s{ ", structOverride.GoName))
+				if structOverride.BaseType != "" {
+					funcRes.WriteString(fmt.Sprintf("%s: base, ", structOverride.BaseType))
+				}
+
 				for i, field := range structOverride.Fields {
 					if i > 0 {
 						funcRes.WriteString(", ")
@@ -159,6 +223,7 @@ func main() {
 					if !common.IsPointerType(field.Type) {
 						dereference = "*"
 					}
+
 					if _, subOverrideField := converter.GetOverriddenType(field.Type); subOverrideField != nil {
 						funcRes.WriteString(fmt.Sprintf("%s: %sNew%sFromC(cObj.%s)", field.Name, dereference, subOverrideField.GoName, cField.Name))
 					} else if converter.IsKnownGoType(field.Type) && !converter.IsEnum(field.Type) {
@@ -326,6 +391,15 @@ func main() {
 				Enumerators: enumerators,
 			})
 		}
+	}
+
+	for _, f := range converter.PhantomStructOverrides {
+		// Phantom structs are not real C types, but we still need to define them in Go
+		writer.Struct(common.Struct{
+			Name:     f.GoName,
+			Fields:   f.Fields,
+			BaseType: f.BaseType, // e.g. "EventBase"
+		})
 	}
 
 	err = writer.WriteToFile(path.Join(common.OutputDir, "/go_types.go"))

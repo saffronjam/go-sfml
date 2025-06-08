@@ -35,6 +35,7 @@ type ArrayParamOverride struct {
 // StructOverride holds the Go‐side name of a vector typedef and its field names.
 type StructOverride struct {
 	GoName              string
+	BaseType            string  // Go‐side base type name, e.g. "EventBase"
 	Fields              []Field // Go‐side field names, e.g. "X", "Y", "Z", "W"
 	CFields             []Field // C‐side field names, e.g. "x", "y", "z", "w"
 	ArrayParamOverrides []ArrayParamOverride
@@ -50,14 +51,16 @@ type UnionMapper struct {
 // UnionOverride holds the Go‐side name of a union typedef and its field names.
 type UnionOverride struct {
 	GoName     string
+	GoBaseName string // Go‐side base type name, e.g. "BaseEvent"
 	TypeField  Field
 	CTypeField Field
 	Mappers    []UnionMapper
 }
 
 type Struct struct {
-	Name   string
-	Fields []Field
+	Name     string
+	Fields   []Field
+	BaseType string
 }
 
 type Interface struct {

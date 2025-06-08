@@ -2,8 +2,6 @@ package main
 
 import (
 	"github.com/saffronjam/go-sfml/public/sfml"
-	"log"
-	"math/rand"
 	"runtime"
 	"time"
 )
@@ -35,7 +33,7 @@ func main() {
 	})
 
 	rect := sfml.NewRectangleShape()
-	rect.SetFillColor(sfml.Color{R: 255, G: 255, B: 255})
+	rect.SetFillColor(sfml.Color{R: 255, G: 255, B: 255, A: 255})
 	rect.SetSize(sfml.Vector2f{X: 100, Y: 100})
 
 	circle := sfml.NewCircleShape()
@@ -47,16 +45,30 @@ func main() {
 	for wnd.IsOpen() {
 		position := wnd.Position()
 
-		event, populated := wnd.PollEvent()
-		if populated {
-			switch event.(type) {
-			case sfml.KeyEvent:
-				log.Println("Pressed key:", event.(sfml.KeyEvent).Code)
+		event, hasMore := wnd.PollEvent()
+		if hasMore {
+			switch event.EventType() {
+			case sfml.EvtKeyPressed:
+				keyEvent := event.(*sfml.KeyEvent)
+				if keyEvent.Code == sfml.KeyA {
+					circle.SetFillColor(sfml.Color{R: 0, G: 100, B: 0, A: 255})
+				}
+			case sfml.EvtKeyReleased:
+				keyEvent := event.(*sfml.KeyEvent)
+				if keyEvent.Code == sfml.KeyA {
+					circle.SetFillColor(sfml.Color{R: 255, G: 0, B: 0, A: 255})
+				}
+			case sfml.EvtClosed:
+				wnd.Close()
+				continue
+			case sfml.EvtMouseEntered:
+				circle.SetFillColor(sfml.Color{R: 0, G: 255, B: 0, A: 255})
+			case sfml.EvtMouseLeft:
+				circle.SetFillColor(sfml.Color{R: 255, G: 0, B: 0, A: 255})
 			}
 		}
 
 		pos := sfml.MouseGetPosition(asNormalWindow)
-		log.Println("setting position to:", pos)
 		rect.SetPosition(sfml.Vector2f{X: float32(pos.X), Y: float32(pos.Y)})
 		wnd.Clear(sfml.Color{R: uint8(position.X % 255), G: uint8(position.Y % 255), B: 0, A: 255})
 
@@ -64,13 +76,6 @@ func main() {
 		wnd.DrawCircleShape(circle, sfml.RenderStatesDefault())
 
 		wnd.Display()
-
-		r := uint8(rand.Intn(256))
-		g := uint8(rand.Intn(256))
-		b := uint8(rand.Intn(256))
-
-		circle.SetFillColor(sfml.Color{R: r, G: g, B: b, A: 255})
-		rect.SetFillColor(sfml.Color{R: r, G: g, B: b, A: 255})
 	}
 
 	time.Sleep(5 * time.Second)

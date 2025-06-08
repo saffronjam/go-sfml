@@ -20,9 +20,10 @@ type Converter struct {
 	GoTypesMap  map[string]struct{}
 	GoEnumsMap  map[string]struct{} // Map Go‐side enum names to struct{} for quick lookup
 
-	StructOverrides      map[string]StructOverride
-	UnionOverrides       map[string]UnionOverride
-	ReturnParamOverrides map[string]Field // Map C param names that should be moved to a Go return value (possibly creating a multi-return function).
+	StructOverrides        map[string]StructOverride
+	PhantomStructOverrides []StructOverride // Map C struct names that should be overridden with a Go struct, but does not exist in SFML.
+	UnionOverrides         map[string]UnionOverride
+	ReturnParamOverrides   map[string]Field // Map C param names that should be moved to a Go return value (possibly creating a multi-return function).
 
 	StoreAsValue map[string]struct{} // Map cTypes (as translated to GoTypes) that should be stored as values, not pointers, like sfTransform.
 
@@ -36,149 +37,127 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 	c := &Converter{
 		StructOverrides: map[string]StructOverride{
 			"sfVector2i": {
-				"Vector2i",
-				[]Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
-				[]Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
-				[]ArrayParamOverride{},
+
+				GoName:  "Vector2i",
+				Fields:  []Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
+				CFields: []Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
 			},
 			"sfVector2f": {
-				"Vector2f",
-				[]Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}},
-				[]Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector2f",
+				Fields:  []Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}},
+				CFields: []Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}},
 			},
 			"sfVector2u": {
-				"Vector2u",
-				[]Field{{Name: "X", Type: "uint32"}, {Name: "Y", Type: "uint32"}},
-				[]Field{{Name: "x", Type: "sfUint32"}, {Name: "y", Type: "sfUint32"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector2u",
+				Fields:  []Field{{Name: "X", Type: "uint32"}, {Name: "Y", Type: "uint32"}},
+				CFields: []Field{{Name: "x", Type: "sfUint32"}, {Name: "y", Type: "sfUint32"}},
 			},
 			"sfVector3f": {
-				"Vector3f",
-				[]Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}},
-				[]Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector3f",
+				Fields:  []Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}},
+				CFields: []Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}},
 			},
 			"sfGlslIvec2": {
-				"Vector2i",
-				[]Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
-				[]Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector2i",
+				Fields:  []Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
+				CFields: []Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
 			},
 			"sfGlslIvec3": {
-				"Vector3i",
-				[]Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}, {Name: "Z", Type: "int32"}},
-				[]Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}, {Name: "z", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector3i",
+				Fields:  []Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}, {Name: "Z", Type: "int32"}},
+				CFields: []Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}, {Name: "z", Type: "int"}},
 			},
 			"sfGlslIvec4": {
-				"Vector4i",
-				[]Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}, {Name: "Z", Type: "int32"}, {Name: "W", Type: "int32"}},
-				[]Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}, {Name: "z", Type: "int"}, {Name: "w", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector4i",
+				Fields:  []Field{{Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}, {Name: "Z", Type: "int32"}, {Name: "W", Type: "int32"}},
+				CFields: []Field{{Name: "x", Type: "int"}, {Name: "y", Type: "int"}, {Name: "z", Type: "int"}, {Name: "w", Type: "int"}},
 			},
 			"sfGlslBvec2": {
-				"Vector2b",
-				[]Field{{Name: "X", Type: "bool"}, {Name: "Y", Type: "bool"}},
-				[]Field{{Name: "x", Type: "sfBool"}, {Name: "y", Type: "sfBool"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector2b",
+				Fields:  []Field{{Name: "X", Type: "bool"}, {Name: "Y", Type: "bool"}},
+				CFields: []Field{{Name: "x", Type: "sfBool"}, {Name: "y", Type: "sfBool"}},
 			},
 			"sfGlslBvec3": {
-				"Vector3b",
-				[]Field{{Name: "X", Type: "bool"}, {Name: "Y", Type: "bool"}, {Name: "Z", Type: "bool"}},
-				[]Field{{Name: "x", Type: "sfBool"}, {Name: "y", Type: "sfBool"}, {Name: "z", Type: "sfBool"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector3b",
+				Fields:  []Field{{Name: "X", Type: "bool"}, {Name: "Y", Type: "bool"}, {Name: "Z", Type: "bool"}},
+				CFields: []Field{{Name: "x", Type: "sfBool"}, {Name: "y", Type: "sfBool"}, {Name: "z", Type: "sfBool"}},
 			},
 			"sfGlslBvec4": {
-				"Vector4b",
-				[]Field{{Name: "X", Type: "bool"}, {Name: "Y", Type: "bool"}, {Name: "Z", Type: "bool"}, {Name: "W", Type: "bool"}},
-				[]Field{{Name: "x", Type: "sfBool"}, {Name: "y", Type: "sfBool"}, {Name: "z", Type: "sfBool"}, {Name: "w", Type: "sfBool"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector4b",
+				Fields:  []Field{{Name: "X", Type: "bool"}, {Name: "Y", Type: "bool"}, {Name: "Z", Type: "bool"}, {Name: "W", Type: "bool"}},
+				CFields: []Field{{Name: "x", Type: "sfBool"}, {Name: "y", Type: "sfBool"}, {Name: "z", Type: "sfBool"}, {Name: "w", Type: "sfBool"}},
 			},
 			"sfGlslVec2": {
-				"Vector2f",
-				[]Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}},
-				[]Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector2f",
+				Fields:  []Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}},
+				CFields: []Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}},
 			},
 			"sfGlslVec3": {
-				"Vector3f",
-				[]Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}},
-				[]Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector3f",
+				Fields:  []Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}},
+				CFields: []Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}},
 			},
 			"sfGlslVec4": {
-				"Vector4f",
-				[]Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}, {Name: "W", Type: "float32"}},
-				[]Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}, {Name: "w", Type: "float"}},
-				[]ArrayParamOverride{},
+				GoName:  "Vector4f",
+				Fields:  []Field{{Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}, {Name: "W", Type: "float32"}},
+				CFields: []Field{{Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}, {Name: "w", Type: "float"}},
 			},
 			"sfVideoMode": {
-				"VideoMode",
-				[]Field{{Name: "Width", Type: "uint32"}, {Name: "Height", Type: "uint32"}, {Name: "BitsPerPixel", Type: "uint32"}},
-				[]Field{{Name: "width", Type: "sfUint32"}, {Name: "height", Type: "sfUint32"}, {Name: "bitsPerPixel", Type: "sfUint32"}},
-				[]ArrayParamOverride{},
+				GoName:  "VideoMode",
+				Fields:  []Field{{Name: "Width", Type: "uint32"}, {Name: "Height", Type: "uint32"}, {Name: "BitsPerPixel", Type: "uint32"}},
+				CFields: []Field{{Name: "width", Type: "sfUint32"}, {Name: "height", Type: "sfUint32"}, {Name: "bitsPerPixel", Type: "sfUint32"}},
 			},
 			"sfContextSettings": {
-				"ContextSettings",
-				[]Field{{Name: "DepthBits", Type: "uint32"}, {Name: "StencilBits", Type: "uint32"}, {Name: "AntialiasingLevel", Type: "uint32"}, {Name: "MajorVersion", Type: "uint32"}, {Name: "MinorVersion", Type: "uint32"}, {Name: "AttributeFlags", Type: "uint32"}, {Name: "SRgbCapable", Type: "bool"}},
-				[]Field{{Name: "depthBits", Type: "sfUint32"}, {Name: "stencilBits", Type: "sfUint32"}, {Name: "antialiasingLevel", Type: "sfUint32"}, {Name: "majorVersion", Type: "sfUint32"}, {Name: "minorVersion", Type: "sfUint32"}, {Name: "attributeFlags", Type: "sfUint32"}, {Name: "sRgbCapable", Type: "sfBool"}},
-				[]ArrayParamOverride{},
+				GoName:  "ContextSettings",
+				Fields:  []Field{{Name: "DepthBits", Type: "uint32"}, {Name: "StencilBits", Type: "uint32"}, {Name: "AntialiasingLevel", Type: "uint32"}, {Name: "MajorVersion", Type: "uint32"}, {Name: "MinorVersion", Type: "uint32"}, {Name: "AttributeFlags", Type: "uint32"}, {Name: "SRgbCapable", Type: "bool"}},
+				CFields: []Field{{Name: "depthBits", Type: "sfUint32"}, {Name: "stencilBits", Type: "sfUint32"}, {Name: "antialiasingLevel", Type: "sfUint32"}, {Name: "majorVersion", Type: "sfUint32"}, {Name: "minorVersion", Type: "sfUint32"}, {Name: "attributeFlags", Type: "sfUint32"}, {Name: "sRgbCapable", Type: "sfBool"}},
 			},
 			"sfTime": {
-				"Time",
-				[]Field{{Name: "Microseconds", Type: "int64"}},
-				[]Field{{Name: "microseconds", Type: "sfInt64"}},
-				[]ArrayParamOverride{},
+				GoName:  "Time",
+				Fields:  []Field{{Name: "Microseconds", Type: "int64"}},
+				CFields: []Field{{Name: "microseconds", Type: "sfInt64"}},
 			},
 			"sfColor": {
-				"Color",
-				[]Field{{Name: "R", Type: "uint8"}, {Name: "G", Type: "uint8"}, {Name: "B", Type: "uint8"}, {Name: "A", Type: "uint8"}},
-				[]Field{{Name: "r", Type: "sfUint8"}, {Name: "g", Type: "sfUint8"}, {Name: "b", Type: "sfUint8"}, {Name: "a", Type: "sfUint8"}},
-				[]ArrayParamOverride{},
+				GoName:  "Color",
+				Fields:  []Field{{Name: "R", Type: "uint8"}, {Name: "G", Type: "uint8"}, {Name: "B", Type: "uint8"}, {Name: "A", Type: "uint8"}},
+				CFields: []Field{{Name: "r", Type: "sfUint8"}, {Name: "g", Type: "sfUint8"}, {Name: "b", Type: "sfUint8"}, {Name: "a", Type: "sfUint8"}},
 			},
 			"sfIntRect": {
-				"IntRect",
-				[]Field{{Name: "Left", Type: "int32"}, {Name: "Top", Type: "int32"}, {Name: "Width", Type: "int32"}, {Name: "Height", Type: "int32"}},
-				[]Field{{Name: "left", Type: "sfInt32"}, {Name: "top", Type: "sfInt32"}, {Name: "width", Type: "sfInt32"}, {Name: "height", Type: "sfInt32"}},
-				[]ArrayParamOverride{},
+				GoName:  "IntRect",
+				Fields:  []Field{{Name: "Left", Type: "int32"}, {Name: "Top", Type: "int32"}, {Name: "Width", Type: "int32"}, {Name: "Height", Type: "int32"}},
+				CFields: []Field{{Name: "left", Type: "sfInt32"}, {Name: "top", Type: "sfInt32"}, {Name: "width", Type: "sfInt32"}, {Name: "height", Type: "sfInt32"}},
 			},
 			"sfFloatRect": {
-				"FloatRect",
-				[]Field{{Name: "Left", Type: "float32"}, {Name: "Top", Type: "float32"}, {Name: "Width", Type: "float32"}, {Name: "Height", Type: "float32"}},
-				[]Field{{Name: "left", Type: "float"}, {Name: "top", Type: "float"}, {Name: "width", Type: "float"}, {Name: "height", Type: "float"}},
-				[]ArrayParamOverride{},
+				GoName:  "FloatRect",
+				Fields:  []Field{{Name: "Left", Type: "float32"}, {Name: "Top", Type: "float32"}, {Name: "Width", Type: "float32"}, {Name: "Height", Type: "float32"}},
+				CFields: []Field{{Name: "left", Type: "float"}, {Name: "top", Type: "float"}, {Name: "width", Type: "float"}, {Name: "height", Type: "float"}},
 			},
 
 			"sfRenderStates": {
-				"RenderStates",
-				[]Field{{Name: "BlendMode", Type: "BlendMode"}, {Name: "Transform", Type: "Transform"}, {Name: "Texture", Type: "Texture"}, {Name: "Shader", Type: "Shader"}},
-				[]Field{{Name: "blendMode", Type: "sfBlendMode"}, {Name: "transform", Type: "sfTransform"}, {Name: "texture", Type: "sfTexture"}, {Name: "shader", Type: "sfShader"}},
-				[]ArrayParamOverride{},
+				GoName:  "RenderStates",
+				Fields:  []Field{{Name: "BlendMode", Type: "BlendMode"}, {Name: "Transform", Type: "Transform"}, {Name: "Texture", Type: "Texture"}, {Name: "Shader", Type: "Shader"}},
+				CFields: []Field{{Name: "blendMode", Type: "sfBlendMode"}, {Name: "transform", Type: "sfTransform"}, {Name: "texture", Type: "sfTexture"}, {Name: "shader", Type: "sfShader"}},
 			},
 			"sfBlendMode": {
-				"BlendMode",
-				[]Field{{Name: "ColorSrcFactor", Type: "BlendFactor"}, {Name: "ColorDstFactor", Type: "BlendFactor"}, {Name: "ColorEquation", Type: "BlendEquation"}, {Name: "AlphaSrcFactor", Type: "BlendFactor"}, {Name: "AlphaDstFactor", Type: "BlendFactor"}, {Name: "AlphaEquation", Type: "BlendEquation"}},
-				[]Field{{Name: "colorSrcFactor", Type: "sfBlendFactor"}, {Name: "colorDstFactor", Type: "sfBlendFactor"}, {Name: "colorEquation", Type: "sfBlendEquation"}, {Name: "alphaSrcFactor", Type: "sfBlendFactor"}, {Name: "alphaDstFactor", Type: "sfBlendFactor"}, {Name: "alphaEquation", Type: "sfBlendEquation"}},
-				[]ArrayParamOverride{},
+				GoName:  "BlendMode",
+				Fields:  []Field{{Name: "ColorSrcFactor", Type: "BlendFactor"}, {Name: "ColorDstFactor", Type: "BlendFactor"}, {Name: "ColorEquation", Type: "BlendEquation"}, {Name: "AlphaSrcFactor", Type: "BlendFactor"}, {Name: "AlphaDstFactor", Type: "BlendFactor"}, {Name: "AlphaEquation", Type: "BlendEquation"}},
+				CFields: []Field{{Name: "colorSrcFactor", Type: "sfBlendFactor"}, {Name: "colorDstFactor", Type: "sfBlendFactor"}, {Name: "colorEquation", Type: "sfBlendEquation"}, {Name: "alphaSrcFactor", Type: "sfBlendFactor"}, {Name: "alphaDstFactor", Type: "sfBlendFactor"}, {Name: "alphaEquation", Type: "sfBlendEquation"}},
 			},
 			"sfGlyph": {
-				"Glyph",
-				[]Field{{Name: "Advance", Type: "float32"}, {Name: "Bounds", Type: "FloatRect"}, {Name: "TextureRect", Type: "IntRect"}},
-				[]Field{{Name: "advance", Type: "float"}, {Name: "bounds", Type: "sfFloatRect"}, {Name: "textureRect", Type: "sfIntRect"}},
-				[]ArrayParamOverride{},
+				GoName:  "Glyph",
+				Fields:  []Field{{Name: "Advance", Type: "float32"}, {Name: "Bounds", Type: "FloatRect"}, {Name: "TextureRect", Type: "IntRect"}},
+				CFields: []Field{{Name: "advance", Type: "float"}, {Name: "bounds", Type: "sfFloatRect"}, {Name: "textureRect", Type: "sfIntRect"}},
 			},
 			"sfFontInfo": {
-				"FontInfo",
-				[]Field{{Name: "Family", Type: "string"}},
-				[]Field{{Name: "family", Type: "sfString"}},
-				[]ArrayParamOverride{},
+				GoName:  "FontInfo",
+				Fields:  []Field{{Name: "Family", Type: "string"}},
+				CFields: []Field{{Name: "family", Type: "sfString"}},
 			},
 			"sfVertex": {
-				"Vertex",
-				[]Field{{Name: "Position", Type: "Vector2f"}, {Name: "Color", Type: "Color"}, {Name: "TexCoords", Type: "Vector2f"}},
-				[]Field{{Name: "position", Type: "sfVector2f"}, {Name: "color", Type: "sfColor"}, {Name: "texCoords", Type: "sfVector2f"}},
-				[]ArrayParamOverride{
+				GoName:  "Vertex",
+				Fields:  []Field{{Name: "Position", Type: "Vector2f"}, {Name: "Color", Type: "Color"}, {Name: "TexCoords", Type: "Vector2f"}},
+				CFields: []Field{{Name: "position", Type: "sfVector2f"}, {Name: "color", Type: "sfColor"}, {Name: "texCoords", Type: "sfVector2f"}},
+				ArrayParamOverrides: []ArrayParamOverride{
 					{
 						CFunc:       "sfVertexBuffer_update",
 						CParam:      "vertices",
@@ -186,101 +165,139 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 					},
 				},
 			},
+			// data events
 			"sfKeyEvent": {
-				"KeyEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "Code", Type: "KeyCode"}, {Name: "Scancode", Type: "Scancode"}, {Name: "Alt", Type: "bool"}, {Name: "Control", Type: "bool"}, {Name: "Shift", Type: "bool"}, {Name: "System", Type: "bool"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "code", Type: "sfKeyCode"}, {Name: "scancode", Type: "sfScancode"}, {Name: "alt", Type: "sfBool"}, {Name: "control", Type: "sfBool"}, {Name: "shift", Type: "sfBool"}, {Name: "system", Type: "sfBool"}},
-				[]ArrayParamOverride{},
+				GoName:   "KeyEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "Code", Type: "KeyCode"}, {Name: "Scancode", Type: "Scancode"}, {Name: "Alt", Type: "bool"}, {Name: "Control", Type: "bool"}, {Name: "Shift", Type: "bool"}, {Name: "System", Type: "bool"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "code", Type: "sfKeyCode"}, {Name: "scancode", Type: "sfScancode"}, {Name: "alt", Type: "sfBool"}, {Name: "control", Type: "sfBool"}, {Name: "shift", Type: "sfBool"}, {Name: "system", Type: "sfBool"}},
 			},
 			"sfTextEvent": {
-				"TextEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "Unicode", Type: "uint32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "unicode", Type: "sfUint32"}},
-				[]ArrayParamOverride{},
+				GoName:   "TextEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "Unicode", Type: "uint32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "unicode", Type: "sfUint32"}},
 			},
 			"sfMouseMoveEvent": {
-				"MouseMoveEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:   "MouseMoveEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
 			},
 			"sfMouseButtonEvent": {
-				"MouseButtonEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "Button", Type: "MouseButton"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "button", Type: "sfMouseButton"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:   "MouseButtonEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "Button", Type: "MouseButton"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "button", Type: "sfMouseButton"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
 			},
 			"sfMouseWheelEvent": {
-				"MouseWheelEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "Delta", Type: "int32"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "delta", Type: "int"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:   "MouseWheelEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "Delta", Type: "int32"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "delta", Type: "int"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
 			},
 			"sfMouseWheelScrollEvent": {
-				"MouseWheelScrollEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "Wheel", Type: "MouseWheel"}, {Name: "Delta", Type: "float32"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "wheel", Type: "sfMouseWheel"}, {Name: "delta", Type: "float"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:   "MouseWheelScrollEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "Wheel", Type: "MouseWheel"}, {Name: "Delta", Type: "float32"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "wheel", Type: "sfMouseWheel"}, {Name: "delta", Type: "float"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
 			},
 			"sfSizeEvent": {
-				"SizeEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "Width", Type: "uint32"}, {Name: "Height", Type: "uint32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "width", Type: "unsigned int"}, {Name: "height", Type: "unsigned int"}},
-				[]ArrayParamOverride{},
+				GoName:   "SizeEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "Width", Type: "uint32"}, {Name: "Height", Type: "uint32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "width", Type: "unsigned int"}, {Name: "height", Type: "unsigned int"}},
 			},
 			"sfTouchEvent": {
-				"TouchEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "Finger", Type: "uint32"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "finger", Type: "unsigned int"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
-				[]ArrayParamOverride{},
+				GoName:   "TouchEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "Finger", Type: "uint32"}, {Name: "X", Type: "int32"}, {Name: "Y", Type: "int32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "finger", Type: "unsigned int"}, {Name: "x", Type: "int"}, {Name: "y", Type: "int"}},
 			},
 			"sfSensorEvent": {
-				"SensorEvent",
-				[]Field{{Name: "Type", Type: "EventType"}, {Name: "SensorType", Type: "SensorType"}, {Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}},
-				[]Field{{Name: "type", Type: "sfEventType"}, {Name: "sensorType", Type: "sfSensorType"}, {Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}},
-				[]ArrayParamOverride{},
+				GoName:   "SensorEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}, {Name: "SensorType", Type: "SensorType"}, {Name: "X", Type: "float32"}, {Name: "Y", Type: "float32"}, {Name: "Z", Type: "float32"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}, {Name: "sensorType", Type: "sfSensorType"}, {Name: "x", Type: "float"}, {Name: "y", Type: "float"}, {Name: "z", Type: "float"}},
 			},
+			// Parent type for all events
 			"sfEvent": {
-				"Event",
-				[]Field{},
-				[]Field{},
-				[]ArrayParamOverride{},
+				GoName: "Event",
+				Fields: []Field{},
 			},
 		},
-		//typedef enum
-		//{
-		//    sfEvtClosed,                 ///< The window requested to be closed (no data)
-		//    sfEvtResized,                ///< The window was resized (data in event.size)
-		//    sfEvtLostFocus,              ///< The window lost the focus (no data)
-		//    sfEvtGainedFocus,            ///< The window gained the focus (no data)
-		//    sfEvtTextEntered,            ///< A character was entered (data in event.text)
-		//    sfEvtKeyPressed,             ///< A key was pressed (data in event.key)
-		//    sfEvtKeyReleased,            ///< A key was released (data in event.key)
-		//    sfEvtMouseWheelMoved,        ///< The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)
-		//    sfEvtMouseWheelScrolled,     ///< The mouse wheel was scrolled (data in event.mouseWheelScroll)
-		//    sfEvtMouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
-		//    sfEvtMouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
-		//    sfEvtMouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
-		//    sfEvtMouseEntered,           ///< The mouse cursor entered the area of the window (no data)
-		//    sfEvtMouseLeft,              ///< The mouse cursor left the area of the window (no data)
-		//    sfEvtJoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
-		//    sfEvtJoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
-		//    sfEvtJoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
-		//    sfEvtJoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
-		//    sfEvtJoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
-		//    sfEvtTouchBegan,             ///< A touch event began (data in event.touch)
-		//    sfEvtTouchMoved,             ///< A touch moved (data in event.touch)
-		//    sfEvtTouchEnded,             ///< A touch event ended (data in event.touch)
-		//    sfEvtSensorChanged,          ///< A sensor value changed (data in event.sensor)
-		//
-		//    sfEvtCount                   ///< Keep last -- the total number of event types
-		//} sfEventType;
+		PhantomStructOverrides: []StructOverride{
+			// No data events
+			{
+				GoName:   "ClosedEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
+			}, {
+				GoName:   "LostFocusEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
+			}, {
+				GoName:   "GainedFocusEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
+			}, {
+				GoName:   "MouseEnteredEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
+			}, {
+				GoName:   "MouseLeftEvent",
+				BaseType: "BaseEvent",
+				Fields:   []Field{{Name: "Type", Type: "EventType"}},
+				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
+			},
+		},
 		UnionOverrides: map[string]UnionOverride{
 			"sfEvent": {
 				GoName:     "Event",
+				GoBaseName: "BaseEvent",
 				TypeField:  Field{Name: "Type", Type: "EventType"},
 				CTypeField: Field{Name: "type", Type: "sfEventType"},
+				// typedef enum
+				//{
+				//    sfEvtClosed,                 ///< The window requested to be closed (no data)
+				//    sfEvtResized,                ///< The window was resized (data in event.size)
+				//    sfEvtLostFocus,              ///< The window lost the focus (no data)
+				//    sfEvtGainedFocus,            ///< The window gained the focus (no data)
+				//    sfEvtTextEntered,            ///< A character was entered (data in event.text)
+				//    sfEvtKeyPressed,             ///< A key was pressed (data in event.key)
+				//    sfEvtKeyReleased,            ///< A key was released (data in event.key)
+				//    sfEvtMouseWheelMoved,        ///< The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)
+				//    sfEvtMouseWheelScrolled,     ///< The mouse wheel was scrolled (data in event.mouseWheelScroll)
+				//    sfEvtMouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
+				//    sfEvtMouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
+				//    sfEvtMouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
+				//    sfEvtMouseEntered,           ///< The mouse cursor entered the area of the window (no data)
+				//    sfEvtMouseLeft,              ///< The mouse cursor left the area of the window (no data)
+				//    sfEvtJoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
+				//    sfEvtJoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
+				//    sfEvtJoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
+				//    sfEvtJoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
+				//    sfEvtJoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
+				//    sfEvtTouchBegan,             ///< A touch event began (data in event.touch)
+				//    sfEvtTouchMoved,             ///< A touch moved (data in event.touch)
+				//    sfEvtTouchEnded,             ///< A touch event ended (data in event.touch)
+				//    sfEvtSensorChanged,          ///< A sensor value changed (data in event.sensor)
+				//
+				//    sfEvtCount                   ///< Keep last -- the total number of event types
+				//} sfEventType;
 				Mappers: []UnionMapper{
+					// No data events
+					{GoName: "ClosedEvent", CEnumValues: []string{"sfEvtClosed"}},
+					{GoName: "LostFocusEvent", CEnumValues: []string{"sfEvtLostFocus"}},
+					{GoName: "GainedFocusEvent", CEnumValues: []string{"sfEvtGainedFocus"}},
+					{GoName: "MouseEnteredEvent", CEnumValues: []string{"sfEvtMouseEntered"}},
+					{GoName: "MouseLeftEvent", CEnumValues: []string{"sfEvtMouseLeft"}},
+
+					// Data events
 					{CTypeField: Field{Name: "size", Type: "sfSizeEvent"}, GoName: "SizeEvent", CEnumValues: []string{"sfEvtResized"}},
 					{CTypeField: Field{Name: "key", Type: "sfKeyEvent"}, GoName: "KeyEvent", CEnumValues: []string{"sfEvtKeyPressed", "sfEvtKeyReleased"}},
 					{CTypeField: Field{Name: "text", Type: "sfTextEvent"}, GoName: "TextEvent", CEnumValues: []string{"sfEvtTextEntered"}},
@@ -640,8 +657,8 @@ func (c *Converter) GetReceiverType(fnName, firstParamType string) string {
 // IsSliceParam checks if a parameter is a slice parameter
 // and returns the corresponding ArrayParamOverride if it exists.
 func (c *Converter) IsSliceParam(cFunc string, cParamName string) *ArrayParamOverride {
-	for _, vi := range c.StructOverrides {
-		for _, override := range vi.ArrayParamOverrides {
+	for _, so := range c.StructOverrides {
+		for _, override := range so.ArrayParamOverrides {
 			if override.CFunc == cFunc && override.CParam == cParamName {
 				return &override
 			}
@@ -653,8 +670,8 @@ func (c *Converter) IsSliceParam(cFunc string, cParamName string) *ArrayParamOve
 // IsSliceCountParam checks if a parameter is a slice count parameter
 // and returns the corresponding ArrayParamOverride if it exists.
 func (c *Converter) IsSliceCountParam(cFunc string, cParamName string) *ArrayParamOverride {
-	for _, vi := range c.StructOverrides {
-		for _, override := range vi.ArrayParamOverrides {
+	for _, so := range c.StructOverrides {
+		for _, override := range so.ArrayParamOverrides {
 			if override.CFunc == cFunc && override.CCountParam == cParamName {
 				return &override
 			}
@@ -680,4 +697,14 @@ func (c *Converter) GetUnionType(goType string) (string, *UnionOverride) {
 		}
 	}
 	return "", nil
+}
+
+// IsPhantomStruct checks if a Go type is a phantom struct.
+func (c *Converter) IsPhantomStruct(goType string) *StructOverride {
+	for _, pso := range c.PhantomStructOverrides {
+		if pso.GoName == goType {
+			return &pso
+		}
+	}
+	return nil
 }
