@@ -255,6 +255,34 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
 			},
 		},
+		//typedef enum
+		//{
+		//    sfEvtClosed,                 ///< The window requested to be closed (no data)
+		//    sfEvtResized,                ///< The window was resized (data in event.size)
+		//    sfEvtLostFocus,              ///< The window lost the focus (no data)
+		//    sfEvtGainedFocus,            ///< The window gained the focus (no data)
+		//    sfEvtTextEntered,            ///< A character was entered (data in event.text)
+		//    sfEvtKeyPressed,             ///< A key was pressed (data in event.key)
+		//    sfEvtKeyReleased,            ///< A key was released (data in event.key)
+		//    sfEvtMouseWheelMoved,        ///< The mouse wheel was scrolled (data in event.mouseWheel) (deprecated)
+		//    sfEvtMouseWheelScrolled,     ///< The mouse wheel was scrolled (data in event.mouseWheelScroll)
+		//    sfEvtMouseButtonPressed,     ///< A mouse button was pressed (data in event.mouseButton)
+		//    sfEvtMouseButtonReleased,    ///< A mouse button was released (data in event.mouseButton)
+		//    sfEvtMouseMoved,             ///< The mouse cursor moved (data in event.mouseMove)
+		//    sfEvtMouseEntered,           ///< The mouse cursor entered the area of the window (no data)
+		//    sfEvtMouseLeft,              ///< The mouse cursor left the area of the window (no data)
+		//    sfEvtJoystickButtonPressed,  ///< A joystick button was pressed (data in event.joystickButton)
+		//    sfEvtJoystickButtonReleased, ///< A joystick button was released (data in event.joystickButton)
+		//    sfEvtJoystickMoved,          ///< The joystick moved along an axis (data in event.joystickMove)
+		//    sfEvtJoystickConnected,      ///< A joystick was connected (data in event.joystickConnect)
+		//    sfEvtJoystickDisconnected,   ///< A joystick was disconnected (data in event.joystickConnect)
+		//    sfEvtTouchBegan,             ///< A touch event began (data in event.touch)
+		//    sfEvtTouchMoved,             ///< A touch moved (data in event.touch)
+		//    sfEvtTouchEnded,             ///< A touch event ended (data in event.touch)
+		//    sfEvtSensorChanged,          ///< A sensor value changed (data in event.sensor)
+		//
+		//    sfEvtCount                   ///< Keep last -- the total number of event types
+		//} sfEventType;
 		UnionOverrides: map[string]UnionOverride{
 			"sfEvent": {
 				GoName:     "Event",
@@ -275,6 +303,7 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 					{CTypeField: Field{Name: "text", Type: "sfTextEvent"}, GoName: "TextEvent", CEnumValues: []string{"sfEvtTextEntered"}},
 					{CTypeField: Field{Name: "mouseMove", Type: "sfMouseMoveEvent"}, GoName: "MouseMoveEvent", CEnumValues: []string{"sfEvtMouseMoved"}},
 					{CTypeField: Field{Name: "mouseButton", Type: "sfMouseButtonEvent"}, GoName: "MouseButtonEvent", CEnumValues: []string{"sfEvtMouseButtonPressed", "sfEvtMouseButtonReleased"}},
+					{CTypeField: Field{Name: "mouseWheel", Type: "sfMouseWheelEvent"}, GoName: "MouseWheelEvent", CEnumValues: []string{"sfEvtMouseWheelMoved"}},
 					{CTypeField: Field{Name: "mouseWheelScroll", Type: "sfMouseWheelScrollEvent"}, GoName: "MouseWheelScrollEvent", CEnumValues: []string{"sfEvtMouseWheelScrolled"}},
 					{CTypeField: Field{Name: "touch", Type: "sfTouchEvent"}, GoName: "TouchEvent", CEnumValues: []string{"sfEvtTouchBegan", "sfEvtTouchMoved", "sfEvtTouchEnded"}},
 					{CTypeField: Field{Name: "sensor", Type: "sfSensorEvent"}, GoName: "SensorEvent", CEnumValues: []string{"sfEvtSensorChanged"}},

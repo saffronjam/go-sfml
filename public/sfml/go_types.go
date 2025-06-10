@@ -72,12 +72,12 @@ package sfml
 // #include <SFML/Window/WindowHandle.h>
 // #cgo LDFLAGS: -lcsfml-graphics -lcsfml-window -lcsfml-system -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lstdc++ -lm -lGL -ludev -lXrandr -lfreetype -lXcursor
 //
-// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
+// static inline sfEventType get_sfMouseWheelScrollEvent_type(const sfMouseWheelScrollEvent* a) {
 //     return a->type;
 // }
 //
 //
-// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
+// static inline void set_sfMouseWheelScrollEvent_type(sfMouseWheelScrollEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -92,32 +92,12 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfMouseWheelScrollEvent_type(const sfMouseWheelScrollEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseWheelScrollEvent_type(sfMouseWheelScrollEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
 // static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
 //     return a->type;
 // }
 //
 //
 // static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -132,6 +112,16 @@ package sfml
 // }
 //
 //
+// static inline sfEventType get_sfMouseMoveEvent_type(const sfMouseMoveEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseMoveEvent_type(sfMouseMoveEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
 // static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
 //     return a->type;
 // }
@@ -142,22 +132,32 @@ package sfml
 // }
 //
 //
+// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
 // static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
 //     return a->type;
 // }
 //
 //
 // static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfMouseMoveEvent_type(const sfMouseMoveEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseMoveEvent_type(sfMouseMoveEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -194,6 +194,11 @@ package sfml
 // 
 // static inline sfMouseButtonEvent get_sfMouseButtonEvent_from_sfEvent_union(const sfEvent* a) {
 //     return a->mouseButton;
+// }
+//
+// 
+// static inline sfMouseWheelEvent get_sfMouseWheelEvent_from_sfEvent_union(const sfEvent* a) {
+//     return a->mouseWheel;
 // }
 //
 // 
@@ -535,6 +540,8 @@ func NewEventFromC(cObj C.sfEvent) Event {
 		return NewMouseMoveEventFromC(BaseEvent{cObj: cObj}, C.get_sfMouseMoveEvent_from_sfEvent_union(&cObj))
 	case C.sfEvtMouseButtonPressed, C.sfEvtMouseButtonReleased:
 		return NewMouseButtonEventFromC(BaseEvent{cObj: cObj}, C.get_sfMouseButtonEvent_from_sfEvent_union(&cObj))
+	case C.sfEvtMouseWheelMoved:
+		return NewMouseWheelEventFromC(BaseEvent{cObj: cObj}, C.get_sfMouseWheelEvent_from_sfEvent_union(&cObj))
 	case C.sfEvtMouseWheelScrolled:
 		return NewMouseWheelScrollEventFromC(BaseEvent{cObj: cObj}, C.get_sfMouseWheelScrollEvent_from_sfEvent_union(&cObj))
 	case C.sfEvtTouchBegan, C.sfEvtTouchMoved, C.sfEvtTouchEnded:
@@ -627,6 +634,14 @@ func (m *MouseButtonEvent) EventType() EventType {
 }
 
 func (m *MouseButtonEvent) BaseToC() C.sfEvent {
+	return m.BaseEvent.cObj
+}
+
+func (m *MouseWheelEvent) EventType() EventType {
+	return m.Type
+}
+
+func (m *MouseWheelEvent) BaseToC() C.sfEvent {
 	return m.BaseEvent.cObj
 }
 
