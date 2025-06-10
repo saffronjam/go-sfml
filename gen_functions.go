@@ -64,8 +64,7 @@ func main() {
 			functionBodyRows = append(functionBodyRows, fmt.Sprintf("var0 := %s.ToC()", receiverVar))
 			ampersand := ""
 			_, isStructOverride := converter.StructOverrides[common.CleanCType(paramsC[0].Type)]
-			_, storeAsValue := converter.StoreAsValue[common.CleanCType(paramsC[0].Type)]
-			if common.IsPointerType(paramsC[0].Type) && (isStructOverride || storeAsValue) {
+			if common.IsPointerType(paramsC[0].Type) && isStructOverride {
 				ampersand = "&"
 			}
 			callArgs = append(callArgs, fmt.Sprintf("%svar0", ampersand))
@@ -125,7 +124,6 @@ func main() {
 					} else {
 						functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s.ToC()", argVarName, goParam.Name))
 						ampersand = ""
-						_, storeAsValue = converter.StoreAsValue[common.CleanCType(cParam.Type)]
 						if common.IsPointerType(cParam.Type) {
 							ampersand = "&"
 						}
@@ -134,12 +132,13 @@ func main() {
 				} else if converter.IsKnownGoType(common.StripPointer(goParam.Type)) && !converter.IsEnum(goParam.Type) {
 					// If it is a known Go type, we need to pass it as a pointer using var1.ToC()
 					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s.ToC()", argVarName, goParam.Name))
-					ampersand = ""
-					_, storeAsValue = converter.StoreAsValue[common.CleanCType(cParam.Type)]
-					if common.IsPointerType(cParam.Type) && storeAsValue {
-						ampersand = "&"
+					dereference := ""
+					_, storeAsValue := converter.StoreAsValue[common.CleanCType(cParam.Type)]
+					if !common.IsPointerType(cParam.Type) && storeAsValue {
+						dereference = "*"
 					}
-					callArgs = append(callArgs, fmt.Sprintf("%s%s", ampersand, argVarName))
+
+					callArgs = append(callArgs, fmt.Sprintf("%s%s", dereference, argVarName))
 				} else if goParam.Type == "string" {
 					// If the parameter is a string, we need to convert it to a C string
 					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := C.CString(%s)", argVarName, goParam.Name))

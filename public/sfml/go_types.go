@@ -82,12 +82,12 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
+// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
 //     return a->type;
 // }
 //
 //
-// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
+// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -102,32 +102,12 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
+// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
 //     return a->type;
 // }
 //
 //
-// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
+// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -142,12 +122,32 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
+// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
 //     return a->type;
 // }
 //
 //
-// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
+// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -1633,7 +1633,7 @@ type RenderStates struct {
 }
 
 func (r *RenderStates) ToC() C.sfRenderStates {
-	funcRes := C.sfRenderStates{ blendMode: r.BlendMode.ToC(), transform: r.Transform.ToC(), texture: r.Texture.ToC(), shader: r.Shader.ToC() }
+	funcRes := C.sfRenderStates{ blendMode: r.BlendMode.ToC(), transform: *r.Transform.ToC(), texture: r.Texture.ToC(), shader: r.Shader.ToC() }
 	return funcRes
 }
 
@@ -2180,8 +2180,8 @@ type Transform struct {
 	obj C.sfTransform
 }
 
-func (t *Transform) ToC() C.sfTransform {
-	return t.obj
+func (t *Transform) ToC() *C.sfTransform {
+	return &t.obj
 }
 
 func NewTransformFromC(cObj C.sfTransform) *Transform {

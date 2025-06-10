@@ -41,6 +41,7 @@ func main() {
 	circle.SetFillColor(sfml.Color{R: 255, G: 0, B: 0})
 	circle.SetPosition(sfml.Vector2f{X: 400, Y: 300})
 	circle.SetOrigin(sfml.Vector2f{X: 10, Y: 10})
+	renderStates := sfml.RenderStatesDefault()
 
 	for wnd.IsOpen() {
 		position := wnd.Position()
@@ -52,6 +53,11 @@ func main() {
 				keyEvent := event.(*sfml.KeyEvent)
 				if keyEvent.Code == sfml.KeyA {
 					circle.SetFillColor(sfml.Color{R: 0, G: 100, B: 0, A: 255})
+				}
+
+				if keyEvent.Code == sfml.KeySpace {
+					renderStates.Transform.Rotate(1.0)
+					continue
 				}
 			case sfml.EvtKeyReleased:
 				keyEvent := event.(*sfml.KeyEvent)
@@ -72,7 +78,7 @@ func main() {
 		rect.SetPosition(sfml.Vector2f{X: float32(pos.X), Y: float32(pos.Y)})
 		wnd.Clear(sfml.Color{R: uint8(position.X % 255), G: uint8(position.Y % 255), B: 0, A: 255})
 
-		wnd.DrawRectangleShape(rect, sfml.RenderStatesDefault())
+		wnd.DrawRectangleShape(rect, renderStates)
 		wnd.DrawCircleShape(circle, sfml.RenderStatesDefault())
 
 		wnd.Display()

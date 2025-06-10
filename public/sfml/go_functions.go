@@ -72,56 +72,6 @@ package sfml
 // #include <SFML/Window/WindowHandle.h>
 // #cgo LDFLAGS: -lcsfml-graphics -lcsfml-window -lcsfml-system -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lstdc++ -lm -lGL -ludev -lXrandr -lfreetype -lXcursor
 //
-// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
 // static inline sfEventType get_sfMouseMoveEvent_type(const sfMouseMoveEvent* a) {
 //     return a->type;
 // }
@@ -148,6 +98,56 @@ package sfml
 //
 //
 // static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -2274,7 +2274,7 @@ func (s *Shader) SetTransformParameter(name string, transform Transform) {
 	var0 := s.ToC()
 	var1 := C.CString(name)
 	var2 := transform.ToC()
-	C.sfShader_setTransformParameter(var0, var1, var2)
+	C.sfShader_setTransformParameter(var0, var1, *var2)
 }
 
 func (s *Shader) SetVec2uniform(name string, vector Vector2f) {
@@ -3192,13 +3192,13 @@ func TouchIsDown(finger int32) bool {
 func (t *Transform) Combine(other *Transform) {
 	var0 := t.ToC()
 	var1 := other.ToC()
-	C.sfTransform_combine(&var0, &var1)
+	C.sfTransform_combine(var0, var1)
 }
 
 func (t *Transform) Equal(right *Transform) bool {
 	var0 := t.ToC()
 	var1 := right.ToC()
-	funcRes0 := C.sfTransform_equal(&var0, &var1)
+	funcRes0 := C.sfTransform_equal(var0, var1)
 	res := sfBoolToBool(funcRes0)
 	return res
 }
@@ -3219,7 +3219,7 @@ func TransformFromMatrix(a00 float32, a01 float32, a02 float32, a10 float32, a11
 
 func (t *Transform) Inverse() *Transform {
 	var0 := t.ToC()
-	funcRes0 := C.sfTransform_getInverse(&var0)
+	funcRes0 := C.sfTransform_getInverse(var0)
 	res := NewTransformFromC(funcRes0)
 	return res
 }
@@ -3227,13 +3227,13 @@ func (t *Transform) Inverse() *Transform {
 func (t *Transform) Matrix(matrix *float32) {
 	var0 := t.ToC()
 	var1 := (*C.float)(matrix)
-	C.sfTransform_getMatrix(&var0, var1)
+	C.sfTransform_getMatrix(var0, var1)
 }
 
 func (t *Transform) Rotate(angle float32) {
 	var0 := t.ToC()
 	var1 := C.float(angle)
-	C.sfTransform_rotate(&var0, var1)
+	C.sfTransform_rotate(var0, var1)
 }
 
 func (t *Transform) RotateWithCenter(angle float32, centerX float32, centerY float32) {
@@ -3241,14 +3241,14 @@ func (t *Transform) RotateWithCenter(angle float32, centerX float32, centerY flo
 	var1 := C.float(angle)
 	var2 := C.float(centerX)
 	var3 := C.float(centerY)
-	C.sfTransform_rotateWithCenter(&var0, var1, var2, var3)
+	C.sfTransform_rotateWithCenter(var0, var1, var2, var3)
 }
 
 func (t *Transform) Scale(scaleX float32, scaleY float32) {
 	var0 := t.ToC()
 	var1 := C.float(scaleX)
 	var2 := C.float(scaleY)
-	C.sfTransform_scale(&var0, var1, var2)
+	C.sfTransform_scale(var0, var1, var2)
 }
 
 func (t *Transform) ScaleWithCenter(scaleX float32, scaleY float32, centerX float32, centerY float32) {
@@ -3257,13 +3257,13 @@ func (t *Transform) ScaleWithCenter(scaleX float32, scaleY float32, centerX floa
 	var2 := C.float(scaleY)
 	var3 := C.float(centerX)
 	var4 := C.float(centerY)
-	C.sfTransform_scaleWithCenter(&var0, var1, var2, var3, var4)
+	C.sfTransform_scaleWithCenter(var0, var1, var2, var3, var4)
 }
 
 func (t *Transform) TransformPoint(point Vector2f) *Vector2f {
 	var0 := t.ToC()
 	var1 := point.ToC()
-	funcRes0 := C.sfTransform_transformPoint(&var0, var1)
+	funcRes0 := C.sfTransform_transformPoint(var0, var1)
 	res := NewVector2fFromC(funcRes0)
 	return res
 }
@@ -3271,7 +3271,7 @@ func (t *Transform) TransformPoint(point Vector2f) *Vector2f {
 func (t *Transform) TransformRect(rectangle FloatRect) *FloatRect {
 	var0 := t.ToC()
 	var1 := rectangle.ToC()
-	funcRes0 := C.sfTransform_transformRect(&var0, var1)
+	funcRes0 := C.sfTransform_transformRect(var0, var1)
 	res := NewFloatRectFromC(funcRes0)
 	return res
 }
@@ -3280,7 +3280,7 @@ func (t *Transform) Translate(x float32, y float32) {
 	var0 := t.ToC()
 	var1 := C.float(x)
 	var2 := C.float(y)
-	C.sfTransform_translate(&var0, var1, var2)
+	C.sfTransform_translate(var0, var1, var2)
 }
 
 func (t *Transformable) Copy() *Transformable {

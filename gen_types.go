@@ -177,7 +177,13 @@ func main() {
 					if _, subOverrideField := converter.GetOverriddenType(field.Type); subOverrideField != nil {
 						funcRes.WriteString(fmt.Sprintf("%s: %s.%s.ToC()", cField.Name, receiverName, field.Name))
 					} else if converter.IsKnownGoType(field.Type) && !converter.IsEnum(field.Type) {
-						funcRes.WriteString(fmt.Sprintf("%s: %s.%s.ToC()", cField.Name, receiverName, common.TypeConverterToGo(field.Type)))
+						_, storeAsValue := converter.StoreAsValue[cField.Type]
+						dereference := ""
+						if storeAsValue {
+							dereference = "*"
+						}
+
+						funcRes.WriteString(fmt.Sprintf("%s: %s%s.%s.ToC()", cField.Name, dereference, receiverName, common.TypeConverterToGo(field.Type)))
 					} else {
 						funcRes.WriteString(fmt.Sprintf("%s: %s(%s.%s)", structOverride.CFields[i].Name, common.TypeConverterToC(structOverride.CFields[i].Type), receiverName, field.Name))
 					}
@@ -348,9 +354,9 @@ func main() {
 					ReceiverType: common.MakePointerType(goName),
 					MethodName:   "ToC",
 					Parameters:   []common.Field{},
-					ReturnType:   fmt.Sprintf("C.%s", rawName),
+					ReturnType:   fmt.Sprintf("*C.%s", rawName),
 				})
-				writer.ReturnValue(fmt.Sprintf("%s.obj", receiverName))
+				writer.ReturnValue(fmt.Sprintf("&%s.obj", receiverName))
 
 				writer.FunctionHeader(common.FunctionHeader{
 					MethodName: "New" + goName + "FromC",
