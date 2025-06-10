@@ -47,14 +47,16 @@ python3 scripts/extract_all.py
 echo "📦 Running Go code generators..."
 go run gen_types.go
 go run gen_functions.go
+go run gen_templates.go
 
 # Move to public directory
 echo "📁 Moving generated files to public directory..."
-rm -rf "$PUBLIC_DIR"
+rm -f "$PUBLIC_DIR/sfml/go_types.go" "$PUBLIC_DIR/sfml/go_functions.go" "$PUBLIC_DIR/sfml/go_addon_vector.go"
 mkdir -p "$PUBLIC_DIR/sfml"
 
 mv "$GEN_DIR/go_types.go" "$PUBLIC_DIR/sfml/go_types.go"
 mv "$GEN_DIR/go_functions.go" "$PUBLIC_DIR/sfml/go_functions.go"
+mv "$GEN_DIR/go_addon_vector.go" "$PUBLIC_DIR/sfml/go_addon_vector.go"
 
 echo "✅ Done. Output in $PUBLIC_DIR/sfml/"
 

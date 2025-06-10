@@ -72,12 +72,52 @@ package sfml
 // #include <SFML/Window/WindowHandle.h>
 // #cgo LDFLAGS: -lcsfml-graphics -lcsfml-window -lcsfml-system -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lstdc++ -lm -lGL -ludev -lXrandr -lfreetype -lXcursor
 //
+// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
 // static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
 //     return a->type;
 // }
 //
 //
 // static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -102,36 +142,6 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
 // static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
 //     return a->type;
 // }
@@ -142,22 +152,12 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
+// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
 //     return a->type;
 // }
 //
 //
-// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
+// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //

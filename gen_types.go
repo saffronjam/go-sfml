@@ -155,7 +155,7 @@ func main() {
 				receiverName := strings.ToLower(structOverride.GoName[:1]) // e.g. "v" for "Vector2i"
 				writer.ReceiverFunctionHeader(common.ReceiverFunctionHeader{
 					ReceiverName: receiverName, // e.g. "v" for "Vector2i"
-					ReceiverType: structOverride.GoName,
+					ReceiverType: common.MakePointerType(structOverride.GoName),
 					MethodName:   "ToC",
 					Parameters:   []common.Field{},
 					ReturnType:   fmt.Sprintf("C.%s", rawName),
@@ -345,7 +345,7 @@ func main() {
 
 				writer.ReceiverFunctionHeader(common.ReceiverFunctionHeader{
 					ReceiverName: receiverName,
-					ReceiverType: fmt.Sprintf("*%s", goName),
+					ReceiverType: common.MakePointerType(goName),
 					MethodName:   "ToC",
 					Parameters:   []common.Field{},
 					ReturnType:   fmt.Sprintf("C.%s", rawName),

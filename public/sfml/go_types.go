@@ -72,6 +72,26 @@ package sfml
 // #include <SFML/Window/WindowHandle.h>
 // #cgo LDFLAGS: -lcsfml-graphics -lcsfml-window -lcsfml-system -lsfml-graphics -lsfml-window -lsfml-system -lX11 -lstdc++ -lm -lGL -ludev -lXrandr -lfreetype -lXcursor
 //
+// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
 // static inline sfEventType get_sfMouseWheelScrollEvent_type(const sfMouseWheelScrollEvent* a) {
 //     return a->type;
 // }
@@ -92,6 +112,36 @@ package sfml
 // }
 //
 //
+// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
 // static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
 //     return a->type;
 // }
@@ -108,56 +158,6 @@ package sfml
 //
 //
 // static inline void set_sfMouseMoveEvent_type(sfMouseMoveEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfMouseWheelEvent_type(const sfMouseWheelEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseWheelEvent_type(sfMouseWheelEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseButtonEvent_type(sfMouseButtonEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfTextEvent_type(const sfTextEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfTextEvent_type(sfTextEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -264,7 +264,7 @@ type BlendMode struct {
 	AlphaEquation BlendEquation
 }
 
-func (b BlendMode) ToC() C.sfBlendMode {
+func (b *BlendMode) ToC() C.sfBlendMode {
 	funcRes := C.sfBlendMode{ colorSrcFactor: C.sfBlendFactor(b.ColorSrcFactor), colorDstFactor: C.sfBlendFactor(b.ColorDstFactor), colorEquation: C.sfBlendEquation(b.ColorEquation), alphaSrcFactor: C.sfBlendFactor(b.AlphaSrcFactor), alphaDstFactor: C.sfBlendFactor(b.AlphaDstFactor), alphaEquation: C.sfBlendEquation(b.AlphaEquation) }
 	return funcRes
 }
@@ -347,7 +347,7 @@ type Color struct {
 	A uint8
 }
 
-func (c Color) ToC() C.sfColor {
+func (c *Color) ToC() C.sfColor {
 	funcRes := C.sfColor{ r: C.sfUint8(c.R), g: C.sfUint8(c.G), b: C.sfUint8(c.B), a: C.sfUint8(c.A) }
 	return funcRes
 }
@@ -417,7 +417,7 @@ type ContextSettings struct {
 	SRgbCapable bool
 }
 
-func (c ContextSettings) ToC() C.sfContextSettings {
+func (c *ContextSettings) ToC() C.sfContextSettings {
 	funcRes := C.sfContextSettings{ depthBits: C.sfUint32(c.DepthBits), stencilBits: C.sfUint32(c.StencilBits), antialiasingLevel: C.sfUint32(c.AntialiasingLevel), majorVersion: C.sfUint32(c.MajorVersion), minorVersion: C.sfUint32(c.MinorVersion), attributeFlags: C.sfUint32(c.AttributeFlags), sRgbCapable: boolToSfBool(c.SRgbCapable) }
 	return funcRes
 }
@@ -690,7 +690,7 @@ type FloatRect struct {
 	Height float32
 }
 
-func (f FloatRect) ToC() C.sfFloatRect {
+func (f *FloatRect) ToC() C.sfFloatRect {
 	funcRes := C.sfFloatRect{ left: C.float(f.Left), top: C.float(f.Top), width: C.float(f.Width), height: C.float(f.Height) }
 	return funcRes
 }
@@ -746,7 +746,7 @@ type FontInfo struct {
 	Family string
 }
 
-func (f FontInfo) ToC() C.sfFontInfo {
+func (f *FontInfo) ToC() C.sfFontInfo {
 	funcRes := C.sfFontInfo{ family: C.CString(f.Family) }
 	return funcRes
 }
@@ -791,7 +791,7 @@ type Vector2b struct {
 	Y bool
 }
 
-func (v Vector2b) ToC() C.sfGlslBvec2 {
+func (v *Vector2b) ToC() C.sfGlslBvec2 {
 	funcRes := C.sfGlslBvec2{ x: boolToSfBool(v.X), y: boolToSfBool(v.Y) }
 	return funcRes
 }
@@ -837,7 +837,7 @@ type Vector3b struct {
 	Z bool
 }
 
-func (v Vector3b) ToC() C.sfGlslBvec3 {
+func (v *Vector3b) ToC() C.sfGlslBvec3 {
 	funcRes := C.sfGlslBvec3{ x: boolToSfBool(v.X), y: boolToSfBool(v.Y), z: boolToSfBool(v.Z) }
 	return funcRes
 }
@@ -884,7 +884,7 @@ type Vector4b struct {
 	W bool
 }
 
-func (v Vector4b) ToC() C.sfGlslBvec4 {
+func (v *Vector4b) ToC() C.sfGlslBvec4 {
 	funcRes := C.sfGlslBvec4{ x: boolToSfBool(v.X), y: boolToSfBool(v.Y), z: boolToSfBool(v.Z), w: boolToSfBool(v.W) }
 	return funcRes
 }
@@ -930,7 +930,7 @@ type Vector3i struct {
 	Z int32
 }
 
-func (v Vector3i) ToC() C.sfGlslIvec3 {
+func (v *Vector3i) ToC() C.sfGlslIvec3 {
 	funcRes := C.sfGlslIvec3{ x: C.int(v.X), y: C.int(v.Y), z: C.int(v.Z) }
 	return funcRes
 }
@@ -977,7 +977,7 @@ type Vector4i struct {
 	W int32
 }
 
-func (v Vector4i) ToC() C.sfGlslIvec4 {
+func (v *Vector4i) ToC() C.sfGlslIvec4 {
 	funcRes := C.sfGlslIvec4{ x: C.int(v.X), y: C.int(v.Y), z: C.int(v.Z), w: C.int(v.W) }
 	return funcRes
 }
@@ -1048,7 +1048,7 @@ type Vector4f struct {
 	W float32
 }
 
-func (v Vector4f) ToC() C.sfGlslVec4 {
+func (v *Vector4f) ToC() C.sfGlslVec4 {
 	funcRes := C.sfGlslVec4{ x: C.float(v.X), y: C.float(v.Y), z: C.float(v.Z), w: C.float(v.W) }
 	return funcRes
 }
@@ -1094,7 +1094,7 @@ type Glyph struct {
 	TextureRect IntRect
 }
 
-func (g Glyph) ToC() C.sfGlyph {
+func (g *Glyph) ToC() C.sfGlyph {
 	funcRes := C.sfGlyph{ advance: C.float(g.Advance), bounds: g.Bounds.ToC(), textureRect: g.TextureRect.ToC() }
 	return funcRes
 }
@@ -1165,7 +1165,7 @@ type IntRect struct {
 	Height int32
 }
 
-func (i IntRect) ToC() C.sfIntRect {
+func (i *IntRect) ToC() C.sfIntRect {
 	funcRes := C.sfIntRect{ left: C.sfInt32(i.Left), top: C.sfInt32(i.Top), width: C.sfInt32(i.Width), height: C.sfInt32(i.Height) }
 	return funcRes
 }
@@ -1331,7 +1331,7 @@ type KeyEvent struct {
 	System bool
 }
 
-func (k KeyEvent) ToC() C.sfKeyEvent {
+func (k *KeyEvent) ToC() C.sfKeyEvent {
 	funcRes := C.sfKeyEvent{ code: C.sfKeyCode(k.Code), scancode: C.sfScancode(k.Scancode), alt: boolToSfBool(k.Alt), control: boolToSfBool(k.Control), shift: boolToSfBool(k.Shift), system: boolToSfBool(k.System) }
 	C.set_sfKeyEvent_type(&funcRes, C.sfEventType(k.Type))
 	return funcRes
@@ -1391,7 +1391,7 @@ type MouseButtonEvent struct {
 	Y int32
 }
 
-func (m MouseButtonEvent) ToC() C.sfMouseButtonEvent {
+func (m *MouseButtonEvent) ToC() C.sfMouseButtonEvent {
 	funcRes := C.sfMouseButtonEvent{ button: C.sfMouseButton(m.Button), x: C.int(m.X), y: C.int(m.Y) }
 	C.set_sfMouseButtonEvent_type(&funcRes, C.sfEventType(m.Type))
 	return funcRes
@@ -1439,7 +1439,7 @@ type MouseMoveEvent struct {
 	Y int32
 }
 
-func (m MouseMoveEvent) ToC() C.sfMouseMoveEvent {
+func (m *MouseMoveEvent) ToC() C.sfMouseMoveEvent {
 	funcRes := C.sfMouseMoveEvent{ x: C.int(m.X), y: C.int(m.Y) }
 	C.set_sfMouseMoveEvent_type(&funcRes, C.sfEventType(m.Type))
 	return funcRes
@@ -1495,7 +1495,7 @@ type MouseWheelEvent struct {
 	Y int32
 }
 
-func (m MouseWheelEvent) ToC() C.sfMouseWheelEvent {
+func (m *MouseWheelEvent) ToC() C.sfMouseWheelEvent {
 	funcRes := C.sfMouseWheelEvent{ delta: C.int(m.Delta), x: C.int(m.X), y: C.int(m.Y) }
 	C.set_sfMouseWheelEvent_type(&funcRes, C.sfEventType(m.Type))
 	return funcRes
@@ -1545,7 +1545,7 @@ type MouseWheelScrollEvent struct {
 	Y int32
 }
 
-func (m MouseWheelScrollEvent) ToC() C.sfMouseWheelScrollEvent {
+func (m *MouseWheelScrollEvent) ToC() C.sfMouseWheelScrollEvent {
 	funcRes := C.sfMouseWheelScrollEvent{ wheel: C.sfMouseWheel(m.Wheel), delta: C.float(m.Delta), x: C.int(m.X), y: C.int(m.Y) }
 	C.set_sfMouseWheelScrollEvent_type(&funcRes, C.sfEventType(m.Type))
 	return funcRes
@@ -1632,7 +1632,7 @@ type RenderStates struct {
 	Shader Shader
 }
 
-func (r RenderStates) ToC() C.sfRenderStates {
+func (r *RenderStates) ToC() C.sfRenderStates {
 	funcRes := C.sfRenderStates{ blendMode: r.BlendMode.ToC(), transform: r.Transform.ToC(), texture: r.Texture.ToC(), shader: r.Shader.ToC() }
 	return funcRes
 }
@@ -1858,7 +1858,7 @@ type SensorEvent struct {
 	Z float32
 }
 
-func (s SensorEvent) ToC() C.sfSensorEvent {
+func (s *SensorEvent) ToC() C.sfSensorEvent {
 	funcRes := C.sfSensorEvent{ sensorType: C.sfSensorType(s.SensorType), x: C.float(s.X), y: C.float(s.Y), z: C.float(s.Z) }
 	C.set_sfSensorEvent_type(&funcRes, C.sfEventType(s.Type))
 	return funcRes
@@ -1942,7 +1942,7 @@ type SizeEvent struct {
 	Height uint32
 }
 
-func (s SizeEvent) ToC() C.sfSizeEvent {
+func (s *SizeEvent) ToC() C.sfSizeEvent {
 	funcRes := C.sfSizeEvent{ width: C.uint(s.Width), height: C.uint(s.Height) }
 	C.set_sfSizeEvent_type(&funcRes, C.sfEventType(s.Type))
 	return funcRes
@@ -2013,7 +2013,7 @@ type TextEvent struct {
 	Unicode uint32
 }
 
-func (t TextEvent) ToC() C.sfTextEvent {
+func (t *TextEvent) ToC() C.sfTextEvent {
 	funcRes := C.sfTextEvent{ unicode: C.sfUint32(t.Unicode) }
 	C.set_sfTextEvent_type(&funcRes, C.sfEventType(t.Type))
 	return funcRes
@@ -2087,7 +2087,7 @@ type Time struct {
 	Microseconds int64
 }
 
-func (t Time) ToC() C.sfTime {
+func (t *Time) ToC() C.sfTime {
 	funcRes := C.sfTime{ microseconds: C.sfInt64(t.Microseconds) }
 	return funcRes
 }
@@ -2135,7 +2135,7 @@ type TouchEvent struct {
 	Y int32
 }
 
-func (t TouchEvent) ToC() C.sfTouchEvent {
+func (t *TouchEvent) ToC() C.sfTouchEvent {
 	funcRes := C.sfTouchEvent{ finger: C.uint(t.Finger), x: C.int(t.X), y: C.int(t.Y) }
 	C.set_sfTouchEvent_type(&funcRes, C.sfEventType(t.Type))
 	return funcRes
@@ -2205,7 +2205,7 @@ type Vector2f struct {
 	Y float32
 }
 
-func (v Vector2f) ToC() C.sfVector2f {
+func (v *Vector2f) ToC() C.sfVector2f {
 	funcRes := C.sfVector2f{ x: C.float(v.X), y: C.float(v.Y) }
 	return funcRes
 }
@@ -2250,7 +2250,7 @@ type Vector2i struct {
 	Y int32
 }
 
-func (v Vector2i) ToC() C.sfVector2i {
+func (v *Vector2i) ToC() C.sfVector2i {
 	funcRes := C.sfVector2i{ x: C.int(v.X), y: C.int(v.Y) }
 	return funcRes
 }
@@ -2295,7 +2295,7 @@ type Vector2u struct {
 	Y uint32
 }
 
-func (v Vector2u) ToC() C.sfVector2u {
+func (v *Vector2u) ToC() C.sfVector2u {
 	funcRes := C.sfVector2u{ x: C.sfUint32(v.X), y: C.sfUint32(v.Y) }
 	return funcRes
 }
@@ -2341,7 +2341,7 @@ type Vector3f struct {
 	Z float32
 }
 
-func (v Vector3f) ToC() C.sfVector3f {
+func (v *Vector3f) ToC() C.sfVector3f {
 	funcRes := C.sfVector3f{ x: C.float(v.X), y: C.float(v.Y), z: C.float(v.Z) }
 	return funcRes
 }
@@ -2387,7 +2387,7 @@ type Vertex struct {
 	TexCoords Vector2f
 }
 
-func (v Vertex) ToC() C.sfVertex {
+func (v *Vertex) ToC() C.sfVertex {
 	funcRes := C.sfVertex{ position: v.Position.ToC(), color: v.Color.ToC(), texCoords: v.TexCoords.ToC() }
 	return funcRes
 }
@@ -2465,7 +2465,7 @@ type VideoMode struct {
 	BitsPerPixel uint32
 }
 
-func (v VideoMode) ToC() C.sfVideoMode {
+func (v *VideoMode) ToC() C.sfVideoMode {
 	funcRes := C.sfVideoMode{ width: C.sfUint32(v.Width), height: C.sfUint32(v.Height), bitsPerPixel: C.sfUint32(v.BitsPerPixel) }
 	return funcRes
 }
