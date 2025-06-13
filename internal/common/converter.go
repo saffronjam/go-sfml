@@ -25,7 +25,8 @@ type Converter struct {
 	UnionOverrides         map[string]UnionOverride
 	ReturnParamOverrides   map[string]Field // Map C param names that should be moved to a Go return value (possibly creating a multi-return function).
 
-	StoreAsValue map[string]struct{} // Map cTypes (as translated to GoTypes) that should be stored as values, not pointers, like sfTransform.
+	StoreAsValueOverrides map[string]struct{} // Map cTypes (as translated to GoTypes) that should be stored as values, not pointers, like sfTransform.
+	NilParamOverrides     map[string][]Field  // Map C param names that should accept nil values in Go, like sfShader, used for optional parameters.
 
 	SkippedTypes     map[string]struct{}
 	SkippedFunctions map[string]struct{}
@@ -373,8 +374,15 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 				Type: "sfFloatRect",
 			},
 		},
-		StoreAsValue: map[string]struct{}{
+		StoreAsValueOverrides: map[string]struct{}{
 			"sfTransform": {}, // Keep Transform as a pointer in Go
+		},
+		NilParamOverrides: map[string][]Field{
+			"sfShader_createFromFile": {
+				{Name: "vertexShaderFilename", Type: "string"},
+				{Name: "geometryShaderFilename", Type: "string"},
+				{Name: "fragmentShaderFilename", Type: "string"},
+			},
 		},
 		PrefixMap: map[string]string{
 			"sf": "",
@@ -734,6 +742,18 @@ func (c *Converter) IsPhantomStruct(goType string) *StructOverride {
 	for _, pso := range c.PhantomStructOverrides {
 		if pso.GoName == goType {
 			return &pso
+		}
+	}
+	return nil
+}
+
+// IsNilParamOverride checks if a parameter is a nil override given a C-function name and parameter name.
+func (c *Converter) IsNilParamOverride(cFunc string, cParamName string) *Field {
+	if field, ok := c.NilParamOverrides[cFunc]; ok {
+		for _, f := range field {
+			if f.Name == cParamName {
+				return &f
+			}
 		}
 	}
 	return nil

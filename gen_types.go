@@ -42,7 +42,7 @@ func main() {
 			baseName := converter.StripPrefix(rawName)
 			goName := textcase.PascalCase(baseName)
 			isPointer := true
-			if _, ok := converter.StoreAsValue[rawName]; ok {
+			if _, ok := converter.StoreAsValueOverrides[rawName]; ok {
 				isPointer = false
 			}
 
@@ -177,7 +177,7 @@ func main() {
 					if _, subOverrideField := converter.GetOverriddenType(field.Type); subOverrideField != nil {
 						funcRes.WriteString(fmt.Sprintf("%s: %s.%s.ToC()", cField.Name, receiverName, field.Name))
 					} else if converter.IsKnownGoType(field.Type) && !converter.IsEnum(field.Type) {
-						_, storeAsValue := converter.StoreAsValue[cField.Type]
+						_, storeAsValue := converter.StoreAsValueOverrides[cField.Type]
 						dereference := ""
 						if storeAsValue {
 							dereference = "*"

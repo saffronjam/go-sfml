@@ -82,26 +82,6 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
-// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
 // static inline sfEventType get_sfMouseButtonEvent_type(const sfMouseButtonEvent* a) {
 //     return a->type;
 // }
@@ -112,12 +92,22 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
+// static inline sfEventType get_sfTouchEvent_type(const sfTouchEvent* a) {
 //     return a->type;
 // }
 //
 //
-// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
+// static inline void set_sfTouchEvent_type(sfTouchEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -132,16 +122,6 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfMouseMoveEvent_type(const sfMouseMoveEvent* a) {
-//     return a->type;
-// }
-//
-//
-// static inline void set_sfMouseMoveEvent_type(sfMouseMoveEvent* a, sfEventType type) {
-//     a->type = type;
-// }
-//
-//
 // static inline sfEventType get_sfMouseWheelScrollEvent_type(const sfMouseWheelScrollEvent* a) {
 //     return a->type;
 // }
@@ -152,12 +132,32 @@ package sfml
 // }
 //
 //
-// static inline sfEventType get_sfSensorEvent_type(const sfSensorEvent* a) {
+// static inline sfEventType get_sfKeyEvent_type(const sfKeyEvent* a) {
 //     return a->type;
 // }
 //
 //
-// static inline void set_sfSensorEvent_type(sfSensorEvent* a, sfEventType type) {
+// static inline void set_sfKeyEvent_type(sfKeyEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfMouseMoveEvent_type(const sfMouseMoveEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfMouseMoveEvent_type(sfMouseMoveEvent* a, sfEventType type) {
+//     a->type = type;
+// }
+//
+//
+// static inline sfEventType get_sfSizeEvent_type(const sfSizeEvent* a) {
+//     return a->type;
+// }
+//
+//
+// static inline void set_sfSizeEvent_type(sfSizeEvent* a, sfEventType type) {
 //     a->type = type;
 // }
 //
@@ -2049,11 +2049,20 @@ func (s *Shader) Bind() {
 	C.sfShader_bind(var0)
 }
 
-func NewShaderFromFile(vertexShaderFilename string, geometryShaderFilename string, fragmentShaderFilename string) *Shader {
-	var0 := C.CString(vertexShaderFilename)
-	var1 := C.CString(geometryShaderFilename)
-	var2 := C.CString(fragmentShaderFilename)
-	funcRes0 := C.sfShader_createFromFile(var0, var1, var2)
+func NewShaderFromFile(vertexShaderFilename *string, geometryShaderFilename *string, fragmentShaderFilename *string) *Shader {
+	var var0 *C.char = nil
+	if vertexShaderFilename != nil {
+	  var0 = C.CString(*vertexShaderFilename)
+	}
+	var var4 *C.char = nil
+	if geometryShaderFilename != nil {
+	  var4 = C.CString(*geometryShaderFilename)
+	}
+	var var8 *C.char = nil
+	if fragmentShaderFilename != nil {
+	  var8 = C.CString(*fragmentShaderFilename)
+	}
+	funcRes0 := C.sfShader_createFromFile(var0, var4, var8)
 	return NewShaderFromC(funcRes0)
 }
 
