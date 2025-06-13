@@ -233,26 +233,55 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 				BaseType: "BaseEvent",
 				Fields:   []Field{{Name: "Type", Type: "EventType"}},
 				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
-			}, {
+			},
+			{
 				GoName:   "LostFocusEvent",
 				BaseType: "BaseEvent",
 				Fields:   []Field{{Name: "Type", Type: "EventType"}},
 				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
-			}, {
+			},
+			{
 				GoName:   "GainedFocusEvent",
 				BaseType: "BaseEvent",
 				Fields:   []Field{{Name: "Type", Type: "EventType"}},
 				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
-			}, {
+			},
+			{
 				GoName:   "MouseEnteredEvent",
 				BaseType: "BaseEvent",
 				Fields:   []Field{{Name: "Type", Type: "EventType"}},
 				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
-			}, {
+			},
+			{
 				GoName:   "MouseLeftEvent",
 				BaseType: "BaseEvent",
 				Fields:   []Field{{Name: "Type", Type: "EventType"}},
 				CFields:  []Field{{Name: "type", Type: "sfEventType"}},
+			},
+			{
+				GoName:  "Vector2d",
+				Fields:  []Field{{Name: "X", Type: "float64"}, {Name: "Y", Type: "float64"}},
+				CFields: []Field{{Name: "x", Type: "double"}, {Name: "y", Type: "double"}},
+			},
+			{
+				GoName:  "Vector3d",
+				Fields:  []Field{{Name: "X", Type: "float64"}, {Name: "Y", Type: "float64"}, {Name: "Z", Type: "float64"}},
+				CFields: []Field{{Name: "x", Type: "double"}, {Name: "y", Type: "double"}, {Name: "z", Type: "double"}},
+			},
+			{
+				GoName:  "Vector3u",
+				Fields:  []Field{{Name: "X", Type: "uint32"}, {Name: "Y", Type: "uint32"}, {Name: "Z", Type: "uint32"}},
+				CFields: []Field{{Name: "x", Type: "sfUint32"}, {Name: "y", Type: "sfUint32"}, {Name: "z", Type: "sfUint32"}},
+			},
+			{
+				GoName:  "Vector4d",
+				Fields:  []Field{{Name: "X", Type: "float64"}, {Name: "Y", Type: "float64"}, {Name: "Z", Type: "float64"}, {Name: "W", Type: "float64"}},
+				CFields: []Field{{Name: "x", Type: "double"}, {Name: "y", Type: "double"}, {Name: "z", Type: "double"}, {Name: "w", Type: "double"}},
+			},
+			{
+				GoName:  "Vector4u",
+				Fields:  []Field{{Name: "X", Type: "uint32"}, {Name: "Y", Type: "uint32"}, {Name: "Z", Type: "uint32"}, {Name: "W", Type: "uint32"}},
+				CFields: []Field{{Name: "x", Type: "sfUint32"}, {Name: "y", Type: "sfUint32"}, {Name: "z", Type: "sfUint32"}, {Name: "w", Type: "sfUint32"}},
 			},
 		},
 		//typedef enum

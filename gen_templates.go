@@ -15,12 +15,17 @@ var vectorTypes = []struct {
 	HasFloat   bool     // True if the type is a float, for float-specific functions
 }{
 	{Name: "Vector2f", TypeName: "float32", Components: []string{"X", "Y"}, HasFloat: true},
+	{Name: "Vector2d", TypeName: "float64", Components: []string{"X", "Y"}, HasFloat: true},
 	{Name: "Vector2i", TypeName: "int32", Components: []string{"X", "Y"}, HasFloat: false},
 	{Name: "Vector2u", TypeName: "uint32", Components: []string{"X", "Y"}, HasFloat: false},
 	{Name: "Vector3f", TypeName: "float32", Components: []string{"X", "Y", "Z"}, HasFloat: true},
+	{Name: "Vector3d", TypeName: "float64", Components: []string{"X", "Y", "Z"}, HasFloat: true},
 	{Name: "Vector3i", TypeName: "int32", Components: []string{"X", "Y", "Z"}, HasFloat: false},
+	{Name: "Vector3u", TypeName: "uint32", Components: []string{"X", "Y", "Z"}, HasFloat: false},
 	{Name: "Vector4f", TypeName: "float32", Components: []string{"X", "Y", "Z", "W"}, HasFloat: true},
+	{Name: "Vector4d", TypeName: "float64", Components: []string{"X", "Y", "Z", "W"}, HasFloat: true},
 	{Name: "Vector4i", TypeName: "int32", Components: []string{"X", "Y", "Z", "W"}, HasFloat: false},
+	{Name: "Vector4u", TypeName: "uint32", Components: []string{"X", "Y", "Z", "W"}, HasFloat: false},
 }
 
 func main() {

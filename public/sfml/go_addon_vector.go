@@ -345,6 +345,344 @@ func (v *Vector2f) Rotate(angle float32) *Vector2f {
 }
 
 
+// ------------------- Vector2d Methods -------------------
+
+/*
+Add returns a new vector representing the component-wise sum
+of this vector and another.
+
+Params:
+  - other: the vector to add to this one.
+
+Returns:
+  - A new Vector2d representing the result of the addition.
+*/
+func (v *Vector2d) Add(other *Vector2d) *Vector2d {
+	return &Vector2d{
+		X: v.X + other.X,
+		Y: v.Y + other.Y,
+	}
+}
+
+/*
+Subtract returns a new vector representing the component-wise difference
+between this vector and another.
+
+Params:
+  - other: the vector to subtract from this one.
+
+Returns:
+  - A new Vector2d representing the result of the subtraction.
+*/
+func (v *Vector2d) Subtract(other *Vector2d) *Vector2d {
+	return &Vector2d{
+		X: v.X - other.X,
+		Y: v.Y - other.Y,
+	}
+}
+
+/*
+Multiply returns a new vector with component-wise multiplication
+of this vector and another.
+
+Params:
+  - other: the vector to multiply with.
+
+Returns:
+  - A new Vector2d with each component multiplied.
+*/
+func (v *Vector2d) Multiply(other *Vector2d) *Vector2d {
+	return &Vector2d{
+		X: v.X * other.X,
+		Y: v.Y * other.Y,
+	}
+}
+
+/*
+MultiplyScalar multiplies each component of the vector by a scalar.
+
+Params:
+  - scalar: the scalar value to multiply by.
+
+Returns:
+  - A new Vector2d with each component scaled.
+*/
+func (v *Vector2d) MultiplyScalar(scalar float64) *Vector2d {
+	return &Vector2d{
+		X: v.X * scalar,
+		Y: v.Y * scalar,
+	}
+}
+
+/*
+MultiplyScalars performs component-wise multiplication with individual scalar values.
+
+Params:
+  - x float64, y float64
+
+Returns:
+  - A new Vector2d with each component multiplied by its corresponding scalar.
+*/
+func (v *Vector2d) MultiplyScalars(x float64, y float64) *Vector2d {
+	return &Vector2d{
+		X: v.X * x,
+		Y: v.Y * y,
+	}
+}
+
+/*
+Divide performs component-wise division of this vector by another.
+
+Params:
+  - other: the vector to divide by.
+
+Returns:
+  - A new Vector2d with each component divided.
+*/
+func (v *Vector2d) Divide(other *Vector2d) *Vector2d {
+	return &Vector2d{
+		X: v.X / other.X,
+		Y: v.Y / other.Y,
+	}
+}
+
+/*
+DivideScalar divides each component by a scalar.
+
+Params:
+  - scalar: the scalar divisor.
+
+Returns:
+  - A new Vector2d with each component divided by scalar.
+*/
+func (v *Vector2d) DivideScalar(scalar float64) *Vector2d {
+	return &Vector2d{
+		X: v.X / scalar,
+		Y: v.Y / scalar,
+	}
+}
+
+/*
+DivideScalars divides each component by its corresponding scalar.
+
+Params:
+  - x float64, y float64
+
+Returns:
+  - A new Vector2d with each component divided.
+*/
+func (v *Vector2d) DivideScalars(x float64, y float64) *Vector2d {
+	return &Vector2d{
+		X: v.X / x,
+		Y: v.Y / y,
+	}
+}
+
+/*
+Equals returns true if all components of both vectors are equal.
+
+Params:
+  - other: the vector to compare with.
+
+Returns:
+  - Boolean indicating equality.
+*/
+func (v *Vector2d) Equals(other *Vector2d) bool {
+	return v.X == other.X && v.Y == other.Y
+}
+
+/*
+String returns a formatted string representation of the vector.
+*/
+func (v *Vector2d) String() string {
+	return fmt.Sprintf("Vector2d(X: %f, Y: %f)", v.X, v.Y)
+}
+
+
+// --- Float-Specific Vector2d Methods ---
+
+/*
+LengthSquared returns the squared magnitude of the vector.
+
+Returns:
+  - Sum of squares of components.
+*/
+func (v *Vector2d) LengthSquared() float64 {
+	return v.X*v.X + v.Y*v.Y
+}
+
+/*
+Length returns the Euclidean length (magnitude) of the vector.
+
+Returns:
+  - Square root of LengthSquared.
+*/
+func (v *Vector2d) Length() float64 {
+	return float64(math.Sqrt(float64(v.LengthSquared())))
+}
+
+/*
+Normalize returns a unit vector pointing in the same direction.
+
+Returns:
+  - A normalized vector, or zero vector if original length is 0.
+*/
+func (v *Vector2d) Normalize() *Vector2d {
+	if l := v.Length(); l != 0 {
+		return v.DivideScalar(l)
+	}
+	return &Vector2d{}
+}
+
+/*
+Dot returns the dot product with another vector.
+
+Params:
+  - other: the vector to dot with.
+
+Returns:
+  - Dot product (scalar).
+*/
+func (v *Vector2d) Dot(other *Vector2d) float64 {
+	return v.X*other.X + v.Y*other.Y
+}
+
+/*
+Distance returns the Euclidean distance between two vectors.
+
+Params:
+  - other: the vector to measure distance to.
+
+Returns:
+  - Distance as a float.
+*/
+func (v *Vector2d) Distance(other *Vector2d) float64 {
+	return float64(math.Sqrt(float64(v.DistanceSquared(other))))
+}
+
+/*
+DistanceSquared returns the squared distance between two vectors.
+
+Params:
+  - other: the vector to measure distance to.
+
+Returns:
+  - Squared distance (faster if exact distance isn't needed).
+*/
+func (v *Vector2d) DistanceSquared(other *Vector2d) float64 {
+	return (v.X - other.X)*(v.X - other.X) + (v.Y - other.Y)*(v.Y - other.Y)
+}
+
+/*
+Lerp performs linear interpolation toward another vector.
+
+Params:
+  - other: target vector.
+  - t: interpolation factor in [0, 1].
+
+Returns:
+  - Interpolated vector between this and other.
+*/
+func (v *Vector2d) Lerp(other *Vector2d, t float64) *Vector2d {
+	return &Vector2d{
+		X: v.X + (other.X - v.X)*t,
+		Y: v.Y + (other.Y - v.Y)*t,
+	}
+}
+
+/*
+Clamp limits each component to the corresponding range.
+
+Params:
+  - min: minimum vector values.
+  - max: maximum vector values.
+
+Returns:
+  - Clamped vector.
+*/
+func (v *Vector2d) Clamp(min, max *Vector2d) *Vector2d {
+	return &Vector2d{
+		X: float64(math.Max(float64(min.X), math.Min(float64(max.X), float64(v.X)))),
+		Y: float64(math.Max(float64(min.Y), math.Min(float64(max.Y), float64(v.Y)))),
+	}
+}
+
+/*
+Reflect reflects this vector around a surface normal.
+
+Params:
+  - normal: surface normal vector.
+
+Returns:
+  - Reflected vector.
+*/
+func (v *Vector2d) Reflect(normal *Vector2d) *Vector2d {
+	dot := v.Dot(normal)
+	return &Vector2d{
+		X: v.X - 2*dot*normal.X,
+		Y: v.Y - 2*dot*normal.Y,
+	}
+}
+
+/*
+Project projects this vector onto another.
+
+Params:
+  - other: vector to project onto.
+
+Returns:
+  - Projected vector.
+*/
+func (v *Vector2d) Project(other *Vector2d) *Vector2d {
+	dot := v.Dot(other)
+	lengthSquared := other.LengthSquared()
+	if lengthSquared == 0 {
+		return &Vector2d{}
+	}
+	scalar := dot / lengthSquared
+	return &Vector2d{
+		X: other.X * scalar,
+		Y: other.Y * scalar,
+	}
+}
+
+/*
+SetLength returns a new vector in the same direction with a given length.
+
+Params:
+  - length: the desired length of the new vector.
+
+Returns:
+  - Rescaled vector, or zero vector if original length is zero.
+*/
+func (v *Vector2d) SetLength(length float64) *Vector2d {
+	if v.Length() == 0 {
+		return &Vector2d{}
+	}
+	return v.Normalize().MultiplyScalar(length)
+}
+
+
+/*
+Rotate rotates a 2D vector by a given angle in degrees.
+
+Params:
+  - angle: angle to rotate in degrees.
+
+Returns:
+  - Rotated vector.
+*/
+func (v *Vector2d) Rotate(angle float64) *Vector2d {
+	radians := angle * (math.Pi / 180.0)
+	cos := float64(math.Cos(float64(radians)))
+	sin := float64(math.Sin(float64(radians)))
+	return &Vector2d{
+		X: v.X*cos - v.Y*sin,
+		Y: v.X*sin + v.Y*cos,
+	}
+}
+
+
 // ------------------- Vector2i Methods -------------------
 
 /*
@@ -986,6 +1324,337 @@ func (v *Vector3f) SetLength(length float32) *Vector3f {
 
 
 
+// ------------------- Vector3d Methods -------------------
+
+/*
+Add returns a new vector representing the component-wise sum
+of this vector and another.
+
+Params:
+  - other: the vector to add to this one.
+
+Returns:
+  - A new Vector3d representing the result of the addition.
+*/
+func (v *Vector3d) Add(other *Vector3d) *Vector3d {
+	return &Vector3d{
+		X: v.X + other.X,
+		Y: v.Y + other.Y,
+		Z: v.Z + other.Z,
+	}
+}
+
+/*
+Subtract returns a new vector representing the component-wise difference
+between this vector and another.
+
+Params:
+  - other: the vector to subtract from this one.
+
+Returns:
+  - A new Vector3d representing the result of the subtraction.
+*/
+func (v *Vector3d) Subtract(other *Vector3d) *Vector3d {
+	return &Vector3d{
+		X: v.X - other.X,
+		Y: v.Y - other.Y,
+		Z: v.Z - other.Z,
+	}
+}
+
+/*
+Multiply returns a new vector with component-wise multiplication
+of this vector and another.
+
+Params:
+  - other: the vector to multiply with.
+
+Returns:
+  - A new Vector3d with each component multiplied.
+*/
+func (v *Vector3d) Multiply(other *Vector3d) *Vector3d {
+	return &Vector3d{
+		X: v.X * other.X,
+		Y: v.Y * other.Y,
+		Z: v.Z * other.Z,
+	}
+}
+
+/*
+MultiplyScalar multiplies each component of the vector by a scalar.
+
+Params:
+  - scalar: the scalar value to multiply by.
+
+Returns:
+  - A new Vector3d with each component scaled.
+*/
+func (v *Vector3d) MultiplyScalar(scalar float64) *Vector3d {
+	return &Vector3d{
+		X: v.X * scalar,
+		Y: v.Y * scalar,
+		Z: v.Z * scalar,
+	}
+}
+
+/*
+MultiplyScalars performs component-wise multiplication with individual scalar values.
+
+Params:
+  - x float64, y float64, z float64
+
+Returns:
+  - A new Vector3d with each component multiplied by its corresponding scalar.
+*/
+func (v *Vector3d) MultiplyScalars(x float64, y float64, z float64) *Vector3d {
+	return &Vector3d{
+		X: v.X * x,
+		Y: v.Y * y,
+		Z: v.Z * z,
+	}
+}
+
+/*
+Divide performs component-wise division of this vector by another.
+
+Params:
+  - other: the vector to divide by.
+
+Returns:
+  - A new Vector3d with each component divided.
+*/
+func (v *Vector3d) Divide(other *Vector3d) *Vector3d {
+	return &Vector3d{
+		X: v.X / other.X,
+		Y: v.Y / other.Y,
+		Z: v.Z / other.Z,
+	}
+}
+
+/*
+DivideScalar divides each component by a scalar.
+
+Params:
+  - scalar: the scalar divisor.
+
+Returns:
+  - A new Vector3d with each component divided by scalar.
+*/
+func (v *Vector3d) DivideScalar(scalar float64) *Vector3d {
+	return &Vector3d{
+		X: v.X / scalar,
+		Y: v.Y / scalar,
+		Z: v.Z / scalar,
+	}
+}
+
+/*
+DivideScalars divides each component by its corresponding scalar.
+
+Params:
+  - x float64, y float64, z float64
+
+Returns:
+  - A new Vector3d with each component divided.
+*/
+func (v *Vector3d) DivideScalars(x float64, y float64, z float64) *Vector3d {
+	return &Vector3d{
+		X: v.X / x,
+		Y: v.Y / y,
+		Z: v.Z / z,
+	}
+}
+
+/*
+Equals returns true if all components of both vectors are equal.
+
+Params:
+  - other: the vector to compare with.
+
+Returns:
+  - Boolean indicating equality.
+*/
+func (v *Vector3d) Equals(other *Vector3d) bool {
+	return v.X == other.X && v.Y == other.Y && v.Z == other.Z
+}
+
+/*
+String returns a formatted string representation of the vector.
+*/
+func (v *Vector3d) String() string {
+	return fmt.Sprintf("Vector3d(X: %f, Y: %f, Z: %f)", v.X, v.Y, v.Z)
+}
+
+
+// --- Float-Specific Vector3d Methods ---
+
+/*
+LengthSquared returns the squared magnitude of the vector.
+
+Returns:
+  - Sum of squares of components.
+*/
+func (v *Vector3d) LengthSquared() float64 {
+	return v.X*v.X + v.Y*v.Y + v.Z*v.Z
+}
+
+/*
+Length returns the Euclidean length (magnitude) of the vector.
+
+Returns:
+  - Square root of LengthSquared.
+*/
+func (v *Vector3d) Length() float64 {
+	return float64(math.Sqrt(float64(v.LengthSquared())))
+}
+
+/*
+Normalize returns a unit vector pointing in the same direction.
+
+Returns:
+  - A normalized vector, or zero vector if original length is 0.
+*/
+func (v *Vector3d) Normalize() *Vector3d {
+	if l := v.Length(); l != 0 {
+		return v.DivideScalar(l)
+	}
+	return &Vector3d{}
+}
+
+/*
+Dot returns the dot product with another vector.
+
+Params:
+  - other: the vector to dot with.
+
+Returns:
+  - Dot product (scalar).
+*/
+func (v *Vector3d) Dot(other *Vector3d) float64 {
+	return v.X*other.X + v.Y*other.Y + v.Z*other.Z
+}
+
+/*
+Distance returns the Euclidean distance between two vectors.
+
+Params:
+  - other: the vector to measure distance to.
+
+Returns:
+  - Distance as a float.
+*/
+func (v *Vector3d) Distance(other *Vector3d) float64 {
+	return float64(math.Sqrt(float64(v.DistanceSquared(other))))
+}
+
+/*
+DistanceSquared returns the squared distance between two vectors.
+
+Params:
+  - other: the vector to measure distance to.
+
+Returns:
+  - Squared distance (faster if exact distance isn't needed).
+*/
+func (v *Vector3d) DistanceSquared(other *Vector3d) float64 {
+	return (v.X - other.X)*(v.X - other.X) + (v.Y - other.Y)*(v.Y - other.Y) + (v.Z - other.Z)*(v.Z - other.Z)
+}
+
+/*
+Lerp performs linear interpolation toward another vector.
+
+Params:
+  - other: target vector.
+  - t: interpolation factor in [0, 1].
+
+Returns:
+  - Interpolated vector between this and other.
+*/
+func (v *Vector3d) Lerp(other *Vector3d, t float64) *Vector3d {
+	return &Vector3d{
+		X: v.X + (other.X - v.X)*t,
+		Y: v.Y + (other.Y - v.Y)*t,
+		Z: v.Z + (other.Z - v.Z)*t,
+	}
+}
+
+/*
+Clamp limits each component to the corresponding range.
+
+Params:
+  - min: minimum vector values.
+  - max: maximum vector values.
+
+Returns:
+  - Clamped vector.
+*/
+func (v *Vector3d) Clamp(min, max *Vector3d) *Vector3d {
+	return &Vector3d{
+		X: float64(math.Max(float64(min.X), math.Min(float64(max.X), float64(v.X)))),
+		Y: float64(math.Max(float64(min.Y), math.Min(float64(max.Y), float64(v.Y)))),
+		Z: float64(math.Max(float64(min.Z), math.Min(float64(max.Z), float64(v.Z)))),
+	}
+}
+
+/*
+Reflect reflects this vector around a surface normal.
+
+Params:
+  - normal: surface normal vector.
+
+Returns:
+  - Reflected vector.
+*/
+func (v *Vector3d) Reflect(normal *Vector3d) *Vector3d {
+	dot := v.Dot(normal)
+	return &Vector3d{
+		X: v.X - 2*dot*normal.X,
+		Y: v.Y - 2*dot*normal.Y,
+		Z: v.Z - 2*dot*normal.Z,
+	}
+}
+
+/*
+Project projects this vector onto another.
+
+Params:
+  - other: vector to project onto.
+
+Returns:
+  - Projected vector.
+*/
+func (v *Vector3d) Project(other *Vector3d) *Vector3d {
+	dot := v.Dot(other)
+	lengthSquared := other.LengthSquared()
+	if lengthSquared == 0 {
+		return &Vector3d{}
+	}
+	scalar := dot / lengthSquared
+	return &Vector3d{
+		X: other.X * scalar,
+		Y: other.Y * scalar,
+		Z: other.Z * scalar,
+	}
+}
+
+/*
+SetLength returns a new vector in the same direction with a given length.
+
+Params:
+  - length: the desired length of the new vector.
+
+Returns:
+  - Rescaled vector, or zero vector if original length is zero.
+*/
+func (v *Vector3d) SetLength(length float64) *Vector3d {
+	if v.Length() == 0 {
+		return &Vector3d{}
+	}
+	return v.Normalize().MultiplyScalar(length)
+}
+
+
+
 // ------------------- Vector3i Methods -------------------
 
 /*
@@ -1145,6 +1814,169 @@ String returns a formatted string representation of the vector.
 */
 func (v *Vector3i) String() string {
 	return fmt.Sprintf("Vector3i(X: %d, Y: %d, Z: %d)", v.X, v.Y, v.Z)
+}
+
+
+
+// ------------------- Vector3u Methods -------------------
+
+/*
+Add returns a new vector representing the component-wise sum
+of this vector and another.
+
+Params:
+  - other: the vector to add to this one.
+
+Returns:
+  - A new Vector3u representing the result of the addition.
+*/
+func (v *Vector3u) Add(other *Vector3u) *Vector3u {
+	return &Vector3u{
+		X: v.X + other.X,
+		Y: v.Y + other.Y,
+		Z: v.Z + other.Z,
+	}
+}
+
+/*
+Subtract returns a new vector representing the component-wise difference
+between this vector and another.
+
+Params:
+  - other: the vector to subtract from this one.
+
+Returns:
+  - A new Vector3u representing the result of the subtraction.
+*/
+func (v *Vector3u) Subtract(other *Vector3u) *Vector3u {
+	return &Vector3u{
+		X: v.X - other.X,
+		Y: v.Y - other.Y,
+		Z: v.Z - other.Z,
+	}
+}
+
+/*
+Multiply returns a new vector with component-wise multiplication
+of this vector and another.
+
+Params:
+  - other: the vector to multiply with.
+
+Returns:
+  - A new Vector3u with each component multiplied.
+*/
+func (v *Vector3u) Multiply(other *Vector3u) *Vector3u {
+	return &Vector3u{
+		X: v.X * other.X,
+		Y: v.Y * other.Y,
+		Z: v.Z * other.Z,
+	}
+}
+
+/*
+MultiplyScalar multiplies each component of the vector by a scalar.
+
+Params:
+  - scalar: the scalar value to multiply by.
+
+Returns:
+  - A new Vector3u with each component scaled.
+*/
+func (v *Vector3u) MultiplyScalar(scalar uint32) *Vector3u {
+	return &Vector3u{
+		X: v.X * scalar,
+		Y: v.Y * scalar,
+		Z: v.Z * scalar,
+	}
+}
+
+/*
+MultiplyScalars performs component-wise multiplication with individual scalar values.
+
+Params:
+  - x uint32, y uint32, z uint32
+
+Returns:
+  - A new Vector3u with each component multiplied by its corresponding scalar.
+*/
+func (v *Vector3u) MultiplyScalars(x uint32, y uint32, z uint32) *Vector3u {
+	return &Vector3u{
+		X: v.X * x,
+		Y: v.Y * y,
+		Z: v.Z * z,
+	}
+}
+
+/*
+Divide performs component-wise division of this vector by another.
+
+Params:
+  - other: the vector to divide by.
+
+Returns:
+  - A new Vector3u with each component divided.
+*/
+func (v *Vector3u) Divide(other *Vector3u) *Vector3u {
+	return &Vector3u{
+		X: v.X / other.X,
+		Y: v.Y / other.Y,
+		Z: v.Z / other.Z,
+	}
+}
+
+/*
+DivideScalar divides each component by a scalar.
+
+Params:
+  - scalar: the scalar divisor.
+
+Returns:
+  - A new Vector3u with each component divided by scalar.
+*/
+func (v *Vector3u) DivideScalar(scalar uint32) *Vector3u {
+	return &Vector3u{
+		X: v.X / scalar,
+		Y: v.Y / scalar,
+		Z: v.Z / scalar,
+	}
+}
+
+/*
+DivideScalars divides each component by its corresponding scalar.
+
+Params:
+  - x uint32, y uint32, z uint32
+
+Returns:
+  - A new Vector3u with each component divided.
+*/
+func (v *Vector3u) DivideScalars(x uint32, y uint32, z uint32) *Vector3u {
+	return &Vector3u{
+		X: v.X / x,
+		Y: v.Y / y,
+		Z: v.Z / z,
+	}
+}
+
+/*
+Equals returns true if all components of both vectors are equal.
+
+Params:
+  - other: the vector to compare with.
+
+Returns:
+  - Boolean indicating equality.
+*/
+func (v *Vector3u) Equals(other *Vector3u) bool {
+	return v.X == other.X && v.Y == other.Y && v.Z == other.Z
+}
+
+/*
+String returns a formatted string representation of the vector.
+*/
+func (v *Vector3u) String() string {
+	return fmt.Sprintf("Vector3u(X: %d, Y: %d, Z: %d)", v.X, v.Y, v.Z)
 }
 
 
@@ -1492,6 +2324,349 @@ func (v *Vector4f) SetLength(length float32) *Vector4f {
 
 
 
+// ------------------- Vector4d Methods -------------------
+
+/*
+Add returns a new vector representing the component-wise sum
+of this vector and another.
+
+Params:
+  - other: the vector to add to this one.
+
+Returns:
+  - A new Vector4d representing the result of the addition.
+*/
+func (v *Vector4d) Add(other *Vector4d) *Vector4d {
+	return &Vector4d{
+		X: v.X + other.X,
+		Y: v.Y + other.Y,
+		Z: v.Z + other.Z,
+		W: v.W + other.W,
+	}
+}
+
+/*
+Subtract returns a new vector representing the component-wise difference
+between this vector and another.
+
+Params:
+  - other: the vector to subtract from this one.
+
+Returns:
+  - A new Vector4d representing the result of the subtraction.
+*/
+func (v *Vector4d) Subtract(other *Vector4d) *Vector4d {
+	return &Vector4d{
+		X: v.X - other.X,
+		Y: v.Y - other.Y,
+		Z: v.Z - other.Z,
+		W: v.W - other.W,
+	}
+}
+
+/*
+Multiply returns a new vector with component-wise multiplication
+of this vector and another.
+
+Params:
+  - other: the vector to multiply with.
+
+Returns:
+  - A new Vector4d with each component multiplied.
+*/
+func (v *Vector4d) Multiply(other *Vector4d) *Vector4d {
+	return &Vector4d{
+		X: v.X * other.X,
+		Y: v.Y * other.Y,
+		Z: v.Z * other.Z,
+		W: v.W * other.W,
+	}
+}
+
+/*
+MultiplyScalar multiplies each component of the vector by a scalar.
+
+Params:
+  - scalar: the scalar value to multiply by.
+
+Returns:
+  - A new Vector4d with each component scaled.
+*/
+func (v *Vector4d) MultiplyScalar(scalar float64) *Vector4d {
+	return &Vector4d{
+		X: v.X * scalar,
+		Y: v.Y * scalar,
+		Z: v.Z * scalar,
+		W: v.W * scalar,
+	}
+}
+
+/*
+MultiplyScalars performs component-wise multiplication with individual scalar values.
+
+Params:
+  - x float64, y float64, z float64, w float64
+
+Returns:
+  - A new Vector4d with each component multiplied by its corresponding scalar.
+*/
+func (v *Vector4d) MultiplyScalars(x float64, y float64, z float64, w float64) *Vector4d {
+	return &Vector4d{
+		X: v.X * x,
+		Y: v.Y * y,
+		Z: v.Z * z,
+		W: v.W * w,
+	}
+}
+
+/*
+Divide performs component-wise division of this vector by another.
+
+Params:
+  - other: the vector to divide by.
+
+Returns:
+  - A new Vector4d with each component divided.
+*/
+func (v *Vector4d) Divide(other *Vector4d) *Vector4d {
+	return &Vector4d{
+		X: v.X / other.X,
+		Y: v.Y / other.Y,
+		Z: v.Z / other.Z,
+		W: v.W / other.W,
+	}
+}
+
+/*
+DivideScalar divides each component by a scalar.
+
+Params:
+  - scalar: the scalar divisor.
+
+Returns:
+  - A new Vector4d with each component divided by scalar.
+*/
+func (v *Vector4d) DivideScalar(scalar float64) *Vector4d {
+	return &Vector4d{
+		X: v.X / scalar,
+		Y: v.Y / scalar,
+		Z: v.Z / scalar,
+		W: v.W / scalar,
+	}
+}
+
+/*
+DivideScalars divides each component by its corresponding scalar.
+
+Params:
+  - x float64, y float64, z float64, w float64
+
+Returns:
+  - A new Vector4d with each component divided.
+*/
+func (v *Vector4d) DivideScalars(x float64, y float64, z float64, w float64) *Vector4d {
+	return &Vector4d{
+		X: v.X / x,
+		Y: v.Y / y,
+		Z: v.Z / z,
+		W: v.W / w,
+	}
+}
+
+/*
+Equals returns true if all components of both vectors are equal.
+
+Params:
+  - other: the vector to compare with.
+
+Returns:
+  - Boolean indicating equality.
+*/
+func (v *Vector4d) Equals(other *Vector4d) bool {
+	return v.X == other.X && v.Y == other.Y && v.Z == other.Z && v.W == other.W
+}
+
+/*
+String returns a formatted string representation of the vector.
+*/
+func (v *Vector4d) String() string {
+	return fmt.Sprintf("Vector4d(X: %f, Y: %f, Z: %f, W: %f)", v.X, v.Y, v.Z, v.W)
+}
+
+
+// --- Float-Specific Vector4d Methods ---
+
+/*
+LengthSquared returns the squared magnitude of the vector.
+
+Returns:
+  - Sum of squares of components.
+*/
+func (v *Vector4d) LengthSquared() float64 {
+	return v.X*v.X + v.Y*v.Y + v.Z*v.Z + v.W*v.W
+}
+
+/*
+Length returns the Euclidean length (magnitude) of the vector.
+
+Returns:
+  - Square root of LengthSquared.
+*/
+func (v *Vector4d) Length() float64 {
+	return float64(math.Sqrt(float64(v.LengthSquared())))
+}
+
+/*
+Normalize returns a unit vector pointing in the same direction.
+
+Returns:
+  - A normalized vector, or zero vector if original length is 0.
+*/
+func (v *Vector4d) Normalize() *Vector4d {
+	if l := v.Length(); l != 0 {
+		return v.DivideScalar(l)
+	}
+	return &Vector4d{}
+}
+
+/*
+Dot returns the dot product with another vector.
+
+Params:
+  - other: the vector to dot with.
+
+Returns:
+  - Dot product (scalar).
+*/
+func (v *Vector4d) Dot(other *Vector4d) float64 {
+	return v.X*other.X + v.Y*other.Y + v.Z*other.Z + v.W*other.W
+}
+
+/*
+Distance returns the Euclidean distance between two vectors.
+
+Params:
+  - other: the vector to measure distance to.
+
+Returns:
+  - Distance as a float.
+*/
+func (v *Vector4d) Distance(other *Vector4d) float64 {
+	return float64(math.Sqrt(float64(v.DistanceSquared(other))))
+}
+
+/*
+DistanceSquared returns the squared distance between two vectors.
+
+Params:
+  - other: the vector to measure distance to.
+
+Returns:
+  - Squared distance (faster if exact distance isn't needed).
+*/
+func (v *Vector4d) DistanceSquared(other *Vector4d) float64 {
+	return (v.X - other.X)*(v.X - other.X) + (v.Y - other.Y)*(v.Y - other.Y) + (v.Z - other.Z)*(v.Z - other.Z) + (v.W - other.W)*(v.W - other.W)
+}
+
+/*
+Lerp performs linear interpolation toward another vector.
+
+Params:
+  - other: target vector.
+  - t: interpolation factor in [0, 1].
+
+Returns:
+  - Interpolated vector between this and other.
+*/
+func (v *Vector4d) Lerp(other *Vector4d, t float64) *Vector4d {
+	return &Vector4d{
+		X: v.X + (other.X - v.X)*t,
+		Y: v.Y + (other.Y - v.Y)*t,
+		Z: v.Z + (other.Z - v.Z)*t,
+		W: v.W + (other.W - v.W)*t,
+	}
+}
+
+/*
+Clamp limits each component to the corresponding range.
+
+Params:
+  - min: minimum vector values.
+  - max: maximum vector values.
+
+Returns:
+  - Clamped vector.
+*/
+func (v *Vector4d) Clamp(min, max *Vector4d) *Vector4d {
+	return &Vector4d{
+		X: float64(math.Max(float64(min.X), math.Min(float64(max.X), float64(v.X)))),
+		Y: float64(math.Max(float64(min.Y), math.Min(float64(max.Y), float64(v.Y)))),
+		Z: float64(math.Max(float64(min.Z), math.Min(float64(max.Z), float64(v.Z)))),
+		W: float64(math.Max(float64(min.W), math.Min(float64(max.W), float64(v.W)))),
+	}
+}
+
+/*
+Reflect reflects this vector around a surface normal.
+
+Params:
+  - normal: surface normal vector.
+
+Returns:
+  - Reflected vector.
+*/
+func (v *Vector4d) Reflect(normal *Vector4d) *Vector4d {
+	dot := v.Dot(normal)
+	return &Vector4d{
+		X: v.X - 2*dot*normal.X,
+		Y: v.Y - 2*dot*normal.Y,
+		Z: v.Z - 2*dot*normal.Z,
+		W: v.W - 2*dot*normal.W,
+	}
+}
+
+/*
+Project projects this vector onto another.
+
+Params:
+  - other: vector to project onto.
+
+Returns:
+  - Projected vector.
+*/
+func (v *Vector4d) Project(other *Vector4d) *Vector4d {
+	dot := v.Dot(other)
+	lengthSquared := other.LengthSquared()
+	if lengthSquared == 0 {
+		return &Vector4d{}
+	}
+	scalar := dot / lengthSquared
+	return &Vector4d{
+		X: other.X * scalar,
+		Y: other.Y * scalar,
+		Z: other.Z * scalar,
+		W: other.W * scalar,
+	}
+}
+
+/*
+SetLength returns a new vector in the same direction with a given length.
+
+Params:
+  - length: the desired length of the new vector.
+
+Returns:
+  - Rescaled vector, or zero vector if original length is zero.
+*/
+func (v *Vector4d) SetLength(length float64) *Vector4d {
+	if v.Length() == 0 {
+		return &Vector4d{}
+	}
+	return v.Normalize().MultiplyScalar(length)
+}
+
+
+
 // ------------------- Vector4i Methods -------------------
 
 /*
@@ -1659,6 +2834,177 @@ String returns a formatted string representation of the vector.
 */
 func (v *Vector4i) String() string {
 	return fmt.Sprintf("Vector4i(X: %d, Y: %d, Z: %d, W: %d)", v.X, v.Y, v.Z, v.W)
+}
+
+
+
+// ------------------- Vector4u Methods -------------------
+
+/*
+Add returns a new vector representing the component-wise sum
+of this vector and another.
+
+Params:
+  - other: the vector to add to this one.
+
+Returns:
+  - A new Vector4u representing the result of the addition.
+*/
+func (v *Vector4u) Add(other *Vector4u) *Vector4u {
+	return &Vector4u{
+		X: v.X + other.X,
+		Y: v.Y + other.Y,
+		Z: v.Z + other.Z,
+		W: v.W + other.W,
+	}
+}
+
+/*
+Subtract returns a new vector representing the component-wise difference
+between this vector and another.
+
+Params:
+  - other: the vector to subtract from this one.
+
+Returns:
+  - A new Vector4u representing the result of the subtraction.
+*/
+func (v *Vector4u) Subtract(other *Vector4u) *Vector4u {
+	return &Vector4u{
+		X: v.X - other.X,
+		Y: v.Y - other.Y,
+		Z: v.Z - other.Z,
+		W: v.W - other.W,
+	}
+}
+
+/*
+Multiply returns a new vector with component-wise multiplication
+of this vector and another.
+
+Params:
+  - other: the vector to multiply with.
+
+Returns:
+  - A new Vector4u with each component multiplied.
+*/
+func (v *Vector4u) Multiply(other *Vector4u) *Vector4u {
+	return &Vector4u{
+		X: v.X * other.X,
+		Y: v.Y * other.Y,
+		Z: v.Z * other.Z,
+		W: v.W * other.W,
+	}
+}
+
+/*
+MultiplyScalar multiplies each component of the vector by a scalar.
+
+Params:
+  - scalar: the scalar value to multiply by.
+
+Returns:
+  - A new Vector4u with each component scaled.
+*/
+func (v *Vector4u) MultiplyScalar(scalar uint32) *Vector4u {
+	return &Vector4u{
+		X: v.X * scalar,
+		Y: v.Y * scalar,
+		Z: v.Z * scalar,
+		W: v.W * scalar,
+	}
+}
+
+/*
+MultiplyScalars performs component-wise multiplication with individual scalar values.
+
+Params:
+  - x uint32, y uint32, z uint32, w uint32
+
+Returns:
+  - A new Vector4u with each component multiplied by its corresponding scalar.
+*/
+func (v *Vector4u) MultiplyScalars(x uint32, y uint32, z uint32, w uint32) *Vector4u {
+	return &Vector4u{
+		X: v.X * x,
+		Y: v.Y * y,
+		Z: v.Z * z,
+		W: v.W * w,
+	}
+}
+
+/*
+Divide performs component-wise division of this vector by another.
+
+Params:
+  - other: the vector to divide by.
+
+Returns:
+  - A new Vector4u with each component divided.
+*/
+func (v *Vector4u) Divide(other *Vector4u) *Vector4u {
+	return &Vector4u{
+		X: v.X / other.X,
+		Y: v.Y / other.Y,
+		Z: v.Z / other.Z,
+		W: v.W / other.W,
+	}
+}
+
+/*
+DivideScalar divides each component by a scalar.
+
+Params:
+  - scalar: the scalar divisor.
+
+Returns:
+  - A new Vector4u with each component divided by scalar.
+*/
+func (v *Vector4u) DivideScalar(scalar uint32) *Vector4u {
+	return &Vector4u{
+		X: v.X / scalar,
+		Y: v.Y / scalar,
+		Z: v.Z / scalar,
+		W: v.W / scalar,
+	}
+}
+
+/*
+DivideScalars divides each component by its corresponding scalar.
+
+Params:
+  - x uint32, y uint32, z uint32, w uint32
+
+Returns:
+  - A new Vector4u with each component divided.
+*/
+func (v *Vector4u) DivideScalars(x uint32, y uint32, z uint32, w uint32) *Vector4u {
+	return &Vector4u{
+		X: v.X / x,
+		Y: v.Y / y,
+		Z: v.Z / z,
+		W: v.W / w,
+	}
+}
+
+/*
+Equals returns true if all components of both vectors are equal.
+
+Params:
+  - other: the vector to compare with.
+
+Returns:
+  - Boolean indicating equality.
+*/
+func (v *Vector4u) Equals(other *Vector4u) bool {
+	return v.X == other.X && v.Y == other.Y && v.Z == other.Z && v.W == other.W
+}
+
+/*
+String returns a formatted string representation of the vector.
+*/
+func (v *Vector4u) String() string {
+	return fmt.Sprintf("Vector4u(X: %d, Y: %d, Z: %d, W: %d)", v.X, v.Y, v.Z, v.W)
 }
 
 
