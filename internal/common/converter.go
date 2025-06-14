@@ -375,13 +375,16 @@ func NewConverter(typesFile string, functionsFile string) (*Converter, error) {
 			},
 		},
 		StoreAsValueOverrides: map[string]struct{}{
-			"sfTransform": {}, // Keep Transform as a pointer in Go
+			"sfTransform": {},
 		},
 		NilParamOverrides: map[string][]Field{
 			"sfShader_createFromFile": {
-				{Name: "vertexShaderFilename", Type: "string"},
-				{Name: "geometryShaderFilename", Type: "string"},
-				{Name: "fragmentShaderFilename", Type: "string"},
+				{Name: "vertexShaderFilename"},
+				{Name: "geometryShaderFilename"},
+				{Name: "fragmentShaderFilename"},
+			},
+			"sfTexture_createFromFile": {
+				{Name: "area"},
 			},
 		},
 		PrefixMap: map[string]string{

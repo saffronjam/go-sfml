@@ -212,12 +212,29 @@ func main() {
 				argVarName := fmt.Sprintf("var%d", len(functionBodyRows))
 
 				if _, hasOverride := converter.StructOverrides[common.CleanCType(cParam.Type)]; hasOverride {
-					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s.ToC()", argVarName, goParam.Name))
-					ampersand := ""
-					if common.IsPointerType(goParam.Type) {
-						ampersand = "&"
+					nilPointerOverride := converter.IsNilParamOverride(originalName, cParam.Name)
+					if nilPointerOverride != nil {
+						goParam.Type = common.MakePointerType(goParam.Type)
+						functionBodyRows = append(functionBodyRows, fmt.Sprintf("var %s *C.%s = nil", argVarName, common.CleanCType(cParam.Type)))
+						functionBodyRows = append(functionBodyRows, fmt.Sprintf("if %s != nil {", goParam.Name))
+
+						if common.IsPointerType(cParam.Type) {
+							functionBodyRows = append(functionBodyRows, fmt.Sprintf("  %sVal := %s.ToC()", argVarName, goParam.Name))
+							functionBodyRows = append(functionBodyRows, fmt.Sprintf("  %s = &%sVal", argVarName, argVarName))
+						} else {
+							functionBodyRows = append(functionBodyRows, fmt.Sprintf("  %s = %s.ToC()", argVarName, goParam.Name))
+						}
+
+						functionBodyRows = append(functionBodyRows, fmt.Sprintf("}"))
+						callArgs = append(callArgs, fmt.Sprintf("%s", argVarName))
+					} else {
+						functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s.ToC()", argVarName, goParam.Name))
+						ampersand := ""
+						if common.IsPointerType(goParam.Type) {
+							ampersand = "&"
+						}
+						callArgs = append(callArgs, fmt.Sprintf("%s%s", ampersand, argVarName))
 					}
-					callArgs = append(callArgs, fmt.Sprintf("%s%s", ampersand, argVarName))
 				} else if converter.IsKnownGoType(common.StripPointer(goParam.Type)) && !converter.IsEnum(goParam.Type) {
 					functionBodyRows = append(functionBodyRows, fmt.Sprintf("%s := %s.ToC()", argVarName, goParam.Name))
 					callArgs = append(callArgs, argVarName)
